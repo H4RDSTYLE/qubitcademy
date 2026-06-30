@@ -245,15 +245,8 @@ nav.scrolled {
   letter-spacing: 0.07em;
 }
 .qsim-out .ket { color: var(--cyan); font-weight: 600; }
-/* Animated particle */
-.qparticle { fill: var(--cyan); filter: drop-shadow(0 0 3px var(--cyan)); }
-.qparticle1 { animation: pflow1 3s linear infinite; }
-.qparticle2 { animation: pflow2 3s linear infinite 1s; }
-.qparticle3 { animation: pflow3 3s linear infinite 2s; }
-.qparticle4 { animation: pflow1 3s linear infinite 0.5s; }
-@keyframes pflow1 { 0%{transform:translateX(-20px);opacity:0} 10%{opacity:1} 90%{opacity:1} 100%{transform:translateX(340px);opacity:0} }
-@keyframes pflow2 { 0%{transform:translateX(-20px);opacity:0} 10%{opacity:1} 90%{opacity:1} 100%{transform:translateX(340px);opacity:0} }
-@keyframes pflow3 { 0%{transform:translateX(-20px);opacity:0} 10%{opacity:1} 90%{opacity:1} 100%{transform:translateX(340px);opacity:0} }
+/* Circuit particles — JS-animated sequentially in main.js qsim() */
+.qparticle { fill: var(--cyan); filter: drop-shadow(0 0 4px var(--cyan)); opacity: 0; }
 
 .qcircuit-badge {
   position: absolute; bottom: 16px; right: 16px;
