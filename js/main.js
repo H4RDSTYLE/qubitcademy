@@ -528,8 +528,8 @@ applyLang();
       const el = els[i];
       if (!el) return;
       el.textContent = b;
-      /* 0 → purple (superposition collapsed to ground), 1 → gold (excited) */
-      el.setAttribute('fill', b ? '#f59e0b' : '#9333ea');
+      /* 0 → near-white, 1 → bright amber; both high-contrast on dark gate */
+      el.setAttribute('fill', b ? '#fbbf24' : '#e2e8f0');
       el.classList.add('qmres-vis');
     });
     if (outEl) {

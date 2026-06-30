@@ -228,10 +228,11 @@ nav.scrolled {
 /* Quantum simulation: measurement outcome display */
 .qmres {
   font-family: var(--font-m);
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
   opacity: 0;
   transition: opacity 0.3s ease;
+  filter: drop-shadow(0 0 4px currentColor);
 }
 .qmres.qmres-vis { opacity: 1; }
 .qsim-out {
