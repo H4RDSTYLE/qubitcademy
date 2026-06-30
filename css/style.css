@@ -249,6 +249,7 @@ nav.scrolled {
 .qparticle1 { animation: pflow1 3s linear infinite; }
 .qparticle2 { animation: pflow2 3s linear infinite 1s; }
 .qparticle3 { animation: pflow3 3s linear infinite 2s; }
+.qparticle4 { animation: pflow1 3s linear infinite 0.5s; }
 @keyframes pflow1 { 0%{transform:translateX(-20px);opacity:0} 10%{opacity:1} 90%{opacity:1} 100%{transform:translateX(340px);opacity:0} }
 @keyframes pflow2 { 0%{transform:translateX(-20px);opacity:0} 10%{opacity:1} 90%{opacity:1} 100%{transform:translateX(340px);opacity:0} }
 @keyframes pflow3 { 0%{transform:translateX(-20px);opacity:0} 10%{opacity:1} 90%{opacity:1} 100%{transform:translateX(340px);opacity:0} }
