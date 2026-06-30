@@ -169,9 +169,16 @@
               <circle r="3" cy="50"  class="qparticle qparticle1" cx="70"/>
               <circle r="3" cy="90"  class="qparticle qparticle2" cx="70"/>
               <circle r="2" cy="130" class="qparticle qparticle3" cx="70"/>
+
+              <!-- Measurement outcomes — populated by quantum simulator (main.js) -->
+              <text id="mres0" x="355" y="50"  class="qmres" text-anchor="middle" dominant-baseline="middle" fill="#9333ea"></text>
+              <text id="mres1" x="355" y="90"  class="qmres" text-anchor="middle" dominant-baseline="middle" fill="#9333ea"></text>
+              <text id="mres2" x="355" y="130" class="qmres" text-anchor="middle" dominant-baseline="middle" fill="#9333ea"></text>
+              <text id="mres3" x="355" y="170" class="qmres" text-anchor="middle" dominant-baseline="middle" fill="#9333ea"></text>
             </svg>
           </div>
           <div class="qcircuit-badge" data-i18n="hero.cbadge">Simulación en tiempo real</div>
+          <div class="qsim-out" id="qsim-out"></div>
         </div>
       </div>
 

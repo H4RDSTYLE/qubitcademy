@@ -433,3 +433,119 @@ document.addEventListener('DOMContentLoaded', () => {
   updateCourseResults();
 });
 applyLang();
+
+/* ── Quantum circuit simulator ──────────────────────────────────────
+   Circuit (4 qubits, reading left-to-right from the SVG):
+     q₀: H ─── CNOT(ctrl) ─── T ─────────────────── M
+     q₁: H ─────────────────── S ─── CNOT(ctrl) ─── M
+     q₂: ────── CNOT(tgt) ──────────────────── H ─── M
+     q₃: ──────────────────────────── CNOT(tgt) ─ T ─ M
+
+   State vector: 16 complex amplitudes for a 4-qubit system.
+   Measurement uses Born rule: P(k) = |αₖ|².
+   This circuit produces a uniform superposition over 8 of the 16
+   basis states, each with probability 1/8:
+     |0000⟩ |0010⟩ |0101⟩ |0111⟩ |1000⟩ |1010⟩ |1101⟩ |1111⟩
+   ─────────────────────────────────────────────────────────────── */
+(function qsim() {
+  /* Complex arithmetic */
+  const mul = ([ar,ai],[br,bi]) => [ar*br - ai*bi, ar*bi + ai*br];
+  const add = ([ar,ai],[br,bi]) => [ar+br, ai+bi];
+
+  const S2 = 1 / Math.sqrt(2);
+
+  /* 2×2 unitary matrices: [[m00,m01],[m10,m11]], each mij = [re,im] */
+  const G = {
+    H: [[[S2,0],[S2,0]], [[S2,0],[-S2,0]]],
+    T: [[[1,0],[0,0]], [[0,0],[S2,S2]]],   /* e^(iπ/4) = (1+i)/√2 */
+    S: [[[1,0],[0,0]], [[0,0],[0,1]]],     /* i                   */
+  };
+
+  /* Apply single-qubit gate to qubit q (q=0 is MSB / q₀) */
+  function applyGate(st, n, q, g) {
+    const out = st.map(x => [...x]);
+    const mask = 1 << (n - 1 - q);
+    for (let i = 0; i < st.length; i++) {
+      if (i & mask) continue;
+      const j = i | mask;
+      out[i] = add(mul(g[0][0], st[i]), mul(g[0][1], st[j]));
+      out[j] = add(mul(g[1][0], st[i]), mul(g[1][1], st[j]));
+    }
+    return out;
+  }
+
+  /* Apply CNOT gate: ctrl and tgt are qubit indices */
+  function cnot(st, n, ctrl, tgt) {
+    const out = st.map(x => [...x]);
+    const cm = 1 << (n - 1 - ctrl);
+    const tm = 1 << (n - 1 - tgt);
+    for (let i = 0; i < st.length; i++) {
+      if ((i & cm) && !(i & tm)) {
+        const j = i | tm;
+        out[i] = [...st[j]];
+        out[j] = [...st[i]];
+      }
+    }
+    return out;
+  }
+
+  /* Run the full circuit once and return measurement result [b0,b1,b2,b3] */
+  function shoot() {
+    const n = 4;
+    /* Initial state |0000⟩ */
+    let s = Array.from({ length: 16 }, (_, i) => i === 0 ? [1, 0] : [0, 0]);
+
+    s = applyGate(s, n, 0, G.H);   /* H on q₀ */
+    s = applyGate(s, n, 1, G.H);   /* H on q₁ */
+    s = cnot(s, n, 0, 2);          /* CNOT q₀→q₂ */
+    s = applyGate(s, n, 0, G.T);   /* T on q₀ */
+    s = applyGate(s, n, 1, G.S);   /* S on q₁ */
+    s = cnot(s, n, 1, 3);          /* CNOT q₁→q₃ */
+    s = applyGate(s, n, 2, G.H);   /* H on q₂ */
+    s = applyGate(s, n, 3, G.T);   /* T on q₃ */
+
+    /* Born-rule measurement: pick outcome proportional to |αₖ|² */
+    let r = Math.random(), k = 15;
+    for (let i = 0; i < 16; i++) {
+      r -= s[i][0] * s[i][0] + s[i][1] * s[i][1];
+      if (r <= 0) { k = i; break; }
+    }
+    return [0, 1, 2, 3].map(q => (k >> (n - 1 - q)) & 1);
+  }
+
+  /* ── DOM wiring ────────────────────────────────────────────────── */
+  const els   = [0,1,2,3].map(i => document.getElementById('mres' + i));
+  const outEl = document.getElementById('qsim-out');
+  let shots = 0;
+
+  function hide() {
+    els.forEach(el => { if (el) el.classList.remove('qmres-vis'); });
+  }
+
+  function show(bits) {
+    shots++;
+    bits.forEach((b, i) => {
+      const el = els[i];
+      if (!el) return;
+      el.textContent = b;
+      /* 0 → purple (superposition collapsed to ground), 1 → gold (excited) */
+      el.setAttribute('fill', b ? '#f59e0b' : '#9333ea');
+      el.classList.add('qmres-vis');
+    });
+    if (outEl) {
+      const ket = '|' + bits.join('') + '⟩';
+      outEl.innerHTML = `<span>#${shots}</span>\u2002<span class="ket">${ket}</span>`;
+    }
+  }
+
+  /* ── Animation loop — synced to the 3 s CSS particle cycle ─────── */
+  function cycle() {
+    hide();
+    setTimeout(() => show(shoot()), 2400); /* particles reach M gates at ~2.4 s */
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    cycle();
+    setInterval(cycle, 3000);
+  });
+})();
