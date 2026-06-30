@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Qubitcademy — Academia de computación cuántica en León, España. Aprende de forma presencial con expertos." />
-  <title>Qubitcademy — Academia de Computación Cuántica en León</title>
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%2300d4ff'/><text x='50%' y='55%' text-anchor='middle' dominant-baseline='middle' font-family='monospace' font-size='14' font-weight='600' fill='%2306060f'>Q</text></svg>" />
+  <meta name="description" content="Qubitcademy — La plataforma de aprendizaje cuántico online más completa. Aprende computación cuántica desde cero hasta algoritmos avanzados." />
+  <title>Qubitcademy — Aprende Computación Cuántica Online</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%239333ea'/><text x='50%' y='55%' text-anchor='middle' dominant-baseline='middle' font-family='monospace' font-size='14' font-weight='600' fill='%23fff'>Q</text></svg>" />
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
@@ -21,6 +21,9 @@
 
       <ul class="nav-links">
         <li><a href="index.html" class="active" data-i18n="nav.home">Inicio</a></li>
+        <li><a href="catalogue.html" data-i18n="nav.catalogue">Catálogo</a></li>
+        <li><a href="paths.html" data-i18n="nav.paths">Rutas</a></li>
+        <li><a href="faq.html" data-i18n="nav.faq">FAQ</a></li>
       </ul>
 
       <div class="nav-right">
@@ -29,7 +32,8 @@
           <div class="lang-sep"></div>
           <button class="lang-btn" data-lang="en">EN</button>
         </div>
-        <a href="#" class="btn btn-primary btn-sm" data-i18n="nav.cta">Contactar</a>
+        <a href="#" class="nav-login" data-i18n="nav.login">Iniciar sesión</a>
+        <a href="#" class="btn btn-primary btn-sm" data-i18n="nav.cta">Empezar gratis</a>
       </div>
 
       <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false">
@@ -44,13 +48,17 @@
 <!-- Mobile nav -->
 <div class="nav-mobile" role="dialog" aria-label="Menú">
   <a href="index.html" data-i18n="nav.home">Inicio</a>
+  <a href="catalogue.html" data-i18n="nav.catalogue">Catálogo</a>
+  <a href="paths.html" data-i18n="nav.paths">Rutas</a>
+  <a href="faq.html" data-i18n="nav.faq">FAQ</a>
   <div class="nav-mobile-lang">
     <button class="lang-btn active" data-lang="es">ES</button>
     <div class="lang-sep"></div>
     <button class="lang-btn" data-lang="en">EN</button>
   </div>
   <div class="nav-mobile-footer">
-    <a href="#" class="btn btn-primary" style="flex:1;justify-content:center;" data-i18n="nav.cta">Contactar</a>
+    <a href="#" class="btn btn-ghost" data-i18n="nav.login">Iniciar sesión</a>
+    <a href="#" class="btn btn-primary" data-i18n="nav.cta">Empezar gratis</a>
   </div>
 </div>
 
@@ -69,7 +77,7 @@
       <div class="hero-text">
         <div class="hero-eyebrow">
           <span class="eyebrow-dot"></span>
-          <span class="label" data-i18n="hero.eyebrow">Academia de Computación Cuántica</span>
+          <span class="label" data-i18n="hero.eyebrow">🚀 Plataforma de Aprendizaje Cuántico</span>
         </div>
         <h1>
           <span data-i18n="hero.h1a">Domina la</span><br>
@@ -81,23 +89,23 @@
           Aprende de expertos y transforma tu carrera.
         </p>
         <div class="hero-actions">
-          <a href="#" class="btn btn-primary btn-lg" data-i18n="hero.cta1">Contactar</a>
-          <a href="https://www.google.com/maps/search/?api=1&query=C.+Luis+Salvador+Carmona+13+Le%C3%B3n" target="_blank" rel="noopener" class="btn btn-ghost btn-lg" data-i18n="hero.cta2">Cómo llegar →</a>
+          <a href="catalogue.html" class="btn btn-primary btn-lg" data-i18n="hero.cta1">Empezar gratis</a>
+          <a href="catalogue.html" class="btn btn-ghost btn-lg" data-i18n="hero.cta2">Ver catálogo →</a>
         </div>
         <div class="hero-stats">
           <div class="hstat-item">
-            <div class="hstat-num" data-i18n="hero.s1n">100%</div>
-            <div class="hstat-lbl" data-i18n="hero.s1l">presencial</div>
+            <div class="hstat-num" data-i18n="hero.s1n">12</div>
+            <div class="hstat-lbl" data-i18n="hero.s1l">cursos disponibles</div>
           </div>
           <div class="hstat-sep"></div>
           <div class="hstat-item">
-            <div class="hstat-num" data-i18n="hero.s2n">León</div>
-            <div class="hstat-lbl" data-i18n="hero.s2l">24002, España</div>
+            <div class="hstat-num" data-i18n="hero.s2n">4.800+</div>
+            <div class="hstat-lbl" data-i18n="hero.s2l">estudiantes</div>
           </div>
           <div class="hstat-sep"></div>
           <div class="hstat-item">
-            <div class="hstat-num" data-i18n="hero.s3n">CPD</div>
-            <div class="hstat-lbl" data-i18n="hero.s3l">acreditados</div>
+            <div class="hstat-num" data-i18n="hero.s3n">3</div>
+            <div class="hstat-lbl" data-i18n="hero.s3l">rutas certificadas</div>
           </div>
         </div>
       </div>
@@ -108,74 +116,56 @@
           <div class="qcircuit-label" data-i18n="hero.circuit">Circuito cuántico de 4 qubits</div>
           <div class="qcircuit">
             <svg viewBox="0 0 420 240" xmlns="http://www.w3.org/2000/svg">
-              <!-- Qubit wire labels -->
               <text x="10" y="52"  class="qlabel">|q₀⟩</text>
               <text x="10" y="92"  class="qlabel">|q₁⟩</text>
               <text x="10" y="132" class="qlabel">|q₂⟩</text>
               <text x="10" y="172" class="qlabel">|q₃⟩</text>
 
-              <!-- Horizontal wires -->
               <line x1="50" y1="50"  x2="385" y2="50"  class="qwire"/>
               <line x1="50" y1="90"  x2="385" y2="90"  class="qwire"/>
               <line x1="50" y1="130" x2="385" y2="130" class="qwire"/>
               <line x1="50" y1="170" x2="385" y2="170" class="qwire"/>
 
-              <!-- q0: H gate -->
               <rect x="60" y="37" width="28" height="26" rx="4" class="qgate qgate-h"/>
               <text x="74" y="50" class="qgate-text" fill="#9333ea">H</text>
-
-              <!-- q1: H gate -->
               <rect x="60" y="77" width="28" height="26" rx="4" class="qgate qgate-h"/>
               <text x="74" y="90" class="qgate-text" fill="#9333ea">H</text>
 
-              <!-- CNOT q0→q2 -->
               <circle cx="130" cy="50" r="5" class="qctrl"/>
               <line x1="130" y1="55" x2="130" y2="117" class="qctrl-line"/>
               <circle cx="130" cy="130" r="12" class="qtarget"/>
               <line x1="118" y1="130" x2="142" y2="130" class="qtarget-cross"/>
               <line x1="130" y1="118" x2="130" y2="142" class="qtarget-cross"/>
 
-              <!-- T gate on q0 -->
               <rect x="160" y="37" width="28" height="26" rx="4" class="qgate qgate-t"/>
               <text x="174" y="50" class="qgate-text" fill="#f59e0b">T</text>
-
-              <!-- S gate on q1 -->
               <rect x="160" y="77" width="28" height="26" rx="4" class="qgate qgate-t"/>
               <text x="174" y="90" class="qgate-text" fill="#f59e0b">S</text>
 
-              <!-- CNOT q1→q3 -->
               <circle cx="220" cy="90" r="5" class="qctrl"/>
               <line x1="220" y1="95" x2="220" y2="157" class="qctrl-line"/>
               <circle cx="220" cy="170" r="12" class="qtarget"/>
               <line x1="208" y1="170" x2="232" y2="170" class="qtarget-cross"/>
               <line x1="220" y1="158" x2="220" y2="182" class="qtarget-cross"/>
 
-              <!-- H gate on q2 -->
               <rect x="250" y="117" width="28" height="26" rx="4" class="qgate qgate-h"/>
               <text x="264" y="130" class="qgate-text" fill="#9333ea">H</text>
-
-              <!-- T gate on q3 -->
               <rect x="250" y="157" width="28" height="26" rx="4" class="qgate qgate-t"/>
               <text x="264" y="170" class="qgate-text" fill="#f59e0b">T</text>
 
-              <!-- Measurement gates -->
               <rect x="338" y="37" width="34" height="26" rx="4" class="qgate qgate-m"/>
               <path d="M344,57 Q356,43 368,57" class="qmeas-arc"/>
               <line x1="356" y1="43" x2="364" y2="55" class="qmeas-needle"/>
-
               <rect x="338" y="77" width="34" height="26" rx="4" class="qgate qgate-m"/>
               <path d="M344,97 Q356,83 368,97" class="qmeas-arc"/>
               <line x1="356" y1="83" x2="364" y2="95" class="qmeas-needle"/>
-
               <rect x="338" y="117" width="34" height="26" rx="4" class="qgate qgate-m"/>
               <path d="M344,137 Q356,123 368,137" class="qmeas-arc"/>
               <line x1="356" y1="123" x2="364" y2="135" class="qmeas-needle"/>
-
               <rect x="338" y="157" width="34" height="26" rx="4" class="qgate qgate-m"/>
               <path d="M344,177 Q356,163 368,177" class="qmeas-arc"/>
               <line x1="356" y1="163" x2="364" y2="175" class="qmeas-needle"/>
 
-              <!-- Animated particles (one per wire) -->
               <circle r="3" cy="50"  class="qparticle qparticle1" cx="70"/>
               <circle r="3" cy="90"  class="qparticle qparticle2" cx="70"/>
               <circle r="2" cy="130" class="qparticle qparticle3" cx="70"/>
@@ -198,7 +188,6 @@
       <h2 data-i18n="feat.h2">Aprende cuántica de verdad.</h2>
       <p data-i18n="feat.p">Sin atajos. Desde los fundamentos matemáticos hasta programar en hardware cuántico real.</p>
     </div>
-
     <div class="features-grid">
       <div class="feat-card">
         <div class="feat-icon fi-c">🗺️</div>
@@ -207,8 +196,8 @@
       </div>
       <div class="feat-card">
         <div class="feat-icon fi-v">⚛️</div>
-        <h3 data-i18n="feat.2h">Práctica desde el primer día</h3>
-        <p data-i18n="feat.2p">Ejercicios prácticos con simuladores cuánticos. Aprende haciendo, no solo escuchando.</p>
+        <h3 data-i18n="feat.2h">Hardware real</h3>
+        <p data-i18n="feat.2p">Accede a IBM Quantum e IonQ y ejecuta tus algoritmos en computadoras cuánticas de verdad.</p>
       </div>
       <div class="feat-card">
         <div class="feat-icon fi-g">🏅</div>
@@ -225,6 +214,175 @@
 </section>
 
 
+<!-- ════════════════════════ FEATURED COURSES ══════════════════════ -->
+<section>
+  <div class="container">
+    <div class="section-header" style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:16px;">
+      <div>
+        <div class="label" data-i18n="courses.label">Cursos destacados</div>
+        <h2 data-i18n="courses.h2">Los favoritos de la comunidad.</h2>
+        <p data-i18n="courses.p">Desde el primer qubit hasta el aprendizaje automático cuántico.</p>
+      </div>
+      <a href="catalogue.html" class="btn btn-ghost" data-i18n="courses.more">Ver todos los cursos →</a>
+    </div>
+
+    <div class="courses-grid">
+
+      <a href="catalogue.html" class="course-card" data-level="beginner" data-topic="fundamentals">
+        <div class="course-thumb th-fund">
+          <div class="thumb-glow"></div>
+          <div class="course-emoji">⚛️</div>
+          <span class="lvl-badge lvl-b" data-i18n="lvl.b">Principiante</span>
+        </div>
+        <div class="course-body">
+          <span class="ctag">fundamentos</span>
+          <h3>Fundamentos de Mecánica Cuántica</h3>
+          <div class="course-foot">
+            <span class="cdur">⏱ 3h</span>
+            <span class="cprice-free" data-i18n="free">Gratis</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="catalogue.html" class="course-card" data-level="beginner" data-topic="computing">
+        <div class="course-thumb th-comp">
+          <div class="thumb-glow"></div>
+          <div class="course-emoji">💻</div>
+          <span class="lvl-badge lvl-b" data-i18n="lvl.b">Principiante</span>
+        </div>
+        <div class="course-body">
+          <span class="ctag">computación</span>
+          <h3>Qubits y Circuitos Cuánticos</h3>
+          <div class="course-foot">
+            <span class="cdur">⏱ 4h</span>
+            <span class="cprice-free" data-i18n="free">Gratis</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="catalogue.html" class="course-card" data-level="intermediate" data-topic="algorithms">
+        <div class="course-thumb th-algo">
+          <div class="thumb-glow"></div>
+          <div class="course-emoji">🔍</div>
+          <span class="lvl-badge lvl-i" data-i18n="lvl.i">Intermedio</span>
+        </div>
+        <div class="course-body">
+          <span class="ctag">algoritmos</span>
+          <h3>Algoritmo de Grover</h3>
+          <div class="course-foot">
+            <span class="cdur">⏱ 2.5h</span>
+            <span class="cprice-free" data-i18n="free">Gratis</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="catalogue.html" class="course-card" data-level="intermediate" data-topic="programming">
+        <div class="course-thumb th-prog">
+          <div class="thumb-glow"></div>
+          <div class="course-emoji">👨‍💻</div>
+          <span class="lvl-badge lvl-i" data-i18n="lvl.i">Intermedio</span>
+        </div>
+        <div class="course-body">
+          <span class="ctag">programación</span>
+          <h3>Programación con Qiskit</h3>
+          <div class="course-foot">
+            <span class="cdur">⏱ 6h</span>
+            <span class="cprice-paid">€49</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="catalogue.html" class="course-card" data-level="advanced" data-topic="qml">
+        <div class="course-thumb th-qml">
+          <div class="thumb-glow"></div>
+          <div class="course-emoji">🤖</div>
+          <span class="lvl-badge lvl-a" data-i18n="lvl.a">Avanzado</span>
+        </div>
+        <div class="course-body">
+          <span class="ctag">QML</span>
+          <h3>Quantum Machine Learning</h3>
+          <div class="course-foot">
+            <span class="cdur">⏱ 8h</span>
+            <span class="cprice-paid">€89</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="catalogue.html" class="course-card" data-level="advanced" data-topic="cryptography">
+        <div class="course-thumb th-cry">
+          <div class="thumb-glow"></div>
+          <div class="course-emoji">🔐</div>
+          <span class="lvl-badge lvl-a" data-i18n="lvl.a">Avanzado</span>
+        </div>
+        <div class="course-body">
+          <span class="ctag">criptografía</span>
+          <h3>Criptografía Cuántica y QKD</h3>
+          <div class="course-foot">
+            <span class="cdur">⏱ 5h</span>
+            <span class="cprice-paid">€79</span>
+          </div>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════ PATHS PREVIEW ══════════════════════ -->
+<section>
+  <div class="container">
+    <div class="section-header" style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:16px;">
+      <div>
+        <div class="label" data-i18n="paths.label">Rutas de aprendizaje</div>
+        <h2 data-i18n="paths.h2">Tu camino, paso a paso.</h2>
+        <p data-i18n="paths.p">Tres itinerarios diseñados para diferentes objetivos. Sigue el tuyo y avanza a tu ritmo.</p>
+      </div>
+      <a href="paths.html" class="btn btn-ghost" data-i18n="paths.all">Ver todas las rutas →</a>
+    </div>
+
+    <div class="paths-list">
+      <a href="paths.html" class="path-row">
+        <div class="path-num">01</div>
+        <div class="path-info">
+          <h3 data-i18n="paths.p1h">Quantum Starter</h3>
+          <p data-i18n="paths.p1p">Los fundamentos de la mecánica cuántica y los primeros circuitos. Ideal para comenzar desde cero.</p>
+        </div>
+        <div class="path-meta-r">
+          <span class="path-dur" data-i18n="paths.p1d">4 semanas</span>
+          <span class="path-cnt" data-i18n="paths.p1c">3 cursos</span>
+        </div>
+        <span class="path-arrow">→</span>
+      </a>
+      <a href="paths.html" class="path-row">
+        <div class="path-num">02</div>
+        <div class="path-info">
+          <h3 data-i18n="paths.p2h">Quantum Developer</h3>
+          <p data-i18n="paths.p2p">Programa en Qiskit, implementa algoritmos de búsqueda y aprende a optimizar con QAOA.</p>
+        </div>
+        <div class="path-meta-r">
+          <span class="path-dur" data-i18n="paths.p2d">8 semanas</span>
+          <span class="path-cnt" data-i18n="paths.p2c">5 cursos</span>
+        </div>
+        <span class="path-arrow">→</span>
+      </a>
+      <a href="paths.html" class="path-row">
+        <div class="path-num">03</div>
+        <div class="path-info">
+          <h3 data-i18n="paths.p3h">Quantum Researcher</h3>
+          <p data-i18n="paths.p3p">Algoritmos avanzados, QML, criptografía cuántica y acceso a hardware real.</p>
+        </div>
+        <div class="path-meta-r">
+          <span class="path-dur" data-i18n="paths.p3d">12 semanas</span>
+          <span class="path-cnt" data-i18n="paths.p3c">8 cursos</span>
+        </div>
+        <span class="path-arrow">→</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+
 <!-- ═══════════════════════ TESTIMONIALS ═══════════════════════════ -->
 <section>
   <div class="container">
@@ -235,7 +393,7 @@
     <div class="testi-grid">
       <div class="testi-card">
         <div class="stars">★★★★★</div>
-        <blockquote data-i18n="testi.1q">"Empecé sin saber nada de física cuántica. En 6 semanas ya estaba ejecutando circuitos en IBM Quantum."</blockquote>
+        <blockquote data-i18n="testi.1q">"Empecé sin saber nada de física cuántica. En 6 semanas ya estaba ejecutando circuitos en IBM Quantum. La ruta Quantum Developer es increíble."</blockquote>
         <div class="testi-author">
           <div class="author-av av-c">MG</div>
           <div>
@@ -246,7 +404,7 @@
       </div>
       <div class="testi-card">
         <div class="stars">★★★★★</div>
-        <blockquote data-i18n="testi.2q">"La calidad del contenido es excepcional. Las explicaciones matemáticas son rigurosas pero accesibles."</blockquote>
+        <blockquote data-i18n="testi.2q">"La calidad del contenido es excepcional. Las explicaciones matemáticas son rigurosas pero accesibles. Totalmente recomendable para cualquier investigador."</blockquote>
         <div class="testi-author">
           <div class="author-av av-v">LB</div>
           <div>
@@ -257,7 +415,7 @@
       </div>
       <div class="testi-card">
         <div class="stars">★★★★★</div>
-        <blockquote data-i18n="testi.3q">"Por fin una plataforma que explica cuántica en español con rigor real."</blockquote>
+        <blockquote data-i18n="testi.3q">"Por fin una plataforma que explica cuántica en español con rigor real. El curso de Criptografía Cuántica me abrió las puertas a un nuevo área de trabajo."</blockquote>
         <div class="testi-author">
           <div class="author-av av-g">AL</div>
           <div>
@@ -276,10 +434,10 @@
   <div class="container">
     <div class="cta-box">
       <h2 data-i18n="cta.h2">Empieza a aprender cuántica hoy.</h2>
-      <p data-i18n="cta.p">Clases presenciales en el corazón de León. Plazas limitadas para garantizar la atención personalizada.</p>
+      <p data-i18n="cta.p">Únete a más de 4.800 estudiantes. Accede a los primeros 6 cursos completamente gratis.</p>
       <div class="cta-acts">
-        <a href="#" class="btn btn-primary btn-lg" data-i18n="cta.btn1">Contactar</a>
-        <a href="https://www.google.com/maps/search/?api=1&query=C.+Luis+Salvador+Carmona+13+Le%C3%B3n" target="_blank" rel="noopener" class="btn btn-ghost btn-lg" data-i18n="cta.btn2">Cómo llegar</a>
+        <a href="#" class="btn btn-primary btn-lg" data-i18n="cta.btn1">Crear cuenta gratis</a>
+        <a href="catalogue.html" class="btn btn-ghost btn-lg" data-i18n="cta.btn2">Ver catálogo</a>
       </div>
     </div>
   </div>
@@ -289,24 +447,38 @@
 <!-- ══════════════════════════ FOOTER ══════════════════════════════ -->
 <footer>
   <div class="container">
-    <div class="footer-grid" style="grid-template-columns:1.6fr 1fr;">
+    <div class="footer-grid">
       <div class="footer-brand">
         <a href="index.html" class="nav-logo">
           <div class="nav-logo-mark">|ψ⟩</div>
           <span>qubitcademy</span>
         </a>
-        <p data-i18n="ft.desc">Academia de computación cuántica en León, España.</p>
-        <address style="font-size:0.82rem;color:var(--text-2);font-style:normal;margin-top:10px;line-height:1.7;">
-          C. Luis Salvador Carmona, 13<br>
-          24002 León, España
-        </address>
+        <p data-i18n="ft.desc">La plataforma de aprendizaje cuántico más completa en español.</p>
+      </div>
+      <div class="footer-col">
+        <h4 data-i18n="ft.col1">Cursos</h4>
+        <ul>
+          <li><a href="catalogue.html" data-i18n="ft.1a">Fundamentos</a></li>
+          <li><a href="catalogue.html" data-i18n="ft.1b">Algoritmos</a></li>
+          <li><a href="catalogue.html" data-i18n="ft.1c">Programación</a></li>
+          <li><a href="catalogue.html" data-i18n="ft.1d">Criptografía</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4 data-i18n="ft.col2">Plataforma</h4>
+        <ul>
+          <li><a href="catalogue.html" data-i18n="ft.2a">Catálogo</a></li>
+          <li><a href="paths.html" data-i18n="ft.2b">Rutas</a></li>
+          <li><a href="#" data-i18n="ft.2c">Certificados</a></li>
+          <li><a href="faq.html" data-i18n="ft.2d">FAQ</a></li>
+        </ul>
       </div>
       <div class="footer-col">
         <h4 data-i18n="ft.col3">Empresa</h4>
         <ul>
           <li><a href="#" data-i18n="ft.3a">Sobre nosotros</a></li>
           <li><a href="#" data-i18n="ft.3b">Blog</a></li>
-          <li><a href="#" data-i18n="ft.3c">Contacto</a></li>
+          <li><a href="faq.html" data-i18n="ft.3c">Contacto</a></li>
           <li><a href="#" data-i18n="ft.3d">Afiliados</a></li>
         </ul>
       </div>
