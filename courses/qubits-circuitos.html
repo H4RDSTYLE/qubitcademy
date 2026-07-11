@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Qubits y Circuitos Cuánticos — Qubitcademy</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%239333ea'/><text x='50%' y='55%' text-anchor='middle' dominant-baseline='middle' font-family='monospace' font-size='14' font-weight='600' fill='%23fff'>Q</text></svg>" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <style>
+    .course-hero { padding: calc(var(--nav-h) + 56px) 0 0; position: relative; background: var(--bg-2); border-bottom: 1px solid var(--border); overflow: hidden; }
+    .course-hero-bg { position: absolute; inset: 0; background: radial-gradient(ellipse 60% 80% at 80% 50%, rgba(0,100,255,0.07) 0%, transparent 70%), radial-gradient(ellipse 40% 60% at 10% 80%, rgba(147,51,234,0.05) 0%, transparent 70%); pointer-events: none; }
+    .chi { display: grid; grid-template-columns: 1fr 360px; gap: 48px; align-items: end; position: relative; z-index: 1; }
+    .chi-text { padding-bottom: 40px; }
+    .breadcrumb { display: flex; align-items: center; gap: 8px; font-family: var(--font-m); font-size: 0.72rem; color: var(--text-3); margin-bottom: 20px; }
+    .breadcrumb a { color: var(--text-3); transition: color .18s; } .breadcrumb a:hover { color: var(--cyan); }
+    .chi h1 { font-size: clamp(1.8rem, 4vw, 2.8rem); margin-bottom: 16px; }
+    .chi-desc { font-size: 1rem; color: var(--text-2); max-width: 540px; line-height: 1.75; margin-bottom: 26px; }
+    .chi-stats { display: flex; gap: 20px; flex-wrap: wrap; }
+    .cs { display: flex; align-items: center; gap: 7px; font-size: 0.83rem; color: var(--text-2); }
+    .cs strong { color: var(--text); }
+    .enroll-card { background: var(--bg-card); border: 1px solid var(--border-md); border-radius: 16px; padding: 26px; transform: translateY(40px); box-shadow: 0 24px 60px rgba(0,0,0,0.4); }
+    .enroll-price { font-family: var(--font-h); font-size: 2rem; font-weight: 700; color: var(--green); margin-bottom: 6px; }
+    .enroll-card .btn { width: 100%; justify-content: center; margin-bottom: 12px; }
+    .enroll-list { list-style: none; border-top: 1px solid var(--border); padding-top: 16px; margin-top: 6px; display: flex; flex-direction: column; gap: 9px; }
+    .enroll-list li { font-size: 0.82rem; color: var(--text-2); display: flex; gap: 8px; }
+    .enroll-list li::before { content: '✓'; color: var(--green); font-weight: 700; flex-shrink: 0; }
+    .course-body { display: grid; grid-template-columns: 1fr 360px; gap: 48px; padding: 56px 0 96px; align-items: start; }
+    .course-sidebar { position: sticky; top: calc(var(--nav-h) + 20px); }
+    .learn-box { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--r); padding: 26px; margin-bottom: 36px; }
+    .learn-box h2 { font-size: 1.05rem; margin-bottom: 16px; }
+    .learn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 20px; list-style: none; }
+    .learn-grid li { font-size: 0.85rem; color: var(--text-2); padding-left: 16px; position: relative; line-height: 1.5; }
+    .learn-grid li::before { content: '⚛'; position: absolute; left: 0; color: var(--cyan); font-size: 0.75rem; }
+    .req-box { margin-bottom: 36px; }
+    .req-box h2 { font-size: 1.05rem; margin-bottom: 12px; }
+    .req-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .req-list li { font-size: 0.85rem; color: var(--text-2); padding-left: 16px; position: relative; }
+    .req-list li::before { content: '→'; position: absolute; left: 0; color: var(--text-3); font-family: var(--font-m); }
+    .lessons-wrap h2 { font-size: 1.05rem; margin-bottom: 5px; }
+    .lessons-meta { font-family: var(--font-m); font-size: 0.75rem; color: var(--text-3); margin-bottom: 18px; }
+    .lesson-list { list-style: none; background: var(--border); border-radius: var(--r); overflow: hidden; display: flex; flex-direction: column; gap: 1px; }
+    .lesson-row { background: var(--bg-card); display: flex; align-items: center; gap: 14px; padding: 14px 20px; transition: background .18s; cursor: pointer; text-decoration: none; color: inherit; }
+    .lesson-row:hover { background: var(--bg-3); }
+    .lesson-n { font-family: var(--font-m); font-size: 0.7rem; color: var(--text-3); width: 22px; flex-shrink: 0; }
+    .lesson-play { width: 26px; height: 26px; border-radius: 50%; background: var(--bg-3); border: 1px solid var(--border-md); display: flex; align-items: center; justify-content: center; font-size: 0.55rem; color: var(--text-3); flex-shrink: 0; transition: all .18s; }
+    .lesson-row:hover .lesson-play { background: var(--cyan-dim); border-color: rgba(147,51,234,.3); color: var(--cyan); }
+    .lesson-title { flex: 1; font-size: 0.88rem; font-weight: 500; }
+    .lesson-dur { font-family: var(--font-m); font-size: 0.7rem; color: var(--text-3); white-space: nowrap; }
+    .free-tag { font-family: var(--font-m); font-size: 0.63rem; font-weight: 600; color: var(--green); background: rgba(16,185,129,.1); border: 1px solid rgba(16,185,129,.2); border-radius: 4px; padding: 2px 6px; }
+    .lock-tag { font-family: var(--font-m); font-size: 0.63rem; color: var(--text-3); }
+    .instructor-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--r); padding: 22px; margin-bottom: 18px; }
+    .instructor-card h3 { font-family: var(--font-m); font-size: 0.7rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--text-3); margin-bottom: 14px; }
+    .inst-row { display: flex; align-items: center; gap: 11px; margin-bottom: 11px; }
+    .inst-av { width: 42px; height: 42px; border-radius: 50%; flex-shrink: 0; background: linear-gradient(135deg,var(--cyan),var(--violet)); display: flex; align-items: center; justify-content: center; font-family: var(--font-h); font-size: 0.88rem; font-weight: 700; color: var(--bg); }
+    .inst-name { font-size: 0.9rem; font-weight: 600; }
+    .inst-title { font-size: 0.75rem; color: var(--text-3); margin-top: 2px; }
+    .inst-bio { font-size: 0.81rem; color: var(--text-2); line-height: 1.65; }
+    .next-band { background: var(--bg-2); border-top: 1px solid var(--border); padding: 48px 0; }
+    @media (max-width: 960px) { .chi, .course-body { grid-template-columns: 1fr; } .enroll-card { transform: none; margin-top: 28px; } .course-sidebar { position: static; } .learn-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+<nav id="nav">
+  <div class="container"><div class="nav-inner">
+    <a href="../index.html" class="nav-logo"><div class="nav-logo-mark">|ψ⟩</div><span>qubitcademy</span></a>
+    <ul class="nav-links">
+      <li><a href="../index.html" data-i18n="nav.home">Inicio</a></li>
+      <li><a href="../catalogue.html" class="active" data-i18n="nav.catalogue">Catálogo</a></li>
+      <li><a href="../paths.html" data-i18n="nav.paths">Rutas</a></li>
+      <li><a href="../faq.html" data-i18n="nav.faq">FAQ</a></li>
+    </ul>
+    <div class="nav-right">
+      <div class="lang-switcher"><button class="lang-btn active" data-lang="es">ES</button><div class="lang-sep"></div><button class="lang-btn" data-lang="en">EN</button></div>
+      <a href="#" class="nav-login" data-i18n="nav.login">Iniciar sesión</a>
+      <a href="#" class="btn btn-primary btn-sm" data-i18n="nav.cta">Empezar gratis</a>
+    </div>
+    <button class="nav-toggle" aria-label="Abrir menú"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="19" y2="6"/><line x1="3" y1="11" x2="19" y2="11"/><line x1="3" y1="16" x2="19" y2="16"/></svg></button>
+  </div></div>
+</nav>
+<div class="nav-mobile">
+  <a href="../index.html" data-i18n="nav.home">Inicio</a><a href="../catalogue.html" data-i18n="nav.catalogue">Catálogo</a>
+  <a href="../paths.html" data-i18n="nav.paths">Rutas</a><a href="../faq.html" data-i18n="nav.faq">FAQ</a>
+  <div class="nav-mobile-lang"><button class="lang-btn active" data-lang="es">ES</button><div class="lang-sep"></div><button class="lang-btn" data-lang="en">EN</button></div>
+  <div class="nav-mobile-footer"><a href="#" class="btn btn-ghost" data-i18n="nav.login">Iniciar sesión</a><a href="#" class="btn btn-primary" data-i18n="nav.cta">Empezar gratis</a></div>
+</div>
+
+<div class="course-hero">
+  <div class="course-hero-bg"></div>
+  <div class="container">
+    <div class="chi">
+      <div class="chi-text">
+        <nav class="breadcrumb"><a href="../catalogue.html">Catálogo</a><span>›</span><span>Computación</span><span>›</span><span>Qubits y Circuitos Cuánticos</span></nav>
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px;">
+          <span class="lvl-badge lvl-b">Principiante</span><span class="ctag">computación</span><span class="cprice-free" style="font-size:.88rem;">Gratis</span>
+        </div>
+        <h1>Qubits y Circuitos Cuánticos</h1>
+        <p class="chi-desc">Puertas cuánticas, circuitos y el modelo de computación basado en qubits. El paso natural después de los fundamentos — aquí empieza la programación cuántica real.</p>
+        <div class="chi-stats">
+          <div class="cs"><span>⏱</span><span><strong>4 horas</strong> de contenido</span></div>
+          <div class="cs"><span>📚</span><span><strong>10 lecciones</strong></span></div>
+          <div class="cs"><span>🌐</span><span><strong>ES · EN</strong></span></div>
+          <div class="cs"><span>♾️</span><span>Acceso <strong>de por vida</strong></span></div>
+        </div>
+      </div>
+      <div>
+        <div class="enroll-card">
+          <div class="enroll-price">Gratis</div>
+          <p style="font-size:.78rem;color:var(--text-3);margin-bottom:14px;">Sin tarjeta de crédito</p>
+          <a href="#lessons" class="btn btn-primary btn-lg">Comenzar ahora →</a>
+          <ul class="enroll-list">
+            <li>10 lecciones con diagramas interactivos</li>
+            <li>Ejercicios de circuitos para practicar</li>
+            <li>Certificado de finalización</li>
+            <li>Acceso de por vida</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="course-body">
+    <div>
+      <div class="learn-box">
+        <h2>Lo que aprenderás</h2>
+        <ul class="learn-grid">
+          <li>El qubit como sistema cuántico de dos niveles</li>
+          <li>Representación geométrica en la esfera de Bloch</li>
+          <li>Puertas de un qubit: X, Y, Z, H, S, T</li>
+          <li>La puerta CNOT y operaciones de dos qubits</li>
+          <li>Construcción y lectura de circuitos cuánticos</li>
+          <li>Puertas universales y computación universal</li>
+          <li>Estados de Bell y teletransportación cuántica</li>
+          <li>El modelo de circuitos frente a otros modelos cuánticos</li>
+        </ul>
+      </div>
+      <div class="req-box">
+        <h2>Requisitos</h2>
+        <ul class="req-list">
+          <li>Haber completado "Fundamentos de Mecánica Cuántica" o conocimientos equivalentes</li>
+          <li>Álgebra lineal básica: vectores de 2 componentes y matrices 2×2</li>
+          <li>Familiaridad con números complejos (módulo y argumento)</li>
+        </ul>
+      </div>
+      <div class="lessons-wrap" id="lessons">
+        <h2>Lecciones del curso</h2>
+        <p class="lessons-meta">10 lecciones · 4h de contenido · todas gratuitas</p>
+        <ul class="lesson-list">
+          <li><a href="#" class="lesson-row"><span class="lesson-n">01</span><div class="lesson-play">▶</div><span class="lesson-title">El qubit: más que un bit</span><span class="lesson-dur">20 min</span><span class="free-tag">Gratis</span></a></li>
+          <li><a href="#" class="lesson-row"><span class="lesson-n">02</span><div class="lesson-play">▶</div><span class="lesson-title">La esfera de Bloch</span><span class="lesson-dur">22 min</span><span class="free-tag">Gratis</span></a></li>
+          <li><a href="#" class="lesson-row"><span class="lesson-n">03</span><div class="lesson-play">▶</div><span class="lesson-title">Puertas de un qubit I: X, Y, Z</span><span class="lesson-dur">20 min</span><span class="free-tag">Gratis</span></a></li>
+          <li><a href="#" class="lesson-row"><span class="lesson-n">04</span><div class="lesson-play">▶</div><span class="lesson-title">Puertas de un qubit II: H, S, T</span><span class="lesson-dur">25 min</span><span class="free-tag">Gratis</span></a></li>
+          <li><a href="#" class="lesson-row"><span class="lesson-n">05</span><div class="lesson-play">▶</div><span class="lesson-title">La puerta Hadamard en profundidad</span><span class="lesson-dur">18 min</span><span class="free-tag">Gratis</span></a></li>
+          <li><a href="#" class="lesson-row"><span class="lesson-n">06</span><div class="lesson-play">▶</div><span class="lesson-title">Puertas de dos qubits: CNOT</span><span class="lesson-dur">22 min</span><span class="free-tag">Gratis</span></a></li>
+          <li><a href="#" class="lesson-row"><span class="lesson-n">07</span><div class="lesson-play">▶</div><span class="lesson-title">Toffoli, SWAP y puertas controladas</span><span class="lesson-dur">20 min</span><span class="free-tag">Gratis</span></a></li>
+          <li><a href="#" class="lesson-row"><span class="lesson-n">08</span><div class="lesson-play">▶</div><span class="lesson-title">Circuitos cuánticos: notación estándar</span><span class="lesson-dur">28 min</span><span class="free-tag">Gratis</span></a></li>
+          <li><a href="#" class="lesson-row"><span class="lesson-n">09</span><div class="lesson-play">▶</div><span class="lesson-title">Estados de Bell y teletransportación</span><span class="lesson-dur">30 min</span><span class="free-tag">Gratis</span></a></li>
+          <li><a href="#" class="lesson-row"><span class="lesson-n">10</span><div class="lesson-play">▶</div><span class="lesson-title">Universalidad cuántica</span><span class="lesson-dur">22 min</span><span class="free-tag">Gratis</span></a></li>
+        </ul>
+      </div>
+    </div>
+    <aside class="course-sidebar">
+      <div class="instructor-card">
+        <h3>Instructora</h3>
+        <div class="inst-row"><div class="inst-av">ES</div><div><div class="inst-name">Dra. Elena Santos</div><div class="inst-title">Física Computacional · UPM Madrid</div></div></div>
+        <p class="inst-bio">Doctora en Física por la UPM con especialización en información cuántica. Coautora de tres libros de texto sobre computación cuántica y mentora de más de 2.000 estudiantes en Iberoamérica.</p>
+      </div>
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:20px;">
+        <h3 style="font-family:var(--font-m);font-size:.7rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text-3);margin-bottom:13px;">Incluido en las rutas</h3>
+        <a href="../paths.html" style="display:flex;align-items:center;gap:9px;padding:9px 11px;background:var(--bg-3);border-radius:8px;margin-bottom:8px;"><span>🌱</span><div><div style="font-size:.84rem;font-weight:600;">Quantum Starter</div><div style="font-size:.72rem;color:var(--text-3);">Módulo 2 de 3</div></div></a>
+        <a href="../paths.html" style="display:flex;align-items:center;gap:9px;padding:9px 11px;background:var(--bg-3);border-radius:8px;"><span>⚡</span><div><div style="font-size:.84rem;font-weight:600;">Quantum Developer</div><div style="font-size:.72rem;color:var(--text-3);">Módulo 2 de 5</div></div></a>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<div class="next-band">
+  <div class="container">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;">
+      <div>
+        <div class="label" style="margin-bottom:10px;">Siguiente en la ruta</div>
+        <h2 style="font-size:1.4rem;margin-bottom:7px;">IBM Quantum Experience</h2>
+        <p style="font-size:.88rem;color:var(--text-2);">Ejecuta tus primeros circuitos en hardware cuántico real sin instalar nada · 1.5h · 5 lecciones · Gratis</p>
+      </div>
+      <a href="ibm-quantum.html" class="btn btn-primary btn-lg" style="flex-shrink:0;">Siguiente curso →</a>
+    </div>
+  </div>
+</div>
+
+<footer><div class="container"><div class="footer-grid">
+  <div class="footer-brand"><a href="../index.html" class="nav-logo"><div class="nav-logo-mark">|ψ⟩</div><span>qubitcademy</span></a><p data-i18n="ft.desc">La plataforma de aprendizaje cuántico más completa en español.</p></div>
+  <div class="footer-col"><h4 data-i18n="ft.col1">Cursos</h4><ul><li><a href="../catalogue.html" data-i18n="ft.1a">Fundamentos</a></li><li><a href="../catalogue.html" data-i18n="ft.1b">Algoritmos</a></li><li><a href="../catalogue.html" data-i18n="ft.1c">Programación</a></li><li><a href="../catalogue.html" data-i18n="ft.1d">Criptografía</a></li></ul></div>
+  <div class="footer-col"><h4 data-i18n="ft.col2">Plataforma</h4><ul><li><a href="../catalogue.html" data-i18n="ft.2a">Catálogo</a></li><li><a href="../paths.html" data-i18n="ft.2b">Rutas</a></li><li><a href="#" data-i18n="ft.2c">Certificados</a></li><li><a href="../faq.html" data-i18n="ft.2d">FAQ</a></li></ul></div>
+  <div class="footer-col"><h4 data-i18n="ft.col3">Empresa</h4><ul><li><a href="#" data-i18n="ft.3a">Sobre nosotros</a></li><li><a href="#" data-i18n="ft.3b">Blog</a></li><li><a href="../faq.html" data-i18n="ft.3c">Contacto</a></li><li><a href="#" data-i18n="ft.3d">Afiliados</a></li></ul></div>
+</div><div class="footer-bottom"><span data-i18n="ft.copy">© 2025 Qubitcademy.</span><div style="display:flex;gap:16px;"><a href="#">Privacidad</a><a href="#">Términos</a></div></div></div></footer>
+<script src="../js/main.js"></script>
+</body></html>

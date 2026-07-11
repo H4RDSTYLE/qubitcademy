@@ -1,0 +1,103 @@
+<!DOCTYPE html><html lang="es"><head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Algoritmo de Grover — Qubitcademy</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%239333ea'/><text x='50%' y='55%' text-anchor='middle' dominant-baseline='middle' font-family='monospace' font-size='14' font-weight='600' fill='%23fff'>Q</text></svg>"/>
+  <link rel="stylesheet" href="../css/style.css"/>
+  <style>
+    .ch{padding:calc(var(--nav-h) + 56px) 0 0;position:relative;background:var(--bg-2);border-bottom:1px solid var(--border);overflow:hidden}
+    .ch-bg{position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 80% 50%,rgba(16,185,129,.07) 0%,transparent 70%),radial-gradient(ellipse 40% 60% at 10% 80%,rgba(147,51,234,.05) 0%,transparent 70%);pointer-events:none}
+    .chi{display:grid;grid-template-columns:1fr 360px;gap:48px;align-items:end;position:relative;z-index:1}
+    .cht{padding-bottom:40px}.bc{display:flex;align-items:center;gap:8px;font-family:var(--font-m);font-size:.72rem;color:var(--text-3);margin-bottom:20px}
+    .bc a{color:var(--text-3);transition:color .18s}.bc a:hover{color:var(--cyan)}
+    .chi h1{font-size:clamp(1.8rem,4vw,2.8rem);margin-bottom:16px}
+    .chi-d{font-size:1rem;color:var(--text-2);max-width:540px;line-height:1.75;margin-bottom:26px}
+    .chs{display:flex;gap:20px;flex-wrap:wrap}.cs{display:flex;align-items:center;gap:7px;font-size:.83rem;color:var(--text-2)}.cs strong{color:var(--text)}
+    .ec{background:var(--bg-card);border:1px solid var(--border-md);border-radius:16px;padding:26px;transform:translateY(40px);box-shadow:0 24px 60px rgba(0,0,0,.4)}
+    .ep{font-family:var(--font-h);font-size:2rem;font-weight:700;color:var(--green);margin-bottom:6px}
+    .ec .btn{width:100%;justify-content:center;margin-bottom:12px}
+    .el{list-style:none;border-top:1px solid var(--border);padding-top:16px;margin-top:6px;display:flex;flex-direction:column;gap:9px}
+    .el li{font-size:.82rem;color:var(--text-2);display:flex;gap:8px}.el li::before{content:'✓';color:var(--green);font-weight:700;flex-shrink:0}
+    .cb{display:grid;grid-template-columns:1fr 360px;gap:48px;padding:56px 0 96px;align-items:start}
+    .csb{position:sticky;top:calc(var(--nav-h) + 20px)}
+    .lb{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:26px;margin-bottom:36px}
+    .lb h2{font-size:1.05rem;margin-bottom:16px}
+    .lg{display:grid;grid-template-columns:1fr 1fr;gap:10px 20px;list-style:none}
+    .lg li{font-size:.85rem;color:var(--text-2);padding-left:16px;position:relative;line-height:1.5}
+    .lg li::before{content:'⚛';position:absolute;left:0;color:var(--cyan);font-size:.75rem}
+    .rb{margin-bottom:36px}.rb h2{font-size:1.05rem;margin-bottom:12px}
+    .rl{list-style:none;display:flex;flex-direction:column;gap:8px}
+    .rl li{font-size:.85rem;color:var(--text-2);padding-left:16px;position:relative}
+    .rl li::before{content:'→';position:absolute;left:0;color:var(--text-3);font-family:var(--font-m)}
+    .lw h2{font-size:1.05rem;margin-bottom:5px}
+    .lm{font-family:var(--font-m);font-size:.75rem;color:var(--text-3);margin-bottom:18px}
+    .ll{list-style:none;background:var(--border);border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column;gap:1px}
+    .lr{background:var(--bg-card);display:flex;align-items:center;gap:14px;padding:14px 20px;transition:background .18s;cursor:pointer;text-decoration:none;color:inherit}
+    .lr:hover{background:var(--bg-3)}.ln{font-family:var(--font-m);font-size:.7rem;color:var(--text-3);width:22px;flex-shrink:0}
+    .lp{width:26px;height:26px;border-radius:50%;background:var(--bg-3);border:1px solid var(--border-md);display:flex;align-items:center;justify-content:center;font-size:.55rem;color:var(--text-3);flex-shrink:0;transition:all .18s}
+    .lr:hover .lp{background:var(--cyan-dim);border-color:rgba(147,51,234,.3);color:var(--cyan)}
+    .lt{flex:1;font-size:.88rem;font-weight:500}.ld{font-family:var(--font-m);font-size:.7rem;color:var(--text-3);white-space:nowrap}
+    .ft{font-family:var(--font-m);font-size:.63rem;font-weight:600;color:var(--green);background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.2);border-radius:4px;padding:2px 6px}
+    .lkt{font-family:var(--font-m);font-size:.63rem;color:var(--text-3)}
+    .ic{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:22px;margin-bottom:18px}
+    .ic h3{font-family:var(--font-m);font-size:.7rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text-3);margin-bottom:14px}
+    .ir{display:flex;align-items:center;gap:11px;margin-bottom:11px}
+    .iav{width:42px;height:42px;border-radius:50%;flex-shrink:0;background:linear-gradient(135deg,var(--green),var(--cyan));display:flex;align-items:center;justify-content:center;font-family:var(--font-h);font-size:.88rem;font-weight:700;color:var(--bg)}
+    .in{font-size:.9rem;font-weight:600}.it{font-size:.75rem;color:var(--text-3);margin-top:2px}
+    .ib{font-size:.81rem;color:var(--text-2);line-height:1.65}
+    .nb{background:var(--bg-2);border-top:1px solid var(--border);padding:48px 0}
+    @media(max-width:960px){.chi,.cb{grid-template-columns:1fr}.ec{transform:none;margin-top:28px}.csb{position:static}.lg{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+<nav id="nav"><div class="container"><div class="nav-inner"><a href="../index.html" class="nav-logo"><div class="nav-logo-mark">|ψ⟩</div><span>qubitcademy</span></a><ul class="nav-links"><li><a href="../index.html" data-i18n="nav.home">Inicio</a></li><li><a href="../catalogue.html" class="active" data-i18n="nav.catalogue">Catálogo</a></li><li><a href="../paths.html" data-i18n="nav.paths">Rutas</a></li><li><a href="../faq.html" data-i18n="nav.faq">FAQ</a></li></ul><div class="nav-right"><div class="lang-switcher"><button class="lang-btn active" data-lang="es">ES</button><div class="lang-sep"></div><button class="lang-btn" data-lang="en">EN</button></div><a href="#" class="nav-login" data-i18n="nav.login">Iniciar sesión</a><a href="#" class="btn btn-primary btn-sm" data-i18n="nav.cta">Empezar gratis</a></div><button class="nav-toggle" aria-label="Abrir menú"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="19" y2="6"/><line x1="3" y1="11" x2="19" y2="11"/><line x1="3" y1="16" x2="19" y2="16"/></svg></button></div></div></nav>
+<div class="nav-mobile"><a href="../index.html" data-i18n="nav.home">Inicio</a><a href="../catalogue.html" data-i18n="nav.catalogue">Catálogo</a><a href="../paths.html" data-i18n="nav.paths">Rutas</a><a href="../faq.html" data-i18n="nav.faq">FAQ</a><div class="nav-mobile-lang"><button class="lang-btn active" data-lang="es">ES</button><div class="lang-sep"></div><button class="lang-btn" data-lang="en">EN</button></div><div class="nav-mobile-footer"><a href="#" class="btn btn-ghost" data-i18n="nav.login">Iniciar sesión</a><a href="#" class="btn btn-primary" data-i18n="nav.cta">Empezar gratis</a></div></div>
+
+<div class="ch"><div class="ch-bg"></div><div class="container"><div class="chi">
+  <div class="cht">
+    <nav class="bc"><a href="../catalogue.html">Catálogo</a><span>›</span><span>Algoritmos</span><span>›</span><span>Algoritmo de Grover</span></nav>
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px;"><span class="lvl-badge lvl-i">Intermedio</span><span class="ctag">algoritmos</span><span class="cprice-free" style="font-size:.88rem;">Gratis</span></div>
+    <h1>Algoritmo de Grover</h1>
+    <p class="chi-d">Búsqueda cuántica con ventaja cuadrática sobre cualquier algoritmo clásico. Aprende a construir el oráculo, el operador de difusión e implementar el algoritmo completo en Qiskit.</p>
+    <div class="chs"><div class="cs"><span>⏱</span><span><strong>2.5 horas</strong></span></div><div class="cs"><span>📚</span><span><strong>7 lecciones</strong></span></div><div class="cs"><span>🐍</span><span><strong>Qiskit</strong></span></div><div class="cs"><span>♾️</span><span>Acceso <strong>de por vida</strong></span></div></div>
+  </div>
+  <div><div class="ec"><div class="ep">Gratis</div><p style="font-size:.78rem;color:var(--text-3);margin-bottom:14px;">Incluye código Qiskit completo</p><a href="#lessons" class="btn btn-primary btn-lg">Comenzar ahora →</a><ul class="el"><li>Implementación completa en Qiskit</li><li>Análisis de complejidad detallado</li><li>Código descargable de cada lección</li><li>Certificado de finalización</li></ul></div></div>
+</div></div></div>
+
+<div class="container"><div class="cb">
+  <div>
+    <div class="lb"><h2>Lo que aprenderás</h2><ul class="lg">
+      <li>El problema de búsqueda no estructurada</li><li>Qué es un oráculo cuántico y cómo construirlo</li>
+      <li>El operador de difusión (inversión alrededor de la media)</li><li>Por qué √N iteraciones son las óptimas</li>
+      <li>Implementación del algoritmo completo en Qiskit</li><li>El rol de la interferencia en el speedup cuántico</li>
+      <li>Análisis de complejidad: O(√N) vs O(N)</li><li>Aplicaciones: bases de datos, optimización, criptoanálisis</li>
+    </ul></div>
+    <div class="rb"><h2>Requisitos</h2><ul class="rl">
+      <li>Fundamentos de Mecánica Cuántica y Qubits y Circuitos Cuánticos</li>
+      <li>Nociones de complejidad algorítmica (notación O grande)</li>
+      <li>Python básico (listas, funciones). Qiskit se instala en el curso.</li>
+    </ul></div>
+    <div class="lw" id="lessons"><h2>Lecciones del curso</h2><p class="lm">7 lecciones · 2.5h · todas gratuitas</p>
+      <ul class="ll">
+        <li><a href="#" class="lr"><span class="ln">01</span><div class="lp">▶</div><span class="lt">El problema de búsqueda cuántica</span><span class="ld">18 min</span><span class="ft">Gratis</span></a></li>
+        <li><a href="#" class="lr"><span class="ln">02</span><div class="lp">▶</div><span class="lt">El oráculo cuántico</span><span class="ld">22 min</span><span class="ft">Gratis</span></a></li>
+        <li><a href="#" class="lr"><span class="ln">03</span><div class="lp">▶</div><span class="lt">El operador de difusión</span><span class="ld">25 min</span><span class="ft">Gratis</span></a></li>
+        <li><a href="#" class="lr"><span class="ln">04</span><div class="lp">▶</div><span class="lt">¿Cuántas iteraciones? Análisis geométrico</span><span class="ld">20 min</span><span class="ft">Gratis</span></a></li>
+        <li><a href="#" class="lr"><span class="ln">05</span><div class="lp">▶</div><span class="lt">Implementación completa en Qiskit</span><span class="ld">28 min</span><span class="ft">Gratis</span></a></li>
+        <li><a href="#" class="lr"><span class="ln">06</span><div class="lp">▶</div><span class="lt">Análisis de complejidad y speedup</span><span class="ld">20 min</span><span class="ft">Gratis</span></a></li>
+        <li><a href="#" class="lr"><span class="ln">07</span><div class="lp">▶</div><span class="lt">Extensiones: búsqueda múltiple y amplitude estimation</span><span class="ld">20 min</span><span class="ft">Gratis</span></a></li>
+      </ul>
+    </div>
+  </div>
+  <aside class="csb">
+    <div class="ic"><h3>Instructora</h3><div class="ir"><div class="iav">NP</div><div><div class="in">Dra. Natalia Petrov</div><div class="it">Algoritmia Cuántica · ETH Zürich</div></div></div><p class="ib">Investigadora en algoritmos cuánticos en ETH Zürich con publicaciones en Nature Quantum Information. Especialista en algoritmos de búsqueda y amplificación de amplitudes.</p></div>
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:20px;"><h3 style="font-family:var(--font-m);font-size:.7rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text-3);margin-bottom:13px;">Incluido en las rutas</h3><a href="../paths.html" style="display:flex;align-items:center;gap:9px;padding:9px 11px;background:var(--bg-3);border-radius:8px;margin-bottom:8px;"><span>⚡</span><div><div style="font-size:.84rem;font-weight:600;">Quantum Developer</div><div style="font-size:.72rem;color:var(--text-3);">Módulo 4 de 5</div></div></a><a href="../paths.html" style="display:flex;align-items:center;gap:9px;padding:9px 11px;background:var(--bg-3);border-radius:8px;"><span>🔬</span><div><div style="font-size:.84rem;font-weight:600;">Quantum Researcher</div><div style="font-size:.72rem;color:var(--text-3);">Módulo 4 de 8</div></div></a></div>
+  </aside>
+</div></div>
+
+<div class="nb"><div class="container"><div style="display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;">
+  <div><div class="label" style="margin-bottom:10px;">Siguiente en Quantum Developer</div><h2 style="font-size:1.4rem;margin-bottom:7px;">Programación con Qiskit</h2><p style="font-size:.88rem;color:var(--text-2);">El framework cuántico de IBM de principio a fin · 6h · 14 lecciones · €49</p></div>
+  <a href="qiskit.html" class="btn btn-primary btn-lg" style="flex-shrink:0;">Ver siguiente curso →</a>
+</div></div></div>
+
+<footer><div class="container"><div class="footer-grid"><div class="footer-brand"><a href="../index.html" class="nav-logo"><div class="nav-logo-mark">|ψ⟩</div><span>qubitcademy</span></a><p data-i18n="ft.desc">La plataforma de aprendizaje cuántico más completa en español.</p></div><div class="footer-col"><h4 data-i18n="ft.col1">Cursos</h4><ul><li><a href="../catalogue.html">Fundamentos</a></li><li><a href="../catalogue.html">Algoritmos</a></li><li><a href="../catalogue.html">Programación</a></li><li><a href="../catalogue.html">Criptografía</a></li></ul></div><div class="footer-col"><h4 data-i18n="ft.col2">Plataforma</h4><ul><li><a href="../catalogue.html">Catálogo</a></li><li><a href="../paths.html">Rutas</a></li><li><a href="#">Certificados</a></li><li><a href="../faq.html">FAQ</a></li></ul></div><div class="footer-col"><h4 data-i18n="ft.col3">Empresa</h4><ul><li><a href="#">Sobre nosotros</a></li><li><a href="#">Blog</a></li><li><a href="../faq.html">Contacto</a></li><li><a href="#">Afiliados</a></li></ul></div></div><div class="footer-bottom"><span data-i18n="ft.copy">© 2025 Qubitcademy.</span><div style="display:flex;gap:16px;"><a href="#">Privacidad</a><a href="#">Términos</a></div></div></div></footer>
+<script src="../js/main.js"></script></body></html>
