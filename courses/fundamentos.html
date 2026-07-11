@@ -416,8 +416,21 @@
           <li>Lección 5: entrelazamiento — la "magia" que Einstein detestaba</li>
           <li>Lecciones 6-8: interferencia, medición y el puente hacia los qubits</li>
         </ul>
-      </div>
 
+        <h2>La mecánica cuántica en tu vida cotidiana</h2>
+        <p>Aunque los efectos cuánticos son invisibles a escala humana, sus aplicaciones tecnológicas están en todas partes. Los <strong>transistores</strong> de tu smartphone funcionan gracias a efectos cuánticos de efecto túnel. Los <strong>láseres</strong> — desde los de los lectores Blu-ray hasta los quirúrgicos — son dispositivos puramente cuánticos. Los <strong>escáneres MRI</strong> explotan el espín cuántico de los núcleos de hidrógeno. Incluso el <strong>GPS</strong> requiere correcciones relativistas y cuánticas para ser preciso.</p>
+        <p>Y en el horizonte próximo: los <strong>ordenadores cuánticos</strong> prometen diseñar fármacos nuevos simulando moléculas a nivel cuántico, romper y crear nuevos sistemas criptográficos, y resolver problemas de optimización global imposibles para los mejores superordenadores clásicos de hoy.</p>
+
+        <div class="concept-box">
+          <div class="cb-tag">Los cinco pilares del curso</div>
+          <p>Todo el programa gira en torno a cinco ideas fundamentales: <strong>cuantización</strong> (energía en paquetes discretos), <strong>dualidad onda-corpúsculo</strong> (las partículas también son ondas), <strong>superposición</strong> (múltiples estados a la vez), <strong>entrelazamiento</strong> (correlaciones no-clásicas entre partículas) e <strong>interferencia</strong> (las amplitudes se suman y cancelan como ondas). Sin estos cinco conceptos, no existe la computación cuántica.</p>
+        </div>
+
+        <div class="fact-box">
+          <span class="fact-icon">🏆</span>
+          <p><strong>La teoría más precisa de la historia:</strong> La mecánica cuántica predice el momento magnético del electrón con una precisión de 1 parte en 10.000 millones — equivalente a medir la distancia entre Madrid y Nueva York con un error menor que un nanómetro. Ninguna otra teoría física se acerca a esa precisión experimental.</p>
+        </div>
+      </div>
       <!-- Quiz 1 -->
       <div class="quiz-block">
         <h2>🧠 Comprueba lo que has aprendido</h2>
@@ -538,6 +551,17 @@
           <span class="fact-icon">🤯</span>
           <p><strong>Alucinante:</strong> Este experimento se ha realizado no solo con electrones, sino también con átomos, moléculas y partículas cada vez más grandes. En 2019, se demostró interferencia cuántica con moléculas de más de 2.000 átomos.</p>
         </div>
+
+        <h2>La función de onda: el lenguaje matemático</h2>
+        <p>Para describir matemáticamente lo que está haciendo el electrón entre la fuente y el detector, la mecánica cuántica introduce la <strong>función de onda</strong>, denotada <strong>ψ(x, t)</strong> (psi). Esta función asigna un número complejo a cada punto del espacio y a cada instante del tiempo.</p>
+        <p>La función de onda en sí no es directamente observable, pero contiene toda la información del sistema. Lo que sí tiene significado físico directo es su módulo al cuadrado: <strong>|ψ(x)|²</strong> nos da la <em>densidad de probabilidad</em> de encontrar la partícula en la posición x. Integrada sobre una región, da la probabilidad de detectar la partícula allí.</p>
+        <div class="math-box">P(x) = |ψ(x)|² &nbsp;&nbsp;(Regla de Born)</div>
+        <p>Esta relación, conocida como la <strong>Regla de Born</strong> (Max Born, 1926), es el puente entre las ecuaciones matemáticas de la mecánica cuántica y los resultados medibles en el laboratorio.</p>
+        <p>Crucialmente, las amplitudes ψ pueden ser <strong>números negativos o incluso complejos</strong> (con parte imaginaria). Esto es lo que permite la interferencia: dos caminos pueden tener amplitudes +A y −A, que al sumarse dan cero → interferencia destructiva. En cambio, las probabilidades (siempre ≥ 0) no pueden cancelarse entre sí, por eso la interferencia es un fenómeno puramente cuántico sin equivalente clásico.</p>
+        <div class="concept-box">
+          <div class="cb-tag">¿Por qué números negativos?</div>
+          <p>Las amplitudes negativas (y complejas) son la clave computacional de los ordenadores cuánticos. Permiten que los <strong>caminos incorrectos se cancelen</strong> mediante interferencia destructiva, mientras los <strong>caminos correctos se refuerzan</strong>. Sin amplitudes que puedan ser negativas, la interferencia cuántica —y con ella la ventaja computacional— sería imposible.</p>
+        </div>
       </div>
       <div class="quiz-block">
         <h2>🧠 Comprueba lo que has aprendido</h2>
@@ -615,6 +639,17 @@
         <div class="fact-box">
           <span class="fact-icon">⚛️</span>
           <p><strong>El poder de la superposición:</strong> Con <strong>n</strong> qubits en superposición, puedes representar <strong>2ⁿ</strong> estados simultáneamente. Con 300 qubits en superposición perfecta, podrías representar más estados que átomos hay en el universo observable.</p>
+        </div>
+
+        <h2>El qubit como moneda en el aire</h2>
+        <p>Una forma intuitiva de entender la superposición es imaginar una moneda mientras gira en el aire. No es "cara" ni "cruz" — es ambas a la vez, con cierta orientación. Solo cuando la moneda aterriza (cuando la mides) obtienes un resultado definitivo.</p>
+        <p>Pero la superposición cuántica va más lejos que esta analogía: la moneda cuántica no solo tiene dos lados, tiene una <em>fase relativa</em> entre los dos estados. Esta fase es lo que permite la interferencia. Dos estados de superposición pueden tener las mismas probabilidades (50/50 de |0⟩ y |1⟩) pero comportarse de forma completamente diferente en un circuito si sus fases difieren.</p>
+        <p>Los dos estados de superposición más importantes con igual probabilidad pero fases distintas tienen sus propios nombres:</p>
+        <div class="math-box">|+⟩ = (|0⟩ + |1⟩) / √2 &nbsp;&nbsp;&nbsp; |−⟩ = (|0⟩ − |1⟩) / √2</div>
+        <p><strong>|+⟩</strong> (ket más) y <strong>|−⟩</strong> (ket menos) son los estados de la <em>base X</em> (o base de Hadamard). Ambos tienen exactamente un 50% de probabilidad de medir |0⟩ o |1⟩ si se miden en la base estándar (Z). Pero aplicándoles la puerta Hadamard, |+⟩ devuelve |0⟩ con certeza y |−⟩ devuelve |1⟩ con certeza — la fase marca la diferencia.</p>
+        <div class="concept-box">
+          <div class="cb-tag">La fase importa</div>
+          <p>En un circuito cuántico, la <strong>fase relativa</strong> entre |0⟩ y |1⟩ en una superposición es crucial. Aunque no sea directamente observable en una sola medición, la fase determina cómo interfieren los estados cuando se aplican puertas adicionales. Toda la potencia de los algoritmos cuánticos reside en manipular fases para lograr interferencia constructiva en la respuesta correcta.</p>
         </div>
       </div>
       <div class="quiz-block">
@@ -695,6 +730,18 @@
           <span class="fact-icon">🔍</span>
           <p><strong>Aplicación real:</strong> El efecto túnel cuántico (consecuencia de la incertidumbre) es la base de los microscopios de efecto túnel (STM) que pueden "ver" átomos individuales, y es fundamental para el funcionamiento de los transistores modernos de silicon.</p>
         </div>
+
+        <h2>El principio en acción: electrones en el átomo</h2>
+        <p>El principio de incertidumbre resuelve uno de los grandes misterios del átomo clásico. En el modelo de Rutherford (1911), el electrón orbita el núcleo como un planeta. Pero según la electrodinámica clásica, una carga acelerada (un electrón en órbita curva está acelerado) emite radiación y pierde energía. Debería espiralar hacia el núcleo y colapsar en fracciones de nanosegundo.</p>
+        <p>Los átomos no colapsan. ¿Por qué? Porque el principio de incertidumbre lo impide. Si el electrón se "cayera" al núcleo, su posición estaría muy bien definida (Δx → 0). Por la relación ΔxΔp ≥ ℏ/2, su momento sería enormemente incierto (Δp → ∞), lo que implica una energía cinética media gigantesca. <strong>El costo energético de confinar el electrón cerca del núcleo es prohibitivo.</strong> El electrón se asienta en la distancia mínima donde la suma de energía cinética y potencial electrostática se minimiza — el orbital 1s.</p>
+
+        <h2>El efecto túnel cuántico</h2>
+        <p>La incertidumbre en la energía (ΔE · Δt ≥ ℏ/2) tiene otra consecuencia extraordinaria: el <strong>efecto túnel</strong>. Una partícula puede atravesar una barrera de energía que clásicamente le está prohibida, siempre que dicha barrera sea suficientemente fina.</p>
+        <p>Imagina una pelota de tenis frente a una pared. Clásicamente, si no tiene suficiente energía para escalar la pared, rebota. Una partícula cuántica tiene una probabilidad no nula de aparecer al otro lado de la barrera. El efecto túnel no es una metáfora: es real y medible.</p>
+        <div class="concept-box">
+          <div class="cb-tag">Efecto túnel: aplicaciones reales</div>
+          <p>El efecto túnel no es solo física teórica: es la base del <strong>microscopio de efecto túnel (STM)</strong> que permite ver átomos individuales, de la <strong>fusión nuclear en el Sol</strong> (los protones pasan barreras de energía que clásicamente no podrían), y de los <strong>transistores de efecto de campo (FET)</strong> en los chips modernos, donde los electrones hacen túnel a través de capas de óxido de apenas 1 nm.</p>
+        </div>
       </div>
       <div class="quiz-block">
         <h2>🧠 Comprueba lo que has aprendido</h2>
@@ -771,6 +818,15 @@
         <div class="fact-box">
           <span class="fact-icon">🔗</span>
           <p><strong>Aplicaciones reales:</strong> El entrelazamiento es el recurso que hace posibles la criptografía cuántica (QKD), la teleportación cuántica de estados (ya demostrada) y las puertas de dos qubits en los ordenadores cuánticos. Sin entrelazamiento, no hay ventaja cuántica.</p>
+        </div>
+
+        <h2>Los estados de Bell</h2>
+        <p>Los estados entrelazados de dos qubits más importantes tienen un nombre propio: los <strong>estados de Bell</strong> (en honor a John Bell). Son cuatro, y forman una base completa para el espacio de dos qubits:</p>
+        <div class="math-box">|Φ⁺⟩ = (|00⟩ + |11⟩) / √2<br>|Φ⁻⟩ = (|00⟩ − |11⟩) / √2<br>|Ψ⁺⟩ = (|01⟩ + |10⟩) / √2<br>|Ψ⁻⟩ = (|01⟩ − |10⟩) / √2</div>
+        <p>En <strong>|Φ⁺⟩</strong>, ambos qubits siempre se miden iguales (00 o 11). En <strong>|Ψ⁺⟩</strong>, siempre se miden distintos (01 o 10). Los estados con signo negativo (|Φ⁻⟩ y |Ψ⁻⟩) tienen las mismas probabilidades pero fases diferentes — distinción crucial para aplicaciones.</p>
+        <div class="concept-box">
+          <div class="cb-tag">Estados de Bell como recurso</div>
+          <p>Los estados de Bell son la "moneda" del mundo cuántico. Son el recurso fundamental para la <strong>distribución cuántica de clave (QKD)</strong>, la <strong>teleportación cuántica</strong> (transferir el estado de un qubit a distancia sin mover la partícula física) y las <strong>puertas CNOT</strong> en los circuitos cuánticos. Preparar un estado de Bell es tan simple como aplicar Hadamard + CNOT a dos qubits en |00⟩.</p>
         </div>
       </div>
       <div class="quiz-block">
@@ -852,6 +908,24 @@
           <span class="fact-icon">🌊</span>
           <p><strong>La clave de la ventaja cuántica:</strong> Un ordenador clásico explora las soluciones una a una. Un ordenador cuántico pone todas las soluciones en superposición y usa interferencia para hacer que la correcta "emerja" con alta probabilidad. Así logra la ventaja exponencial.</p>
         </div>
+
+        <h2>Interferencia en un circuito cuántico</h2>
+        <p>El equivalente cuántico del interferómetro de Mach-Zehnder es un circuito con dos puertas Hadamard. Aplica H a un qubit |0⟩: obtienes |+⟩ = (|0⟩ + |1⟩)/√2. Luego aplica otra H: las amplitudes interfieren y el resultado es |0⟩ con certeza. La fase entre los dos caminos determinó el resultado con certeza, aunque a medio camino el estado era 50/50.</p>
+        <p>Para ver la interferencia destructiva explícitamente, considera las amplitudes:</p>
+        <div class="math-box">H|+⟩: amplitud de |0⟩ = (+1/√2 + 1/√2)/√2 = 1 ✓<br>H|+⟩: amplitud de |1⟩ = (+1/√2 − 1/√2)/√2 = 0 ✓</div>
+        <p>El camino hacia |1⟩ tiene dos contribuciones de signo opuesto que se cancelan exactamente. Interferencia destructiva perfecta.</p>
+
+        <h2>Grover: interferencia como motor de búsqueda</h2>
+        <p>El algoritmo de Grover es el ejemplo más intuitivo de interferencia como recurso. Empieza con todos los N estados en superposición uniforme (igual amplitud). Luego aplica dos pasos repetidos:</p>
+        <ul>
+          <li><strong>Oráculo:</strong> invierte el signo de la amplitud del estado correcto (objetivo)</li>
+          <li><strong>Difusión:</strong> refleja todas las amplitudes alrededor de su media</li>
+        </ul>
+        <p>Cada iteración amplifica la amplitud del estado correcto (+) y reduce la de los incorrectos (−). Tras √N iteraciones, la amplitud del estado correcto es ~1 y el resto ~0. La interferencia convierte la ventaja cuadrática en realidad.</p>
+        <div class="concept-box">
+          <div class="cb-tag">Interferencia cuántica vs. clásica</div>
+          <p>La interferencia de luz y sonido también suma amplitudes, pero siempre con valores reales positivos o negativos. Las amplitudes cuánticas son <strong>números complejos</strong> con magnitud y fase. Esto da mucho más control: puedes diseñar interferencias precisas en un espacio de 2ⁿ dimensiones, algo imposible de simular eficientemente con un ordenador clásico para n grande.</p>
+        </div>
       </div>
       <div class="quiz-block">
         <h2>🧠 Comprueba lo que has aprendido</h2>
@@ -932,6 +1006,19 @@
         <div class="fact-box">
           <span class="fact-icon">🌍</span>
           <p><strong>Las interpretaciones:</strong> La interpretación de Copenhague (Bohr) dice que el colapso es real y el estado anterior no tenía sentido. La interpretación de Muchos Mundos (Everett) dice que el universo se divide y ambos resultados ocurren. La de Variables Ocultas (Bohm) dice que hay información extra oculta. ¡Nadie sabe cuál es correcta!</p>
+        </div>
+
+        <h2>Medir en diferentes bases</h2>
+        <p>Cuando mides un qubit, siempre lo haces en una <strong>base de medición</strong>. La más común es la <strong>base Z</strong> (computacional), que distingue |0⟩ de |1⟩. Pero también puedes medir en la <strong>base X</strong> (Hadamard), que distingue |+⟩ de |−⟩, o en la <strong>base Y</strong>.</p>
+        <p>Si preparas el estado |+⟩ = (|0⟩ + |1⟩)/√2 y lo mides en la base Z, obtienes 0 o 1 con un 50% cada uno — máxima incertidumbre. Pero si lo mides en la base X, obtienes |+⟩ con certeza (100%). La elección de base determina completamente la estadística de resultados.</p>
+        <p>Esto es fundamental en criptografía cuántica (BB84): Alice elige bases aleatorias para enviar cada qubit. Si Eve mide en la base incorrecta, destruye la información y revela su presencia. Solo las mediciones en la base correcta dan el bit correcto.</p>
+
+        <h2>Decoherencia: el entorno como medidor involuntario</h2>
+        <p>En la práctica, los qubits no son perfectamente aislados. El entorno (otros átomos, fotones, vibraciones) interactúa con el qubit, efectuando una medición no controlada y parcial. Este proceso se llama <strong>decoherencia</strong>.</p>
+        <p>La decoherencia destruye la superposición: el qubit pasa de un estado cuántico puro |ψ⟩ = α|0⟩ + β|1⟩ a una mezcla estadística clásica (con probabilidades |α|² y |β|² pero sin fases, sin interferencia). El tiempo característico de decoherencia es el <strong>tiempo T₂</strong> (tiempo de coherencia de fase). Los mejores qubits actuales tienen T₂ de microsegundos a milisegundos — muy poco para algoritmos complejos.</p>
+        <div class="concept-box">
+          <div class="cb-tag">Decoherencia: el principal obstáculo</div>
+          <p>La decoherencia es la razón por la que los ordenadores cuánticos son tan difíciles de construir. Cada interacción no deseada con el entorno "mide" parcialmente el qubit, destruyendo su superposición. Los ingenieros cuánticos trabajan a temperaturas de 15 milikelvin (más frío que el espacio exterior) precisamente para minimizar estas perturbaciones térmicas.</p>
         </div>
       </div>
       <div class="quiz-block">
@@ -1017,6 +1104,28 @@
         <div class="fact-box">
           <span class="fact-icon">🚀</span>
           <p><strong>El futuro ya está aquí:</strong> IBM, Google, IonQ y Quantinuum operan ordenadores cuánticos reales accesibles por internet. En el curso de IBM Quantum Experience aprenderás a ejecutar tus propios circuitos en hardware cuántico real, sin necesidad de instalar nada.</p>
+        </div>
+
+        <h2>El hardware cuántico actual</h2>
+        <p>¿Dónde estamos hoy? Los procesadores cuánticos superconductores son la tecnología más avanzada en número de qubits. IBM ha publicado una hoja de ruta clara:</p>
+        <ul>
+          <li><strong>Eagle (2021):</strong> 127 qubits</li>
+          <li><strong>Osprey (2022):</strong> 433 qubits</li>
+          <li><strong>Condor (2023):</strong> 1.121 qubits — primer procesador por encima de los 1.000</li>
+          <li><strong>Heron (2023):</strong> 133 qubits de alta fidelidad, arquitectura modular</li>
+        </ul>
+        <p>Pero el número de qubits no lo es todo. La <strong>fidelidad</strong> de las puertas (tasa de error por puerta), el <strong>tiempo de coherencia T₁ y T₂</strong> y la <strong>conectividad</strong> entre qubits son igualmente críticos.</p>
+
+        <h2>Los tiempos de coherencia T₁ y T₂</h2>
+        <p><strong>T₁</strong> (tiempo de relajación de amplitud) es el tiempo que tarda un qubit en |1⟩ en decaer a |0⟩ por disipación de energía al entorno. <strong>T₂</strong> (tiempo de coherencia de fase) es el tiempo que tarda la fase de la superposición en destruirse por decoherencia. Siempre T₂ ≤ 2·T₁. Los mejores qubits de trampa iónica actuales tienen T₂ de segundos; los superconductores, de microsegundos a milisegundos.</p>
+        <p>Para ejecutar un algoritmo útil, el circuito debe completarse en una fracción de T₂. Con cientos de puertas en un circuito profundo, esto es un reto enorme. Es la razón principal por la que todavía no tenemos ordenadores cuánticos tolerantes a fallos.</p>
+
+        <h2>Era NISQ y el camino al futuro</h2>
+        <p>Estamos en la <strong>era NISQ</strong> (Noisy Intermediate-Scale Quantum): procesadores con decenas a miles de qubits, pero ruidosos e imperfectos, sin corrección de errores cuánticos completa. Los algoritmos NISQ (VQE, QAOA) están diseñados específicamente para sacar partido de este hardware imperfecto.</p>
+        <p>El objetivo a largo plazo es la <strong>computación cuántica tolerante a fallos</strong> (FTQC): usar la corrección de errores cuánticos para proteger los qubits lógicos de los errores físicos. Requiere ~1.000 qubits físicos por qubit lógico con las tasas de error actuales. Los expertos estiman que llegará en los años 2030s.</p>
+        <div class="concept-box">
+          <div class="cb-tag">Google Sycamore: ventaja cuántica demostrada</div>
+          <p>En 2019, Google anunció que su procesador Sycamore (53 qubits) completó un cálculo específico en 200 segundos que, según sus estimaciones, tomaría 10.000 años al superordenador Summit de IBM. Aunque IBM disputó el tiempo clásico (estimó ~2,5 días con optimizaciones), fue la primera demostración experimental de una ventaja cuántica en una tarea bien definida. El debate continúa, pero marca el inicio de una nueva era.</p>
         </div>
       </div>
       <div class="quiz-block">
