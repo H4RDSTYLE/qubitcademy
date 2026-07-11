@@ -1,103 +1,831 @@
-<!DOCTYPE html><html lang="es"><head>
-  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Algoritmo de Grover — Qubitcademy</title>
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%239333ea'/><text x='50%' y='55%' text-anchor='middle' dominant-baseline='middle' font-family='monospace' font-size='14' font-weight='600' fill='%23fff'>Q</text></svg>"/>
-  <link rel="stylesheet" href="../css/style.css"/>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%239333ea'/><text x='50%' y='55%' text-anchor='middle' dominant-baseline='middle' font-family='monospace' font-size='14' font-weight='600' fill='%23fff'>Q</text></svg>" />
+  <link rel="stylesheet" href="../css/style.css" />
   <style>
-    .ch{padding:calc(var(--nav-h) + 56px) 0 56px;position:relative;background:var(--bg-2);border-bottom:1px solid var(--border);overflow-x:hidden}
-    .ch-bg{position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 80% 50%,rgba(16,185,129,.07) 0%,transparent 70%),radial-gradient(ellipse 40% 60% at 10% 80%,rgba(147,51,234,.05) 0%,transparent 70%);pointer-events:none}
-    .chi{display:grid;grid-template-columns:1fr 360px;gap:48px;align-items:end;position:relative;z-index:1}
-    .cht{padding-bottom:40px}.bc{display:flex;align-items:center;gap:8px;font-family:var(--font-m);font-size:.72rem;color:var(--text-3);margin-bottom:20px}
-    .bc a{color:var(--text-3);transition:color .18s}.bc a:hover{color:var(--cyan)}
-    .chi h1{font-size:clamp(1.8rem,4vw,2.8rem);margin-bottom:16px}
-    .chi-d{font-size:1rem;color:var(--text-2);max-width:540px;line-height:1.75;margin-bottom:26px}
-    .chs{display:flex;gap:20px;flex-wrap:wrap}.cs{display:flex;align-items:center;gap:7px;font-size:.83rem;color:var(--text-2)}.cs strong{color:var(--text)}
-    .ec{background:var(--bg-card);border:1px solid var(--border-md);border-radius:16px;padding:26px;box-shadow:0 24px 60px rgba(0,0,0,.4)}
-    .ep{font-family:var(--font-h);font-size:2rem;font-weight:700;color:var(--green);margin-bottom:6px}
-    .ec .btn{width:100%;justify-content:center;margin-bottom:12px}
-    .el{list-style:none;border-top:1px solid var(--border);padding-top:16px;margin-top:6px;display:flex;flex-direction:column;gap:9px}
-    .el li{font-size:.82rem;color:var(--text-2);display:flex;gap:8px}.el li::before{content:'✓';color:var(--green);font-weight:700;flex-shrink:0}
-    .cb{display:grid;grid-template-columns:1fr 360px;gap:48px;padding:96px 0 96px;align-items:start}
-    .csb{position:sticky;top:calc(var(--nav-h) + 20px)}
-    .lb{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:26px;margin-bottom:36px}
-    .lb h2{font-size:1.05rem;margin-bottom:16px}
-    .lg{display:grid;grid-template-columns:1fr 1fr;gap:10px 20px;list-style:none}
-    .lg li{font-size:.85rem;color:var(--text-2);padding-left:16px;position:relative;line-height:1.5}
-    .lg li::before{content:'⚛';position:absolute;left:0;color:var(--cyan);font-size:.75rem}
-    .rb{margin-bottom:36px}.rb h2{font-size:1.05rem;margin-bottom:12px}
-    .rl{list-style:none;display:flex;flex-direction:column;gap:8px}
-    .rl li{font-size:.85rem;color:var(--text-2);padding-left:16px;position:relative}
-    .rl li::before{content:'→';position:absolute;left:0;color:var(--text-3);font-family:var(--font-m)}
-    .lw h2{font-size:1.05rem;margin-bottom:5px}
-    .lm{font-family:var(--font-m);font-size:.75rem;color:var(--text-3);margin-bottom:18px}
-    .ll{list-style:none;background:var(--border);border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column;gap:1px}
-    .lr{background:var(--bg-card);display:flex;align-items:center;gap:14px;padding:14px 20px;transition:background .18s;cursor:pointer;text-decoration:none;color:inherit}
-    .lr:hover{background:var(--bg-3)}.ln{font-family:var(--font-m);font-size:.7rem;color:var(--text-3);width:22px;flex-shrink:0}
-    .lp{width:26px;height:26px;border-radius:50%;background:var(--bg-3);border:1px solid var(--border-md);display:flex;align-items:center;justify-content:center;font-size:.55rem;color:var(--text-3);flex-shrink:0;transition:all .18s}
-    .lr:hover .lp{background:var(--cyan-dim);border-color:rgba(147,51,234,.3);color:var(--cyan)}
-    .lt{flex:1;font-size:.88rem;font-weight:500}.ld{font-family:var(--font-m);font-size:.7rem;color:var(--text-3);white-space:nowrap}
-    .ft{font-family:var(--font-m);font-size:.63rem;font-weight:600;color:var(--green);background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.2);border-radius:4px;padding:2px 6px}
-    .lkt{font-family:var(--font-m);font-size:.63rem;color:var(--text-3)}
-    .ic{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:22px;margin-bottom:18px}
-    .ic h3{font-family:var(--font-m);font-size:.7rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text-3);margin-bottom:14px}
-    .ir{display:flex;align-items:center;gap:11px;margin-bottom:11px}
-    .iav{width:42px;height:42px;border-radius:50%;flex-shrink:0;background:linear-gradient(135deg,var(--green),var(--cyan));display:flex;align-items:center;justify-content:center;font-family:var(--font-h);font-size:.88rem;font-weight:700;color:var(--bg)}
-    .in{font-size:.9rem;font-weight:600}.it{font-size:.75rem;color:var(--text-3);margin-top:2px}
-    .ib{font-size:.81rem;color:var(--text-2);line-height:1.65}
-    .nb{background:var(--bg-2);border-top:1px solid var(--border);padding:48px 0}
-    @media(max-width:960px){.chi,.cb{grid-template-columns:1fr}.ec{margin-top:28px}.csb{position:static}.lg{grid-template-columns:1fr}}
+  #xp-hud { position:fixed;top:var(--nav-h);left:0;right:0;height:42px;background:rgba(14,9,26,0.97);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);z-index:90;display:flex;align-items:center;gap:18px;padding:0 22px; }
+  .hud-level { display:flex;align-items:center;gap:6px;font-family:var(--font-m);font-size:0.7rem;font-weight:600;white-space:nowrap;color:var(--cyan);background:var(--cyan-dim);border:1px solid rgba(147,51,234,0.3);border-radius:100px;padding:3px 11px; }
+  .hud-xp-wrap { display:flex;align-items:center;gap:9px;flex:1;max-width:260px; }
+  .hud-xp-label { font-family:var(--font-m);font-size:0.68rem;color:var(--text-3);white-space:nowrap; }
+  .hud-xp-track { flex:1;height:6px;background:var(--bg-3);border-radius:3px;overflow:hidden; }
+  .hud-xp-fill  { height:100%;border-radius:3px;background:linear-gradient(90deg,var(--cyan),var(--violet));transition:width 0.6s var(--ease); }
+  .hud-streak   { display:flex;align-items:center;gap:5px;font-family:var(--font-m);font-size:0.8rem;color:var(--amber);white-space:nowrap; }
+  .hud-badges   { display:flex;gap:6px;margin-left:auto; }
+  .hud-badge    { font-size:1.05rem;opacity:0.2;transition:opacity 0.4s,transform 0.4s; }
+  .hud-badge.earned { opacity:1;transform:scale(1.15); }
+  body { overflow-x:hidden; }
+  .cl-wrap { display:grid;grid-template-columns:272px 1fr;margin-top:calc(var(--nav-h) + 42px);min-height:calc(100vh - var(--nav-h) - 42px); }
+  .cl-sidebar { position:sticky;top:calc(var(--nav-h) + 42px);height:calc(100vh - var(--nav-h) - 42px);overflow-y:auto;border-right:1px solid var(--border);background:var(--bg-2);display:flex;flex-direction:column;scrollbar-width:thin;scrollbar-color:var(--bg-3) transparent; }
+  .cl-sb-head { padding:20px 18px 16px;border-bottom:1px solid var(--border); }
+  .cl-sb-title { font-size:0.83rem;font-weight:600;line-height:1.4;margin-bottom:14px;color:var(--text); }
+  .cl-prog-bar  { height:5px;background:var(--bg-3);border-radius:3px;overflow:hidden;margin-bottom:5px; }
+  .cl-prog-fill { height:100%;border-radius:3px;background:linear-gradient(90deg,var(--cyan),var(--violet));transition:width 0.6s var(--ease); }
+  .cl-prog-text { font-family:var(--font-m);font-size:0.67rem;color:var(--text-3); }
+  .cl-list { list-style:none;padding:8px 0 24px;flex:1; }
+  .cl-item { display:flex;align-items:center;gap:11px;padding:10px 18px;cursor:pointer;transition:background 0.18s;border-left:2px solid transparent; }
+  .cl-item:hover { background:var(--bg-3); }
+  .cl-item.active { background:rgba(147,51,234,0.08);border-left-color:var(--cyan); }
+  .cl-item.done   { opacity:0.72; }
+  .cl-check { width:22px;height:22px;border-radius:50%;flex-shrink:0;border:1.5px solid var(--border-md);display:flex;align-items:center;justify-content:center;font-size:0.62rem;transition:all 0.3s; }
+  .cl-item.done   .cl-check { background:rgba(16,185,129,0.15);border-color:var(--green);color:var(--green); }
+  .cl-item.active .cl-check { border-color:var(--cyan); }
+  .cl-item-info { flex:1;min-width:0; }
+  .cl-item-name { font-size:0.81rem;font-weight:500;line-height:1.35;color:var(--text); }
+  .cl-item-dur  { font-family:var(--font-m);font-size:0.66rem;color:var(--text-3);margin-top:2px; }
+  .cl-main { padding:44px 52px 96px;max-width:740px; }
+  .cl-lesson { display:none;animation:fadeUp 0.38s var(--ease); }
+  .cl-lesson.active { display:block; }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)} }
+  .lh { display:flex;align-items:center;gap:16px;margin-bottom:32px;padding-bottom:22px;border-bottom:1px solid var(--border); }
+  .lh-badge { width:46px;height:46px;border-radius:12px;flex-shrink:0;background:var(--cyan-dim);border:1px solid rgba(147,51,234,0.28);display:flex;align-items:center;justify-content:center;font-family:var(--font-m);font-size:0.8rem;font-weight:700;color:var(--cyan); }
+  .lh-info h1  { font-size:1.62rem;margin-bottom:5px; }
+  .lh-meta     { display:flex;gap:14px; }
+  .lh-meta span { font-family:var(--font-m);font-size:0.7rem;color:var(--text-3); }
+  .lb h2 { font-size:1.12rem;margin:30px 0 10px; }
+  .lb p  { font-size:0.93rem;color:var(--text-2);line-height:1.82;margin-bottom:14px; }
+  .lb strong { color:var(--text);font-weight:600; }
+  .lb ul { padding-left:0;list-style:none;margin:12px 0 18px;display:flex;flex-direction:column;gap:7px; }
+  .lb li { font-size:0.91rem;color:var(--text-2);padding-left:18px;position:relative;line-height:1.7; }
+  .lb li::before { content:'›';position:absolute;left:0;color:var(--cyan);font-weight:700; }
+  .concept-box { background:rgba(147,51,234,0.055);border:1px solid rgba(147,51,234,0.2);border-left:3px solid var(--cyan);border-radius:var(--r-sm);padding:16px 18px;margin:22px 0; }
+  .concept-box .cb-tag { font-family:var(--font-m);font-size:0.66rem;font-weight:600;color:var(--cyan);letter-spacing:0.13em;text-transform:uppercase;margin-bottom:7px; }
+  .concept-box p { font-size:0.88rem;color:var(--text-2);margin:0;line-height:1.78; }
+  .concept-box strong { color:var(--cyan); }
+  .fact-box { background:rgba(245,158,11,0.055);border:1px solid rgba(245,158,11,0.2);border-left:3px solid var(--violet);border-radius:var(--r-sm);padding:16px 18px;margin:22px 0;display:flex;gap:12px; }
+  .fact-icon { font-size:1.3rem;flex-shrink:0; }
+  .fact-box p { font-size:0.87rem;color:var(--text-2);margin:0;line-height:1.78; }
+  .fact-box strong { color:var(--violet); }
+  .math-box { background:var(--bg-3);border:1px solid var(--border-md);border-radius:var(--r-sm);padding:14px 18px;margin:18px 0;font-family:var(--font-m);font-size:1.05rem;color:var(--text);text-align:center;letter-spacing:0.04em; }
+  .quiz-block { background:var(--bg-2);border:1px solid var(--border-md);border-radius:var(--r);padding:30px;margin-top:44px; }
+  .quiz-block > h2   { font-size:1.05rem;margin-bottom:5px; }
+  .quiz-block > p    { font-size:0.8rem;color:var(--text-3);font-family:var(--font-m);margin-bottom:28px; }
+  .quiz-q            { margin-bottom:24px; }
+  .quiz-q-text       { font-size:0.92rem;font-weight:600;margin-bottom:12px;line-height:1.52; }
+  .quiz-opts         { display:flex;flex-direction:column;gap:7px; }
+  .quiz-opt { display:flex;align-items:center;gap:10px;padding:11px 15px;border-radius:var(--r-sm);border:1px solid var(--border-md);background:var(--bg-card);cursor:pointer;text-align:left;font-size:0.87rem;color:var(--text-2);font-family:var(--font-b);transition:all 0.18s;width:100%; }
+  .quiz-opt:hover:not(:disabled) { border-color:rgba(147,51,234,0.35);color:var(--text);background:rgba(147,51,234,0.05); }
+  .quiz-opt.correct { border-color:var(--green)!important;color:var(--green)!important;background:rgba(16,185,129,0.09)!important; }
+  .quiz-opt.wrong   { border-color:#ef4444!important;color:#ef4444!important;background:rgba(239,68,68,0.08)!important; }
+  .quiz-opt:disabled { cursor:default; }
+  .quiz-opt-letter  { width:22px;height:22px;border-radius:50%;border:1px solid currentColor;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:var(--font-m);font-size:0.68rem;font-weight:700; }
+  .quiz-fb { font-size:0.82rem;margin-top:9px;padding:9px 13px;border-radius:var(--r-sm);display:none;line-height:1.6; }
+  .quiz-fb.show { display:block; }
+  .quiz-fb.ok  { background:rgba(16,185,129,0.1);color:var(--green);border:1px solid rgba(16,185,129,0.22); }
+  .quiz-fb.err { background:rgba(239,68,68,0.08);color:#ef4444;border:1px solid rgba(239,68,68,0.18); }
+  .quiz-score { display:none;align-items:center;justify-content:space-between;gap:16px;padding:14px 16px;background:var(--bg-3);border-radius:var(--r-sm);margin:20px 0 0; }
+  .quiz-score.show { display:flex; }
+  .quiz-score-left h3 { font-size:0.92rem;margin-bottom:3px; }
+  .quiz-score-left p  { font-size:0.78rem;color:var(--text-3);font-family:var(--font-m); }
+  .quiz-score-stars   { font-size:1.4rem;letter-spacing:2px; }
+  .complete-btn { width:100%;justify-content:center;margin-top:20px;opacity:0.35;pointer-events:none;transition:opacity 0.3s;font-size:1rem;padding:14px; }
+  .complete-btn.ready { opacity:1;pointer-events:auto; }
+  .lesson-nav { display:flex;justify-content:space-between;margin-top:14px;gap:10px; }
+  #lesson-done { text-align:center;padding:48px 24px; }
+  #badge-modal { position:fixed;inset:0;background:rgba(0,0,0,0.72);display:flex;align-items:center;justify-content:center;z-index:500;opacity:0;pointer-events:none;transition:opacity 0.3s; }
+  #badge-modal.show { opacity:1;pointer-events:auto; }
+  .bm-box { background:var(--bg-2);border:1px solid var(--border-hi);border-radius:20px;padding:48px 40px;text-align:center;max-width:340px;width:90%;transform:scale(0.82);transition:transform 0.35s var(--ease);box-shadow:0 32px 80px rgba(147,51,234,0.25); }
+  #badge-modal.show .bm-box { transform:scale(1); }
+  .bm-emoji { font-size:4.5rem;display:block;margin-bottom:18px; }
+  .bm-tag   { font-family:var(--font-m);font-size:0.68rem;color:var(--cyan);letter-spacing:0.13em;text-transform:uppercase;margin-bottom:9px; }
+  .bm-name  { font-size:1.55rem;font-weight:700;margin-bottom:10px; }
+  .bm-desc  { font-size:0.88rem;color:var(--text-2);line-height:1.68;margin-bottom:26px; }
+  #xp-toast { position:fixed;bottom:26px;right:26px;background:var(--bg-2);border:1px solid var(--border-hi);border-radius:12px;padding:13px 18px;display:flex;align-items:center;gap:12px;z-index:600;transform:translateY(76px);opacity:0;transition:all 0.38s var(--ease);box-shadow:0 12px 40px rgba(147,51,234,0.2);min-width:210px; }
+  #xp-toast.show { transform:translateY(0);opacity:1; }
+  .toast-icon  { font-size:1.5rem;flex-shrink:0; }
+  .toast-title { font-size:0.92rem;font-weight:700;color:var(--text); }
+  .toast-sub   { font-size:0.76rem;color:var(--text-3);font-family:var(--font-m);margin-top:2px; }
+  #confetti { position:fixed;inset:0;pointer-events:none;z-index:700;overflow:hidden; }
+  .cp { position:absolute;top:-12px;border-radius:2px;animation:fall linear forwards; }
+  @keyframes fall { 0%{top:-12px;opacity:1;transform:rotate(0deg) translateX(0)}80%{opacity:1}100%{top:110vh;opacity:0;transform:rotate(800deg) translateX(var(--tx))} }
+  .sidebar-fab { display:none; }
+  @media (max-width:860px) {
+    .cl-wrap { grid-template-columns:1fr; }
+    .cl-sidebar { position:fixed;left:-280px;top:calc(var(--nav-h) + 42px);height:calc(100vh - var(--nav-h) - 42px);transition:left 0.32s var(--ease);z-index:80;box-shadow:6px 0 28px rgba(0,0,0,0.5);width:272px; }
+    .cl-sidebar.open { left:0; }
+    .cl-main { padding:30px 22px 80px; }
+    .sidebar-fab { display:flex;position:fixed;bottom:18px;left:18px;z-index:85;background:var(--cyan);color:var(--bg);border:none;border-radius:50%;width:48px;height:48px;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 20px rgba(147,51,234,0.45);font-size:1.2rem; }
+  }
+  @media (max-width:640px) {
+    .hud-streak,.hud-badges { display:none; }
+    .lh-info h1 { font-size:1.3rem; }
+    .cl-main { padding:24px 16px 80px; }
+  }
   </style>
 </head>
 <body>
-<nav id="nav"><div class="container"><div class="nav-inner"><a href="../index.html" class="nav-logo"><div class="nav-logo-mark">|ψ⟩</div><span>qubitcademy</span></a><ul class="nav-links"><li><a href="../index.html" data-i18n="nav.home">Inicio</a></li><li><a href="../catalogue.html" class="active" data-i18n="nav.catalogue">Catálogo</a></li><li><a href="../paths.html" data-i18n="nav.paths">Rutas</a></li><li><a href="../faq.html" data-i18n="nav.faq">FAQ</a></li></ul><div class="nav-right"><div class="lang-switcher"><button class="lang-btn active" data-lang="es">ES</button><div class="lang-sep"></div><button class="lang-btn" data-lang="en">EN</button></div><a href="#" class="nav-login" data-i18n="nav.login">Iniciar sesión</a><a href="#" class="btn btn-primary btn-sm" data-i18n="nav.cta">Empezar gratis</a></div><button class="nav-toggle" aria-label="Abrir menú"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="19" y2="6"/><line x1="3" y1="11" x2="19" y2="11"/><line x1="3" y1="16" x2="19" y2="16"/></svg></button></div></div></nav>
-<div class="nav-mobile"><a href="../index.html" data-i18n="nav.home">Inicio</a><a href="../catalogue.html" data-i18n="nav.catalogue">Catálogo</a><a href="../paths.html" data-i18n="nav.paths">Rutas</a><a href="../faq.html" data-i18n="nav.faq">FAQ</a><div class="nav-mobile-lang"><button class="lang-btn active" data-lang="es">ES</button><div class="lang-sep"></div><button class="lang-btn" data-lang="en">EN</button></div><div class="nav-mobile-footer"><a href="#" class="btn btn-ghost" data-i18n="nav.login">Iniciar sesión</a><a href="#" class="btn btn-primary" data-i18n="nav.cta">Empezar gratis</a></div></div>
 
-<div class="ch"><div class="ch-bg"></div><div class="container"><div class="chi">
-  <div class="cht">
-    <nav class="bc"><a href="../catalogue.html">Catálogo</a><span>›</span><span>Algoritmos</span><span>›</span><span>Algoritmo de Grover</span></nav>
-    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px;"><span class="lvl-badge lvl-i">Intermedio</span><span class="ctag">algoritmos</span><span class="cprice-free" style="font-size:.88rem;">Gratis</span></div>
-    <h1>Algoritmo de Grover</h1>
-    <p class="chi-d">Búsqueda cuántica con ventaja cuadrática sobre cualquier algoritmo clásico. Aprende a construir el oráculo, el operador de difusión e implementar el algoritmo completo en Qiskit.</p>
-    <div class="chs"><div class="cs"><span>⏱</span><span><strong>2.5 horas</strong></span></div><div class="cs"><span>📚</span><span><strong>7 lecciones</strong></span></div><div class="cs"><span>🐍</span><span><strong>Qiskit</strong></span></div><div class="cs"><span>♾️</span><span>Acceso <strong>de por vida</strong></span></div></div>
-  </div>
-  <div><div class="ec"><div class="ep">Gratis</div><p style="font-size:.78rem;color:var(--text-3);margin-bottom:14px;">Incluye código Qiskit completo</p><a href="#lessons" class="btn btn-primary btn-lg">Comenzar ahora →</a><ul class="el"><li>Implementación completa en Qiskit</li><li>Análisis de complejidad detallado</li><li>Código descargable de cada lección</li><li>Certificado de finalización</li></ul></div></div>
-</div></div></div>
-
-<div class="container"><div class="cb">
-  <div>
-    <div class="lb"><h2>Lo que aprenderás</h2><ul class="lg">
-      <li>El problema de búsqueda no estructurada</li><li>Qué es un oráculo cuántico y cómo construirlo</li>
-      <li>El operador de difusión (inversión alrededor de la media)</li><li>Por qué √N iteraciones son las óptimas</li>
-      <li>Implementación del algoritmo completo en Qiskit</li><li>El rol de la interferencia en el speedup cuántico</li>
-      <li>Análisis de complejidad: O(√N) vs O(N)</li><li>Aplicaciones: bases de datos, optimización, criptoanálisis</li>
-    </ul></div>
-    <div class="rb"><h2>Requisitos</h2><ul class="rl">
-      <li>Fundamentos de Mecánica Cuántica y Qubits y Circuitos Cuánticos</li>
-      <li>Nociones de complejidad algorítmica (notación O grande)</li>
-      <li>Python básico (listas, funciones). Qiskit se instala en el curso.</li>
-    </ul></div>
-    <div class="lw" id="lessons"><h2>Lecciones del curso</h2><p class="lm">7 lecciones · 2.5h · todas gratuitas</p>
-      <ul class="ll">
-        <li><a href="#" class="lr"><span class="ln">01</span><div class="lp">▶</div><span class="lt">El problema de búsqueda cuántica</span><span class="ld">18 min</span><span class="ft">Gratis</span></a></li>
-        <li><a href="#" class="lr"><span class="ln">02</span><div class="lp">▶</div><span class="lt">El oráculo cuántico</span><span class="ld">22 min</span><span class="ft">Gratis</span></a></li>
-        <li><a href="#" class="lr"><span class="ln">03</span><div class="lp">▶</div><span class="lt">El operador de difusión</span><span class="ld">25 min</span><span class="ft">Gratis</span></a></li>
-        <li><a href="#" class="lr"><span class="ln">04</span><div class="lp">▶</div><span class="lt">¿Cuántas iteraciones? Análisis geométrico</span><span class="ld">20 min</span><span class="ft">Gratis</span></a></li>
-        <li><a href="#" class="lr"><span class="ln">05</span><div class="lp">▶</div><span class="lt">Implementación completa en Qiskit</span><span class="ld">28 min</span><span class="ft">Gratis</span></a></li>
-        <li><a href="#" class="lr"><span class="ln">06</span><div class="lp">▶</div><span class="lt">Análisis de complejidad y speedup</span><span class="ld">20 min</span><span class="ft">Gratis</span></a></li>
-        <li><a href="#" class="lr"><span class="ln">07</span><div class="lp">▶</div><span class="lt">Extensiones: búsqueda múltiple y amplitude estimation</span><span class="ld">20 min</span><span class="ft">Gratis</span></a></li>
-      </ul>
+<nav id="nav">
+  <div class="container"><div class="nav-inner">
+    <a href="../index.html" class="nav-logo"><div class="nav-logo-mark">|ψ⟩</div><span>qubitcademy</span></a>
+    <ul class="nav-links">
+      <li><a href="../index.html">Inicio</a></li>
+      <li><a href="../catalogue.html" class="active">Catálogo</a></li>
+      <li><a href="../paths.html">Rutas</a></li>
+      <li><a href="../faq.html">FAQ</a></li>
+    </ul>
+    <div class="nav-right">
+      <div class="lang-switcher"><button class="lang-btn active" data-lang="es">ES</button><div class="lang-sep"></div><button class="lang-btn" data-lang="en">EN</button></div>
+      <a href="#" class="nav-login">Iniciar sesión</a>
+      <a href="#" class="btn btn-primary btn-sm">Empezar gratis</a>
     </div>
+    <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false">
+      <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="19" y2="6"/><line x1="3" y1="11" x2="19" y2="11"/><line x1="3" y1="16" x2="19" y2="16"/></svg>
+    </button>
+  </div></div>
+</nav>
+<div class="nav-mobile">
+  <a href="../index.html">Inicio</a><a href="../catalogue.html">Catálogo</a><a href="../paths.html">Rutas</a><a href="../faq.html">FAQ</a>
+  <div class="nav-mobile-lang"><button class="lang-btn active" data-lang="es">ES</button><div class="lang-sep"></div><button class="lang-btn" data-lang="en">EN</button></div>
+  <div class="nav-mobile-footer"><a href="#" class="btn btn-ghost">Iniciar sesión</a><a href="#" class="btn btn-primary">Empezar gratis</a></div>
+</div>
+
+<div id="xp-hud">
+  <div class="hud-level" id="hud-level">⚗️ Novato</div>
+  <div class="hud-xp-wrap">
+    <span class="hud-xp-label" id="hud-xp-label">0 XP</span>
+    <div class="hud-xp-track"><div class="hud-xp-fill" id="hud-xp-fill" style="width:0%"></div></div>
   </div>
-  <aside class="csb">
-    <div class="ic"><h3>Instructora</h3><div class="ir"><div class="iav">NP</div><div><div class="in">Dra. Natalia Petrov</div><div class="it">Algoritmia Cuántica · ETH Zürich</div></div></div><p class="ib">Investigadora en algoritmos cuánticos en ETH Zürich con publicaciones en Nature Quantum Information. Especialista en algoritmos de búsqueda y amplificación de amplitudes.</p></div>
-    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:20px;"><h3 style="font-family:var(--font-m);font-size:.7rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text-3);margin-bottom:13px;">Incluido en las rutas</h3><a href="../paths.html" style="display:flex;align-items:center;gap:9px;padding:9px 11px;background:var(--bg-3);border-radius:8px;margin-bottom:8px;"><span>⚡</span><div><div style="font-size:.84rem;font-weight:600;">Quantum Developer</div><div style="font-size:.72rem;color:var(--text-3);">Módulo 4 de 5</div></div></a><a href="../paths.html" style="display:flex;align-items:center;gap:9px;padding:9px 11px;background:var(--bg-3);border-radius:8px;"><span>🔬</span><div><div style="font-size:.84rem;font-weight:600;">Quantum Researcher</div><div style="font-size:.72rem;color:var(--text-3);">Módulo 4 de 8</div></div></a></div>
+  <div class="hud-streak" id="hud-streak">🔥 0 días</div>
+  <div class="hud-badges">
+    <span class="hud-badge" id="hb-0">🚀</span>
+    <span class="hud-badge" id="hb-1">🔭</span>
+    <span class="hud-badge" id="hb-2">⭐</span>
+    <span class="hud-badge" id="hb-3">🔥</span>
+    <span class="hud-badge" id="hb-4">🔍</span>
+  </div>
+</div>
+
+<div class="cl-wrap">
+  <aside class="cl-sidebar" id="cl-sidebar">
+    <div class="cl-sb-head">
+      <div class="cl-sb-title">🔍 Algoritmo de Grover</div>
+      <div class="cl-prog-bar"><div class="cl-prog-fill" id="cl-prog" style="width:0%"></div></div>
+      <div class="cl-prog-text" id="cl-prog-text">0 / 7 lecciones</div>
+    </div>
+    <ul class="cl-list" id="cl-list">
+      <li class="cl-item active" data-lesson="0"><div class="cl-check" id="ck-0">1</div><div class="cl-item-info"><div class="cl-item-name">El problema de búsqueda no estructurada</div><div class="cl-item-dur">⏱ 18 min</div></div></li>
+      <li class="cl-item" data-lesson="1"><div class="cl-check" id="ck-1">2</div><div class="cl-item-info"><div class="cl-item-name">Superposición uniforme: el punto de partida</div><div class="cl-item-dur">⏱ 20 min</div></div></li>
+      <li class="cl-item" data-lesson="2"><div class="cl-check" id="ck-2">3</div><div class="cl-item-info"><div class="cl-item-name">El oráculo cuántico</div><div class="cl-item-dur">⏱ 22 min</div></div></li>
+      <li class="cl-item" data-lesson="3"><div class="cl-check" id="ck-3">4</div><div class="cl-item-info"><div class="cl-item-name">El operador de difusión de Grover</div><div class="cl-item-dur">⏱ 24 min</div></div></li>
+      <li class="cl-item" data-lesson="4"><div class="cl-check" id="ck-4">5</div><div class="cl-item-info"><div class="cl-item-name">El algoritmo completo y su análisis</div><div class="cl-item-dur">⏱ 22 min</div></div></li>
+      <li class="cl-item" data-lesson="5"><div class="cl-check" id="ck-5">6</div><div class="cl-item-info"><div class="cl-item-name">Variantes y extensiones de Grover</div><div class="cl-item-dur">⏱ 20 min</div></div></li>
+      <li class="cl-item" data-lesson="6"><div class="cl-check" id="ck-6">7</div><div class="cl-item-info"><div class="cl-item-name">Aplicaciones reales del algoritmo</div><div class="cl-item-dur">⏱ 18 min</div></div></li>
+    </ul>
   </aside>
-</div></div>
 
-<div class="nb"><div class="container"><div style="display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;">
-  <div><div class="label" style="margin-bottom:10px;">Siguiente en Quantum Developer</div><h2 style="font-size:1.4rem;margin-bottom:7px;">Programación con Qiskit</h2><p style="font-size:.88rem;color:var(--text-2);">El framework cuántico de IBM de principio a fin · 6h · 14 lecciones · €49</p></div>
-  <a href="qiskit.html" class="btn btn-primary btn-lg" style="flex-shrink:0;">Ver siguiente curso →</a>
-</div></div></div>
+  <main class="cl-main" id="cl-main">
 
-<footer><div class="container"><div class="footer-grid"><div class="footer-brand"><a href="../index.html" class="nav-logo"><div class="nav-logo-mark">|ψ⟩</div><span>qubitcademy</span></a><p data-i18n="ft.desc">La plataforma de aprendizaje cuántico más completa en español.</p></div><div class="footer-col"><h4 data-i18n="ft.col1">Cursos</h4><ul><li><a href="../catalogue.html">Fundamentos</a></li><li><a href="../catalogue.html">Algoritmos</a></li><li><a href="../catalogue.html">Programación</a></li><li><a href="../catalogue.html">Criptografía</a></li></ul></div><div class="footer-col"><h4 data-i18n="ft.col2">Plataforma</h4><ul><li><a href="../catalogue.html">Catálogo</a></li><li><a href="../paths.html">Rutas</a></li><li><a href="#">Certificados</a></li><li><a href="../faq.html">FAQ</a></li></ul></div><div class="footer-col"><h4 data-i18n="ft.col3">Empresa</h4><ul><li><a href="#">Sobre nosotros</a></li><li><a href="#">Blog</a></li><li><a href="../faq.html">Contacto</a></li><li><a href="#">Afiliados</a></li></ul></div></div><div class="footer-bottom"><span data-i18n="ft.copy">© 2025 Qubitcademy.</span><div style="display:flex;gap:16px;"><a href="#">Privacidad</a><a href="#">Términos</a></div></div></div></footer>
-<script src="../js/main.js"></script></body></html>
+    <!-- ══════════ LECCIÓN 1 ══════════ -->
+    <section class="cl-lesson active" id="lesson-0">
+      <div class="lh">
+        <div class="lh-badge">01</div>
+        <div class="lh-info">
+          <h1>El problema de búsqueda no estructurada</h1>
+          <div class="lh-meta"><span>⏱ 18 min</span><span>🌱 Principiante</span><span>✨ Gratis</span></div>
+        </div>
+      </div>
+      <div class="lb">
+        <p>Imagina que tienes una caja con un millón de fichas, cada una con un número en el reverso. Solo una ficha tiene el número que buscas. La única forma de encontrarla es darle la vuelta una por una. En promedio, necesitarás mirar 500.000 fichas antes de encontrar la correcta. Lov Grover descubrió en 1996 que un ordenador cuántico puede hacer esto en solo ~1.000 pasos.</p>
+
+        <h2>Búsqueda clásica: el límite inferior</h2>
+        <p>El problema de búsqueda no estructurada es fundamental en informática: dada una base de datos de N elementos y una función f que devuelve 1 para el elemento buscado y 0 para el resto, ¿cuántas consultas a f necesitas para encontrar el elemento con certeza?</p>
+        <p>Clásicamente, en el <strong>peor caso necesitas N consultas</strong> y en el <strong>caso promedio N/2</strong>. No hay truco posible: si los elementos no tienen ninguna estructura (no están ordenados, no hay patrón), no hay forma de evitar ir uno por uno. Esto se puede demostrar formalmente: cualquier algoritmo clásico determinista o probabilístico necesita Ω(N) consultas.</p>
+
+        <div class="concept-box">
+          <div class="cb-tag">Búsqueda no estructurada vs. estructurada</div>
+          <p>La búsqueda <strong>binaria</strong> (buscar en una lista ordenada) requiere O(log N) pasos clásicamente — pero solo porque hay estructura (el orden). En una base de datos <strong>no estructurada</strong> (sin orden, sin índice, sin patrón), no hay atajos clásicos posibles. Grover da una ventaja cuadrática incluso en ausencia de estructura: <strong>√N consultas</strong> para encontrar el elemento con alta probabilidad.</p>
+        </div>
+
+        <h2>El resultado de Grover</h2>
+        <p>En 1996, Lov Grover publicó un algoritmo cuántico que encuentra el elemento marcado en <strong>O(√N) consultas</strong> al oráculo. Para N = 1.000.000, eso pasa de 500.000 consultas promedio a solo ~785. Para N = 10¹²: de 500.000 millones a ~1.000.000. La ventaja crece sin límite.</p>
+        <p>Aún más impresionante: Grover demostró que <strong>ningún algoritmo cuántico puede hacerlo mejor</strong>. O(√N) es el límite inferior cuántico para búsqueda no estructurada. Es óptimo.</p>
+        <div class="math-box">Clásico: O(N) consultas &nbsp;&nbsp;&nbsp; Grover: O(√N) consultas &nbsp;&nbsp;&nbsp; Ventaja: cuadrática</div>
+
+        <h2>¿Por qué "cuadrática" y no "exponencial"?</h2>
+        <p>A diferencia de Shor (que da ventaja exponencial para factorizar), Grover da ventaja cuadrática. Para N = 2¹²⁸ (el espacio de claves AES-128): √N = 2⁶⁴. Eso sigue siendo enorme, pero no hace AES roto — simplemente equivale a reducir la seguridad de 128 bits a 64 bits efectivos. Por eso AES-256 (que quedaría en 128 bits efectivos) sigue siendo considerado seguro en la era cuántica.</p>
+
+        <div class="fact-box">
+          <span class="fact-icon">🏆</span>
+          <p><strong>Óptimo provado:</strong> Bennett, Bernstein, Brassard y Vazirani demostraron en 1997 que cualquier algoritmo cuántico de búsqueda necesita al menos Ω(√N) consultas. Grover no solo es bueno — es el <strong>mejor posible</strong>. Es uno de los pocos resultados de complejidad cuántica donde conocemos tanto el límite superior (Grover) como el inferior (BBBV).</p>
+        </div>
+      </div>
+      <div class="quiz-block">
+        <h2>🧠 Comprueba lo que has aprendido</h2>
+        <p>3 preguntas para completar la lección y ganar XP.</p>
+        <div class="quiz-q" data-answered="false">
+          <div class="quiz-q-text">¿Cuántas consultas necesita el algoritmo de Grover para buscar en una base de datos de N elementos no estructurada?</div>
+          <div class="quiz-opts" data-correct="1">
+            <button class="quiz-opt" data-idx="0"><span class="quiz-opt-letter">A</span> O(log N) — igual que la búsqueda binaria</button>
+            <button class="quiz-opt" data-idx="1"><span class="quiz-opt-letter">B</span> O(√N) — ventaja cuadrática sobre el clásico</button>
+            <button class="quiz-opt" data-idx="2"><span class="quiz-opt-letter">C</span> O(1) — encuentra el resultado en una sola consulta</button>
+          </div>
+          <div class="quiz-fb ok">✓ ¡Correcto! Grover necesita O(√N) consultas, comparado con O(N) clásico. Para N=1.000.000 eso es ~1.000 vs ~500.000 consultas — una ventaja de 500x.</div>
+          <div class="quiz-fb err">✗ No es correcto. Grover usa O(√N) consultas. La búsqueda binaria O(log N) solo funciona en listas ordenadas. En una base de datos no estructurada, la ventaja cuántica de Grover es cuadrática, no logarítmica.</div>
+        </div>
+        <div class="quiz-q" data-answered="false">
+          <div class="quiz-q-text">¿Es O(√N) el límite óptimo para búsqueda cuántica no estructurada, o podría existir un algoritmo cuántico más rápido?</div>
+          <div class="quiz-opts" data-correct="0">
+            <button class="quiz-opt" data-idx="0"><span class="quiz-opt-letter">A</span> Es óptimo: Bennett et al. demostraron que ningún algoritmo cuántico puede hacerlo mejor que Ω(√N)</button>
+            <button class="quiz-opt" data-idx="1"><span class="quiz-opt-letter">B</span> No es óptimo: en teoría un algoritmo cuántico podría buscar en O(log N)</button>
+            <button class="quiz-opt" data-idx="2"><span class="quiz-opt-letter">C</span> Solo es óptimo para bases de datos de más de 1 millón de elementos</button>
+          </div>
+          <div class="quiz-fb ok">✓ ¡Exacto! El resultado BBBV (1997) prueba que Ω(√N) es el límite inferior cuántico. Grover es el mejor posible — un resultado de completitud muy raro en complejidad cuántica.</div>
+          <div class="quiz-fb err">✗ No es correcto. Grover es óptimo. Bennett, Bernstein, Brassard y Vazirani demostraron en 1997 que cualquier algoritmo cuántico de búsqueda no estructurada necesita al menos Ω(√N) consultas. No hay margen de mejora.</div>
+        </div>
+        <div class="quiz-q" data-answered="false">
+          <div class="quiz-q-text">¿Qué implicación tiene Grover para la seguridad de AES-128?</div>
+          <div class="quiz-opts" data-correct="2">
+            <button class="quiz-opt" data-idx="0"><span class="quiz-opt-letter">A</span> AES-128 queda completamente roto — se puede descifrar en segundos</button>
+            <button class="quiz-opt" data-idx="1"><span class="quiz-opt-letter">B</span> AES-128 no se ve afectado en absoluto por Grover</button>
+            <button class="quiz-opt" data-idx="2"><span class="quiz-opt-letter">C</span> La seguridad efectiva se reduce de 128 a 64 bits — debilitado pero no roto</button>
+          </div>
+          <div class="quiz-fb ok">✓ ¡Perfecto! Grover reduce la seguridad de AES-128 de 128 a 64 bits efectivos (√2¹²⁸ = 2⁶⁴). 2⁶⁴ operaciones sigue siendo inviable hoy, pero se recomienda AES-256 para seguridad a largo plazo.</div>
+          <div class="quiz-fb err">✗ No es correcto. Grover reduce la seguridad de AES-128 a la mitad (en bits): de 128 bits a 64 bits efectivos. No lo rompe completamente, pero por eso los estándares post-cuánticos recomiendan usar AES-256.</div>
+        </div>
+        <div class="quiz-score" id="qs-0"><div class="quiz-score-left"><h3 id="qs-0-title">Puntuación</h3><p id="qs-0-sub"></p></div><div class="quiz-score-stars" id="qs-0-stars"></div></div>
+        <button class="btn btn-primary complete-btn" data-lesson="0">Completar lección y ganar XP →</button>
+        <div class="lesson-nav"><span></span><button class="btn btn-ghost btn-sm" onclick="COURSE.go(1)">Siguiente →</button></div>
+      </div>
+    </section>
+
+    <!-- ══════════ LECCIÓN 2 ══════════ -->
+    <section class="cl-lesson" id="lesson-1">
+      <div class="lh">
+        <div class="lh-badge">02</div>
+        <div class="lh-info">
+          <h1>Superposición uniforme: el punto de partida</h1>
+          <div class="lh-meta"><span>⏱ 20 min</span><span>🌱 Principiante</span><span>✨ Gratis</span></div>
+        </div>
+      </div>
+      <div class="lb">
+        <p>Antes de poder "buscar" en una base de datos cuántica, necesitamos que todos los posibles estados estén disponibles simultáneamente. El primer paso de Grover crea la <strong>superposición uniforme</strong>: todos los N estados con exactamente la misma amplitud. Es el equivalente cuántico de "mirar todos los cajones a la vez".</p>
+
+        <h2>¿Qué es la superposición uniforme?</h2>
+        <p>Con n qubits podemos representar 2ⁿ = N estados base: |0⟩, |1⟩, |2⟩, …, |N−1⟩. La superposición uniforme es el estado donde todos tienen exactamente la misma amplitud:</p>
+        <div class="math-box">|s⟩ = (1/√N) Σₓ |x⟩ = (1/√N)(|0⟩ + |1⟩ + |2⟩ + … + |N−1⟩)</div>
+        <p>La amplitud de cada estado es 1/√N, y la probabilidad de medir cualquier estado es (1/√N)² = 1/N. Todos igualmente probables — máxima ignorancia, máxima superposición.</p>
+
+        <h2>Cómo preparar la superposición uniforme</h2>
+        <p>Crear |s⟩ desde el estado inicial |0⟩ⁿ es sorprendentemente simple: basta con aplicar una <strong>puerta Hadamard a cada qubit independientemente</strong>.</p>
+        <div class="math-box">H⊗ⁿ |0⟩ⁿ = |s⟩</div>
+        <p>¿Por qué funciona? La puerta H transforma |0⟩ en (|0⟩+|1⟩)/√2. Aplicada a n qubits independientes, el producto tensorial genera todas las combinaciones posibles de 0s y 1s — exactamente todos los estados de n bits — con igual amplitud.</p>
+        <p>Para n = 3 qubits (N = 8):</p>
+        <div class="math-box">(1/√8)(|000⟩+|001⟩+|010⟩+|011⟩+|100⟩+|101⟩+|110⟩+|111⟩)</div>
+
+        <div class="concept-box">
+          <div class="cb-tag">El poder de la superposición</div>
+          <p>Con n = 300 qubits, la superposición uniforme representa simultáneamente 2³⁰⁰ estados — más que el número de átomos en el universo observable. Preparar este estado toma exactamente <strong>n puertas Hadamard</strong> y un tiempo constante. Ningún ordenador clásico puede siquiera almacenar todos esos estados, mucho menos procesarlos todos a la vez.</p>
+        </div>
+
+        <h2>El estado |s⟩ como vector geométrico</h2>
+        <p>Una forma muy útil de visualizar Grover es geométrica. Considera el espacio de 2 dimensiones formado por:</p>
+        <ul>
+          <li>El vector |ω⟩: el estado marcado (la solución que buscamos)</li>
+          <li>El vector |ω⊥⟩: la superposición uniforme de todos los estados <em>excepto</em> |ω⟩</li>
+        </ul>
+        <p>El estado inicial |s⟩ está casi alineado con |ω⊥⟩ (muy lejos de |ω⟩), con un ángulo θ donde sin(θ) = 1/√N. Grover rota este vector hacia |ω⟩ mediante una serie de reflexiones. Después de ~π√N/4 iteraciones, el vector apunta casi exactamente a |ω⟩ y la medición da el resultado correcto con alta probabilidad.</p>
+
+        <div class="fact-box">
+          <span class="fact-icon">🎯</span>
+          <p><strong>Solo n puertas para N estados:</strong> Preparar la superposición uniforme de N = 2ⁿ estados toma exactamente n puertas Hadamard — una operación de tiempo O(n) = O(log N). Un ordenador clásico necesitaría O(N) pasos solo para listar todos los estados. Aquí ya hay una ventaja exponencial en la preparación del estado inicial.</p>
+        </div>
+      </div>
+      <div class="quiz-block">
+        <h2>🧠 Comprueba lo que has aprendido</h2>
+        <p>¡Ya vas por la lección 2!</p>
+        <div class="quiz-q" data-answered="false">
+          <div class="quiz-q-text">¿Cómo se crea la superposición uniforme de N=2ⁿ estados con n qubits en |0⟩ⁿ?</div>
+          <div class="quiz-opts" data-correct="0">
+            <button class="quiz-opt" data-idx="0"><span class="quiz-opt-letter">A</span> Aplicando una puerta Hadamard a cada qubit: H⊗ⁿ|0⟩ⁿ</button>
+            <button class="quiz-opt" data-idx="1"><span class="quiz-opt-letter">B</span> Aplicando n puertas CNOT en cadena</button>
+            <button class="quiz-opt" data-idx="2"><span class="quiz-opt-letter">C</span> Aplicando una puerta de rotación de ángulo 2π/N a cada qubit</button>
+          </div>
+          <div class="quiz-fb ok">✓ ¡Correcto! La puerta Hadamard aplicada a cada qubit independientemente crea exactamente la superposición uniforme. Es una operación de solo n puertas que genera 2ⁿ estados simultáneamente.</div>
+          <div class="quiz-fb err">✗ No es correcto. La superposición uniforme se crea con H⊗ⁿ: una puerta Hadamard por qubit. H transforma |0⟩ en (|0⟩+|1⟩)/√2, y el producto tensorial de n de estas genera todos los 2ⁿ estados con igual amplitud.</div>
+        </div>
+        <div class="quiz-q" data-answered="false">
+          <div class="quiz-q-text">En la superposición uniforme de N estados, ¿cuál es la probabilidad de medir cualquier estado particular?</div>
+          <div class="quiz-opts" data-correct="2">
+            <button class="quiz-opt" data-idx="0"><span class="quiz-opt-letter">A</span> 1/√N — la amplitud de cada estado</button>
+            <button class="quiz-opt" data-idx="1"><span class="quiz-opt-letter">B</span> N — proporcional al número total de estados</button>
+            <button class="quiz-opt" data-idx="2"><span class="quiz-opt-letter">C</span> 1/N — el cuadrado de la amplitud 1/√N</button>
+          </div>
+          <div class="quiz-fb ok">✓ ¡Exacto! La amplitud de cada estado es 1/√N, y la probabilidad es la amplitud al cuadrado: (1/√N)² = 1/N. Todos los estados son igualmente probables — máxima incertidumbre antes de aplicar el oráculo.</div>
+          <div class="quiz-fb err">✗ No es correcto. La amplitud de cada estado es 1/√N, pero la probabilidad es el módulo de la amplitud al cuadrado: (1/√N)² = 1/N. La Regla de Born dice P = |amplitud|², no P = |amplitud|.</div>
+        </div>
+        <div class="quiz-q" data-answered="false">
+          <div class="quiz-q-text">En la interpretación geométrica de Grover, ¿qué representa el ángulo θ entre |s⟩ y |ω⊥⟩ inicialmente?</div>
+          <div class="quiz-opts" data-correct="1">
+            <button class="quiz-opt" data-idx="0"><span class="quiz-opt-letter">A</span> θ = π/4 siempre, independientemente de N</button>
+            <button class="quiz-opt" data-idx="1"><span class="quiz-opt-letter">B</span> sin(θ) = 1/√N — el ángulo es muy pequeño para N grande</button>
+            <button class="quiz-opt" data-idx="2"><span class="quiz-opt-letter">C</span> θ = π/2 — |s⟩ es perpendicular a |ω⊥⟩</button>
+          </div>
+          <div class="quiz-fb ok">✓ ¡Perfecto! sin(θ) = ⟨ω|s⟩ = 1/√N. Para N grande, θ ≈ 1/√N es muy pequeño — el estado inicial está casi paralelo a |ω⊥⟩ y muy lejos de |ω⟩. Cada iteración de Grover rota el estado θ radianes más hacia |ω⟩.</div>
+          <div class="quiz-fb err">✗ No es correcto. El ángulo inicial satisface sin(θ) = 1/√N. Para N grande, θ es muy pequeño: el estado |s⟩ está casi perpendicular a |ω⟩. El algoritmo de Grover rota el estado en 2θ por iteración hasta apuntar a |ω⟩.</div>
+        </div>
+        <div class="quiz-score" id="qs-1"><div class="quiz-score-left"><h3 id="qs-1-title">Puntuación</h3><p id="qs-1-sub"></p></div><div class="quiz-score-stars" id="qs-1-stars"></div></div>
+        <button class="btn btn-primary complete-btn" data-lesson="1">Completar lección y ganar XP →</button>
+        <div class="lesson-nav"><button class="btn btn-ghost btn-sm" onclick="COURSE.go(0)">← Anterior</button><button class="btn btn-ghost btn-sm" onclick="COURSE.go(2)">Siguiente →</button></div>
+      </div>
+    </section>
+
+    <!-- ══════════ LECCIÓN 3 ══════════ -->
+    <section class="cl-lesson" id="lesson-2">
+      <div class="lh">
+        <div class="lh-badge">03</div>
+        <div class="lh-info">
+          <h1>El oráculo cuántico</h1>
+          <div class="lh-meta"><span>⏱ 22 min</span><span>🟡 Intermedio</span><span>✨ Gratis</span></div>
+        </div>
+      </div>
+      <div class="lb">
+        <p>El <strong>oráculo cuántico</strong> es el componente que sabe cuál es la respuesta correcta. No "busca" — simplemente reconoce la solución cuando la ve y la marca. En el modelo de complejidad cuántica, el oráculo es una caja negra y contamos cuántas veces la consultamos. La magia de Grover es que necesita consultarla muy pocas veces.</p>
+
+        <h2>¿Qué hace el oráculo?</h2>
+        <p>Formalmente, el oráculo es una función booleana f: {0,1}ⁿ → {0,1} que devuelve 1 para el elemento marcado |ω⟩ y 0 para todos los demás. En la versión cuántica, el oráculo actúa como una puerta unitaria U_f que:</p>
+        <div class="math-box">U_f|x⟩ = (−1)^f(x)|x⟩</div>
+        <p>Si x ≠ ω: U_f|x⟩ = |x⟩ (sin cambio)<br>
+        Si x = ω: U_f|ω⟩ = −|ω⟩ (invierte la fase)</p>
+        <p>El oráculo no mide ni colapsa el estado — simplemente cambia el signo de la amplitud del estado marcado. Este truco se llama <strong>phase kickback</strong> (retroceso de fase).</p>
+
+        <div class="concept-box">
+          <div class="cb-tag">Phase kickback: el truco fundamental</div>
+          <p>Para implementar la inversión de fase sin medir, se usa un qubit auxiliar en el estado |−⟩ = (|0⟩−|1⟩)/√2. Cuando aplicas la función f controlada por |x⟩ sobre el qubit auxiliar: si f(x)=1, la fase −1 "rebota" al qubit de control. Si f(x)=0, no pasa nada. Este mecanismo permite que el oráculo marque el estado correcto con una fase sin destruir la superposición.</p>
+        </div>
+
+        <h2>El efecto del oráculo sobre la superposición</h2>
+        <p>Antes del oráculo, todos los estados tienen amplitud +1/√N. Después del oráculo, el estado marcado |ω⟩ tiene amplitud −1/√N y todos los demás siguen con +1/√N:</p>
+        <div class="math-box">|s⟩ → (1/√N) Σ_{x≠ω} |x⟩ − (1/√N)|ω⟩</div>
+        <p>Medido directamente en este punto, el estado marcado sigue teniendo probabilidad (1/√N)² = 1/N — ¡nada ha cambiado en términos de probabilidad! La inversión de fase es invisible en una sola medición. Solo a través de <strong>interferencia</strong> con el operador de difusión (siguiente lección) se vuelve visible.</p>
+
+        <h2>¿Cómo se construye el oráculo en la práctica?</h2>
+        <p>En un circuito cuántico real, el oráculo depende del problema específico:</p>
+        <ul>
+          <li><strong>Búsqueda en base de datos:</strong> el oráculo verifica si x coincide con el elemento buscado (comparación bit a bit)</li>
+          <li><strong>Satisfacibilidad (SAT):</strong> el oráculo evalúa una fórmula booleana en x y devuelve 1 si la satisface</li>
+          <li><strong>Optimización:</strong> el oráculo verifica si una solución candidata cumple una cota mínima de calidad</li>
+        </ul>
+        <p>La complejidad del oráculo depende del problema. Lo importante es que la ventaja cuadrática de Grover se mantiene independientemente de cómo esté construido, siempre que sea una puerta unitaria válida.</p>
+
+        <div class="fact-box">
+          <span class="fact-icon">📦</span>
+          <p><strong>El oráculo como abstracción:</strong> El modelo del oráculo es una abstracción teórica que permite analizar algoritmos independientemente del hardware. En la práctica, implementar el oráculo para problemas reales (como SAT con millones de variables) puede requerir muchos qubits auxiliares y circuitos profundos. El coste del oráculo es parte del análisis completo del algoritmo.</p>
+        </div>
+      </div>
+      <div class="quiz-block">
+        <h2>🧠 Comprueba lo que has aprendido</h2>
+        <p>¡A mitad de camino!</p>
+        <div class="quiz-q" data-answered="false">
+          <div class="quiz-q-text">¿Qué hace el oráculo cuántico U_f al estado marcado |ω⟩?</div>
+          <div class="quiz-opts" data-correct="2">
+            <button class="quiz-opt" data-idx="0"><span class="quiz-opt-letter">A</span> Lo mide y lo colapsa a un estado clásico</button>
+            <button class="quiz-opt" data-idx="1"><span class="quiz-opt-letter">B</span> Duplica su amplitud</button>
+            <button class="quiz-opt" data-idx="2"><span class="quiz-opt-letter">C</span> Invierte su fase: |ω⟩ → −|ω⟩</button>
+          </div>
+          <div class="quiz-fb ok">✓ ¡Correcto! El oráculo aplica U_f|ω⟩ = −|ω⟩: invierte el signo de la amplitud del estado marcado sin medirlo ni colapsarlo. Los demás estados no cambian.</div>
+          <div class="quiz-fb err">✗ No es correcto. El oráculo invierte la fase del estado marcado: U_f|ω⟩ = −|ω⟩. No mide ni colapsa el estado. La inversión de fase es sutil: la probabilidad |−1/√N|² = 1/N no cambia hasta que se aplica el operador de difusión.</div>
+        </div>
+        <div class="quiz-q" data-answered="false">
+          <div class="quiz-q-text">Después de aplicar el oráculo a la superposición uniforme, ¿cuál es la probabilidad de medir el estado marcado si se mide inmediatamente?</div>
+          <div class="quiz-opts" data-correct="1">
+            <button class="quiz-opt" data-idx="0"><span class="quiz-opt-letter">A</span> 100% — el oráculo ha marcado la solución claramente</button>
+            <button class="quiz-opt" data-idx="1"><span class="quiz-opt-letter">B</span> 1/N — la misma que antes del oráculo</button>
+            <button class="quiz-opt" data-idx="2"><span class="quiz-opt-letter">C</span> 0% — el oráculo ha eliminado el estado marcado</button>
+          </div>
+          <div class="quiz-fb ok">✓ ¡Exacto! La inversión de fase no cambia el valor absoluto de la amplitud, así que la probabilidad sigue siendo |−1/√N|² = 1/N. La magia ocurre solo cuando combinas el oráculo con el operador de difusión.</div>
+          <div class="quiz-fb err">✗ No es correcto. Aunque el oráculo marca el estado con una fase negativa, la probabilidad es |amplitud|² = |−1/√N|² = 1/N — igual que antes. La inversión de fase solo se convierte en ventaja cuando el operador de difusión amplifica esa diferencia.</div>
+        </div>
+        <div class="quiz-q" data-answered="false">
+          <div class="quiz-q-text">¿Qué mecanismo usa el oráculo cuántico para marcar el estado correcto con una fase sin medir el sistema?</div>
+          <div class="quiz-opts" data-correct="0">
+            <button class="quiz-opt" data-idx="0"><span class="quiz-opt-letter">A</span> Phase kickback: un qubit auxiliar en |−⟩ hace que la fase −1 "rebote" al qubit de control</button>
+            <button class="quiz-opt" data-idx="1"><span class="quiz-opt-letter">B</span> Una puerta Z controlada que actúa directamente sobre el estado marcado</button>
+            <button class="quiz-opt" data-idx="2"><span class="quiz-opt-letter">C</span> Una medición intermedia que no colapsa la superposición</button>
+          </div>
+          <div class="quiz-fb ok">✓ ¡Perfecto! El phase kickback es una técnica fundamental: usando un qubit auxiliar en |−⟩, la fase producida por f(x)=1 se "transfiere" al registro de control sin medirlo. Es un truco que aparece en muchos algoritmos cuánticos.</div>
+          <div class="quiz-fb err">✗ No es correcto. El mecanismo es el phase kickback: un qubit auxiliar en |−⟩ hace que cuando f(x)=1, la fase −1 se transfiere al estado |x⟩ del registro de control. Así el oráculo marca fases sin colapsar la superposición.</div>
+        </div>
+        <div class="quiz-score" id="qs-2"><div class="quiz-score-left"><h3 id="qs-2-title">Puntuación</h3><p id="qs-2-sub"></p></div><div class="quiz-score-stars" id="qs-2-stars"></div></div>
+        <button class="btn btn-primary complete-btn" data-lesson="2">Completar lección y ganar XP →</button>
+        <div class="lesson-nav"><button class="btn btn-ghost btn-sm" onclick="COURSE.go(1)">← Anterior</button><button class="btn btn-ghost btn-sm" onclick="COURSE.go(3)">Siguiente →</button></div>
+      </div>
+    </section>
+
+    <!-- ══════════ LECCIÓN 4 ══════════ -->
+    <section class="cl-lesson" id="lesson-3">
+      <div class="lh">
+        <div class="lh-badge">04</div>
+        <div class="lh-info">
+          <h1>El operador de difusión de Grover</h1>
+          <div class="lh-meta"><span>⏱ 24 min</span><span>🟡 Intermedio</span><span>✨ Gratis</span></div>
+        </div>
+      </div>
+      <div class="lb">
+        <p>El oráculo marca la solución con una fase negativa, pero eso no es suficiente para encontrarla. El segundo componente del algoritmo — el <strong>operador de difusión de Grover</strong> (también llamado "inversión sobre la media") — convierte esa diferencia de fase en una amplificación real de la probabilidad. Es el motor que hace que Grover funcione.</p>
+
+        <h2>La inversión sobre la media</h2>
+        <p>El operador de difusión realiza una operación geométrica elegante: refleja todas las amplitudes respecto a su valor medio. Si la media es μ, cada amplitud aₓ se transforma en 2μ − aₓ.</p>
+        <p>Veamos por qué esto amplifica la solución. Después del oráculo:</p>
+        <ul>
+          <li>N−1 estados tienen amplitud +1/√N ≈ μ (un poco por encima de la media)</li>
+          <li>El estado marcado |ω⟩ tiene amplitud −1/√N (muy por debajo de la media)</li>
+        </ul>
+        <p>La media μ es ligeramente menor que 1/√N. Al reflejar respecto a μ:</p>
+        <ul>
+          <li>Los estados no marcados: su amplitud queda ligeramente reducida</li>
+          <li>El estado marcado: su amplitud grande y negativa se refleja a un valor grande y <em>positivo</em></li>
+        </ul>
+        <div class="math-box">amplitud nueva = 2μ − amplitud vieja</div>
+
+        <div class="concept-box">
+          <div class="cb-tag">Circuito del operador de difusión</div>
+          <p>El operador de difusión se implementa como: <strong>H⊗ⁿ · (2|0⟩⟨0| − I) · H⊗ⁿ</strong>. En circuito: (1) aplica H a todos los qubits, (2) aplica una puerta de fase que invierte todos los estados excepto |0⟩ (implementada con puertas X, una Toffoli de n-qubits y X de vuelta), (3) aplica H de nuevo. El coste es O(n) puertas con complejidad O(n²) si se descompone en puertas de 1 y 2 qubits.</p>
+        </div>
+
+        <h2>La iteración de Grover: oráculo + difusión</h2>
+        <p>Una iteración de Grover = oráculo + difusión. Geométricamente, cada iteración rota el estado cuántico en un ángulo de <strong>2θ</strong> hacia el estado marcado |ω⟩, donde θ = arcsin(1/√N) ≈ 1/√N para N grande.</p>
+        <p>Para que el estado apunte a |ω⟩, necesitamos rotar un total de π/2 − θ ≈ π/2 radianes. Si cada iteración rota 2θ, el número de iteraciones necesario es:</p>
+        <div class="math-box">k ≈ (π/4) · √N &nbsp;&nbsp; iteraciones óptimas</div>
+        <p>Para N = 1.000.000: k ≈ (π/4)·1000 ≈ 785 iteraciones. Exactamente O(√N).</p>
+
+        <h2>¿Qué pasa si iteramos demasiado?</h2>
+        <p>Si pasamos del número óptimo de iteraciones, el estado "pasa de largo" y la probabilidad del estado marcado empieza a <em>decrecer</em>. Si seguimos iterando indefinidamente, la probabilidad oscila — sube y baja periódicamente. Esto significa que en la práctica hay que calcular el número correcto de iteraciones de antemano (necesitas saber N, el tamaño de la base de datos).</p>
+
+        <div class="fact-box">
+          <span class="fact-icon">📐</span>
+          <p><strong>Intuición geométrica completa:</strong> El estado cuántico es un vector en un espacio 2D. El oráculo lo refleja respecto al eje |ω⊥⟩. El operador de difusión lo refleja respecto al eje |s⟩. Dos reflexiones consecutivas = una rotación. La composición de las dos reflexiones rota el vector exactamente 2θ hacia |ω⟩ en cada iteración. Tras ~π√N/4 iteraciones, el vector apunta directamente a |ω⟩.</p>
+        </div>
+      </div>
+      <div class="quiz-block">
+        <h2>🧠 Comprueba lo que has aprendido</h2>
+        <p>¡Lección 4 de 7! ¡Sigue!</p>
+        <div class="quiz-q" data-answered="false">
+          <div class="quiz-q-text">¿Qué operación realiza el operador de difusión de Grover sobre las amplitudes?</div>
+          <div class="quiz-opts" data-correct="1">
+            <button class="quiz-opt" data-idx="0"><span class="quiz-opt-letter">A</span> Duplica todas las amplitudes uniformemente</button>
+            <button class="quiz-opt" data-idx="1"><span class="quiz-opt-letter">B</span> Refleja todas las amplitudes respecto a su valor medio: aₓ → 2μ − aₓ</button>
+            <button class="quiz-opt" data-idx="2"><span class="quiz-opt-letter">C</span> Elimina las amplitudes negativas y amplifica las positivas</button>
+          </div>
+          <div class="quiz-fb ok">✓ ¡Correcto! La inversión sobre la media transforma cada amplitud aₓ en 2μ − aₓ. El estado marcado, con amplitud muy negativa (muy por debajo de la media), se refleja a un valor grande y positivo — eso es la amplificación.</div>
+          <div class="quiz-fb err">✗ No es correcto. El operador de difusión realiza una "inversión sobre la media": cada amplitud aₓ se transforma en 2μ − aₓ, donde μ es la media. Esto amplifica el estado marcado porque su amplitud negativa se refleja a un valor positivo grande.</div>
+        </div>
+        <div class="quiz-q" data-answered="false">
+          <div class="quiz-q-text">¿Cuántas iteraciones de Grover (oráculo + difusión) son óptimas para N elementos?</div>
+          <div class="quiz-opts" data-correct="2">
+            <button class="quiz-opt" data-idx="0"><span class="quiz-opt-letter">A</span> N/2 iteraciones — la mitad del tamaño de la base de datos</button>
+            <button class="quiz-opt" data-idx="1"><span class="quiz-opt-letter">B</span> log₂(N) iteraciones — escala logarítmica</button>
+            <button class="quiz-opt" data-idx="2"><span class="quiz-opt-letter">C</span> (π/4)·√N iteraciones — escala cuadrática en la raíz</button>
+          </div>
+          <div class="quiz-fb ok">✓ ¡Exacto! El número óptimo de iteraciones es k ≈ (π/4)·√N. Para N=1.000.000: ~785 iteraciones. Para N=4: ~1.57 → 1 o 2 iteraciones. Es O(√N) lo que da la ventaja cuadrática.</div>
+          <div class="quiz-fb err">✗ No es correcto. Las iteraciones óptimas son k ≈ (π/4)·√N. Menos iteraciones → probabilidad aún pequeña. Más iteraciones → el vector "pasa de largo" y la probabilidad decrece. Hay que acertar con el número justo.</div>
+        </div>
+        <div class="quiz-q" data-answered="false">
+          <div class="quiz-q-text">¿Qué ocurre si se aplican más iteraciones de las óptimas en el algoritmo de Grover?</div>
+          <div class="quiz-opts" data-correct="0">
+            <button class="quiz-opt" data-idx="0"><span class="quiz-opt-letter">A</span> La probabilidad del estado marcado oscila — sube y baja periódicamente</button>
+            <button class="quiz-opt" data-idx="1"><span class="quiz-opt-letter">B</span> La probabilidad sigue subiendo indefinidamente hasta llegar a 100%</button>
+            <button class="quiz-opt" data-idx="2"><span class="quiz-opt-letter">C</span> El circuito entra en un estado de error y hay que reiniciar</button>
+          </div>
+          <div class="quiz-fb ok">✓ ¡Perfecto! Pasar del número óptimo hace que el vector "pase de largo" de |ω⟩. La probabilidad del estado marcado baja de nuevo. Con más iteraciones vuelve a subir, después baja, etc. — una oscilación periódica con período ~π√N/2.</div>
+          <div class="quiz-fb err">✗ No es correcto. Las iteraciones de más hacen que el estado "pase de largo" del objetivo y la probabilidad oscile (sube y baja). No hay ningún error de hardware — simplemente el algoritmo aplica demasiadas rotaciones y el vector apunta en la dirección equivocada.</div>
+        </div>
+        <div class="quiz-score" id="qs-3"><div class="quiz-score-left"><h3 id="qs-3-title">Puntuación</h3><p id="qs-3-sub"></p></div><div class="quiz-score-stars" id="qs-3-stars"></div></div>
+        <button class="btn btn-primary complete-btn" data-lesson="3">Completar lección y ganar XP →</button>
+        <div class="lesson-nav"><button class="btn btn-ghost btn-sm" onclick="COURSE.go(2)">← Anterior</button><button class="btn btn-ghost btn-sm" onclick="COURSE.go(4)">Siguiente →</button></div>
+      </div>
+    </section>
+
+    <!-- ══════════ LECCIÓN 5 ══════════ -->
+    <section class="cl-lesson" id="lesson-4">
+      <div class="lh">
+        <div class="lh-badge">05</div>
+        <div class="lh-info">
+          <h1>El algoritmo completo y su análisis</h1>
+          <div class="lh-meta"><span>⏱ 22 min</span><span>🟡 Intermedio</span><span>✨ Gratis</span></div>
+        </div>
+      </div>
+      <div class="lb">
+        <p>Con todas las piezas en su lugar, ensamblamos el algoritmo de Grover completo y analizamos su complejidad, probabilidad de éxito y recursos necesarios.</p>
+
+        <h2>El algoritmo de Grover paso a paso</h2>
+        <ol style="list-style:decimal;padding-left:20px;color:var(--text-2);font-size:0.91rem;line-height:2.0;">
+          <li><strong>Inicializar:</strong> Prepara el estado |0⟩ⁿ en n qubits</li>
+          <li><strong>Superposición:</strong> Aplica H⊗ⁿ para crear la superposición uniforme |s⟩</li>
+          <li><strong>Repetir k ≈ (π/4)√N veces:</strong>
+            <ul style="margin-top:8px;">
+              <li>Aplica el oráculo U_f (invierte la fase del estado marcado)</li>
+              <li>Aplica el operador de difusión D = H⊗ⁿ(2|0⟩⟨0|−I)H⊗ⁿ</li>
+            </ul>
+          </li>
+          <li><strong>Medir:</strong> Mide los n qubits en la base computacional</li>
+          <li><strong>Verificar:</strong> Comprueba clásicamente si el resultado es la solución</li>
+        </ol>
+
+        <div class="math-box">Probabilidad de éxito ≈ sin²((2k+1)θ) con θ = arcsin(1/√N)</div>
+
+        <h2>Análisis de recursos</h2>
+        <ul>
+          <li><strong>Qubits:</strong> n + (qubits del oráculo). El registro de búsqueda necesita n = log₂(N) qubits</li>
+          <li><strong>Consultas al oráculo:</strong> O(√N) — la ventaja cuadrática</li>
+          <li><strong>Puertas adicionales:</strong> O(n) por iteración para el operador de difusión</li>
+          <li><strong>Puertas totales:</strong> O(n · √N) = O(√N · log N)</li>
+          <li><strong>Probabilidad de éxito:</strong> ≥ 1 − 1/N para k = ⌊(π/4)√N⌋ iteraciones</li>
+        </ul>
+
+        <div class="concept-box">
+          <div class="cb-tag">Múltiples soluciones</div>
+          <p>Si hay M soluciones entre N elementos, el número óptimo de iteraciones se reduce a k ≈ (π/4)√(N/M). Con más soluciones, se necesitan menos iteraciones. Si M = N/4 (el 25% son soluciones), solo se necesita 1 iteración. Si M &gt; N/2, el algoritmo de Grover puede "fallar" y hay que ajustar el planteamiento.</p>
+        </div>
+
+        <h2>Grover con M soluciones desconocidas</h2>
+        <p>En la práctica muchas veces no sabemos cuántas soluciones hay (M es desconocido). La solución es el <strong>algoritmo de Grover cuántico con búsqueda exponencial</strong>: empieza con 1 iteración, si no funciona dobla el número de iteraciones, y así sucesivamente. El número esperado de consultas sigue siendo O(√(N/M)) incluso sin conocer M de antemano.</p>
+
+        <div class="fact-box">
+          <span class="fact-icon">📊</span>
+          <p><strong>Ejemplo numérico:</strong> N = 1.000.000 elementos, 1 solución. k_óptimo ≈ 785. Después de exactamente 785 iteraciones, la probabilidad de éxito es &gt;99.9%. Ejecutar el circuito una sola vez da el resultado correcto con casi total certeza. No hay que repetir el experimento muchas veces.</p>
+        </div>
+      </div>
+      <div class="quiz-block">
+        <h2>🧠 Comprueba lo que has aprendido</h2>
+        <p>¡Ya en la lección 5!</p>
+        <div class="quiz-q" data-answered="false">
+          <div class="quiz-q-text">Si hay M soluciones entre N elementos, ¿cuántas iteraciones de Grover se necesitan?</div>
+          <div class="quiz-opts" data-correct="1">
+            <button class="quiz-opt" data-idx="0"><span class="quiz-opt-letter">A</span> Siempre (π/4)√N — el número de soluciones no importa</button>
+            <button class="quiz-opt" data-idx="1"><span class="quiz-opt-letter">B</span> (π/4)√(N/M) — más soluciones = menos iteraciones necesarias</button>
+            <button class="quiz-opt" data-idx="2"><span class="quiz-opt-letter">C</span> (π/4)√(N·M) — más soluciones = más iteraciones</button>
+          </div>
+          <div class="quiz-fb ok">✓ ¡Correcto! Con M soluciones, el ángulo inicial es θ = arcsin(√(M/N)), así que se necesitan ~(π/4)√(N/M) iteraciones. Más soluciones = ángulo mayor = menos iteraciones.</div>
+          <div class="quiz-fb err">✗ No es correcto. Con M soluciones, el número óptimo de iteraciones es (π/4)√(N/M). Más soluciones significa que el estado inicial ya está más cerca del subespacio de soluciones, así que hay que rotar menos.</div>
+        </div>
+        <div class="quiz-q" data-answered="false">
+          <div class="quiz-q-text">¿Cuántos qubits necesita el registro de búsqueda de Grover para una base de datos de N = 2ⁿ elementos?</div>
+          <div class="quiz-opts" data-correct="0">
+            <button class="quiz-opt" data-idx="0"><span class="quiz-opt-letter">A</span> n = log₂(N) qubits</button>
+            <button class="quiz-opt" data-idx="1"><span class="quiz-opt-letter">B</span> N qubits — uno por elemento</button>
+            <button class="quiz-opt" data-idx="2"><span class="quiz-opt-letter">C</span> √N qubits</button>
+          </div>
+          <div class="quiz-fb ok">✓ ¡Exacto! Para indexar N = 2ⁿ elementos se necesitan n = log₂(N) qubits. Cada estado |x⟩ de n bits representa un índice. Es una ventaja exponencial en espacio: n qubits codifican 2ⁿ posibles soluciones.</div>
+          <div class="quiz-fb err">✗ No es correcto. El registro de búsqueda necesita n = log₂(N) qubits para indexar N elementos. Cada estado cuántico de n qubits representa un índice diferente. No necesitas un qubit por elemento.</div>
+        </div>
+        <div class="quiz-q" data-answered="false">
+          <div class="quiz-q-text">¿Qué hace el paso de verificación clásico al final del algoritmo de Grover?</div>
+          <div class="quiz-opts" data-correct="2">
+            <button class="quiz-opt" data-idx="0"><span class="quiz-opt-letter">A</span> Aplica el oráculo una vez más para confirmar el resultado cuántico</button>
+            <button class="quiz-opt" data-idx="1"><span class="quiz-opt-letter">B</span> Comprueba que el número de iteraciones fue correcto</button>
+            <button class="quiz-opt" data-idx="2"><span class="quiz-opt-letter">C</span> Evalúa si el resultado medido realmente satisface f(x)=1 de forma clásica</button>
+          </div>
+          <div class="quiz-fb ok">✓ ¡Perfecto! Después de medir el resultado x, se verifica clásicamente que f(x)=1 (que realmente es la solución). Si la probabilidad de éxito era alta, esto confirma con casi total certeza. Si falla, se repite el algoritmo.</div>
+          <div class="quiz-fb err">✗ No es correcto. El paso de verificación es una evaluación clásica de f(x) para confirmar que el resultado medido es realmente la solución. Como Grover es probabilístico (aunque con alta probabilidad), este paso de verificación valida el resultado.</div>
+        </div>
+        <div class="quiz-score" id="qs-4"><div class="quiz-score-left"><h3 id="qs-4-title">Puntuación</h3><p id="qs-4-sub"></p></div><div class="quiz-score-stars" id="qs-4-stars"></div></div>
+        <button class="btn btn-primary complete-btn" data-lesson="4">Completar lección y ganar XP →</button>
+        <div class="lesson-nav"><button class="btn btn-ghost btn-sm" onclick="COURSE.go(3)">← Anterior</button><button class="btn btn-ghost btn-sm" onclick="COURSE.go(5)">Siguiente →</button></div>
+      </div>
+    </section>
+
+    <!-- ══════════ LECCIÓN 6 ══════════ -->
+    <section class="cl-lesson" id="lesson-5">
+      <div class="lh">
+        <div class="lh-badge">06</div>
+        <div class="lh-info">
+          <h1>Variantes y extensiones de Grover</h1>
+          <div class="lh-meta"><span>⏱ 20 min</span><span>🟡 Intermedio</span><span>✨ Gratis</span></div>
+        </div>
+      </div>
+      <div class="lb">
+        <p>El algoritmo de Grover original es el punto de partida, pero a lo largo de los años se han desarrollado variantes poderosas que amplían enormemente su aplicabilidad: Grover con amplificación de amplitud, búsqueda cuántica para optimización, y el algoritmo de Durr-Høyer para encontrar el mínimo de una función.</p>
+
+        <h2>Amplificación de amplitud cuántica (QAA)</h2>
+        <p>La <strong>amplificación de amplitud cuántica</strong> (Quantum Amplitude Amplification, QAA) es la generalización de Grover propuesta por Brassard, Høyer, Mosca y Tapp en 2002. En lugar de buscar un elemento específico, amplifica cualquier subespacio "bueno" de un estado cuántico.</p>
+        <p>Formalmente, si tienes un algoritmo cuántico A que produce el estado correcto con probabilidad p, la QAA da el resultado en solo O(1/√p) aplicaciones de A y A⁻¹, en lugar de O(1/p) repeticiones clásicas. Siempre que p &gt; 0, hay ventaja cuadrática.</p>
+        <div class="math-box">Repeticiones clásicas: O(1/p) &nbsp;&nbsp;&nbsp; QAA: O(1/√p)</div>
+
+        <h2>Grover para optimización: el algoritmo de Dürr-Høyer</h2>
+        <p>El algoritmo de <strong>Dürr y Høyer (1996)</strong> usa Grover para encontrar el mínimo (o máximo) de una función f sobre un dominio de N elementos con solo O(√N) consultas:</p>
+        <ol style="list-style:decimal;padding-left:20px;color:var(--text-2);font-size:0.91rem;line-height:1.9;">
+          <li>Elige un umbral inicial y aleatorio t</li>
+          <li>Define el oráculo: marca todos los x con f(x) &lt; f(t)</li>
+          <li>Aplica Grover para encontrar un x' con f(x') &lt; f(t)</li>
+          <li>Actualiza t = x' y repite</li>
+          <li>Tras O(√N) iteraciones totales, t converge al mínimo global</li>
+        </ol>
+        <p>Esto da una ventaja cuadrática para optimización combinatoria sobre espacios no estructurados.</p>
+
+        <div class="concept-box">
+          <div class="cb-tag">Grover adaptativo con número desconocido de soluciones</div>
+          <p>Cuando no sabemos cuántas soluciones M hay, la estrategia óptima es la <strong>búsqueda cuántica exponencial</strong>: comienza con j=1 iteraciones, aplica Grover y mide. Si falla, duplica j (j → cj con c = 6/5 en la versión óptima). El número esperado de consultas es O(√(N/M)) aunque M sea desconocido, lo que hace al algoritmo completamente práctico.</p>
+        </div>
+
+        <h2>Grover en hardware NISQ actual</h2>
+        <p>El algoritmo de Grover es uno de los pocos algoritmos cuánticos que se puede demostrar en hardware actual para casos pequeños. En IBM Quantum, puedes ejecutar Grover sobre n = 3 o 4 qubits (N = 8 o 16 elementos) con solo unas pocas iteraciones. Los resultados son visibles aunque el hardware tenga ruido, porque pocos pasos = poco error acumulado.</p>
+        <p>Para casos prácticos útiles (N &gt; 2⁵⁰), se necesitaría hardware tolerante a fallos con muchos más qubits y fidelidades más altas que las actuales.</p>
+
+        <div class="fact-box">
+          <span class="fact-icon">🔬</span>
+          <p><strong>Grover en el laboratorio:</strong> El primer experimento de Grover fue realizado por Chuang, Gershenfeld y Kubinec en 1998 usando RMN (resonancia magnética nuclear) con 2 qubits, buscando en una base de datos de 4 elementos. Desde entonces se ha demostrado en fotónica, trampas de iones, qubits superconductores y puntos cuánticos.</p>
+        </div>
+      </div>
+      <div class="quiz-block">
+        <h2>🧠 Comprueba lo que has aprendido</h2>
+        <p>¡Penúltima lección!</p>
+        <div class="quiz-q" data-answered="false">
+          <div class="quiz-q-text">¿Qué generaliza la Amplificación de Amplitud Cuántica (QAA) respecto al algoritmo de Grover original?</div>
+          <div class="quiz-opts" data-correct="1">
+            <button class="quiz-opt" data-idx="0"><span class="quiz-opt-letter">A</span> Permite búsqueda en bases de datos estructuradas en O(log N)</button>
+            <button class="quiz-opt" data-idx="1"><span class="quiz-opt-letter">B</span> Amplifica cualquier subespacio "bueno" de un estado cuántico, no solo un elemento</button>
+            <button class="quiz-opt" data-idx="2"><span class="quiz-opt-letter">C</span> Elimina la necesidad del operador de difusión</button>
+          </div>
+          <div class="quiz-fb ok">✓ ¡Correcto! QAA generaliza Grover: en lugar de amplificar un estado específico, amplifica cualquier subespacio marcado por un predicado. Si un algoritmo A produce soluciones con probabilidad p, QAA lo hace en O(1/√p) aplicaciones de A.</div>
+          <div class="quiz-fb err">✗ No es correcto. QAA generaliza Grover amplificando cualquier subespacio "bueno" definido por un algoritmo A, no solo un elemento específico. Si A produce el resultado correcto con probabilidad p, QAA lo logra en O(1/√p) en vez de O(1/p) repeticiones.</div>
+        </div>
+        <div class="quiz-q" data-answered="false">
+          <div class="quiz-q-text">¿Cuántas consultas necesita el algoritmo de Dürr-Høyer para encontrar el mínimo de una función sobre N elementos?</div>
+          <div class="quiz-opts" data-correct="2">
+            <button class="quiz-opt" data-idx="0"><span class="quiz-opt-letter">A</span> O(N) — igual que el mínimo clásico</button>
+            <button class="quiz-opt" data-idx="1"><span class="quiz-opt-letter">B</span> O(log N) — búsqueda binaria cuántica</button>
+            <button class="quiz-opt" data-idx="2"><span class="quiz-opt-letter">C</span> O(√N) — ventaja cuadrática sobre el mínimo clásico</button>
+          </div>
+          <div class="quiz-fb ok">✓ ¡Exacto! Dürr-Høyer usa Grover iterativamente para encontrar el mínimo en O(√N) consultas. Clásicamente encontrar el mínimo de N elementos sin estructura requiere O(N). La ventaja es cuadrática.</div>
+          <div class="quiz-fb err">✗ No es correcto. El algoritmo de Dürr-Høyer encuentra el mínimo en O(√N) consultas mediante Grover aplicado iterativamente con umbrales sucesivos. Es una ventaja cuadrática sobre el O(N) clásico.</div>
+        </div>
+        <div class="quiz-q" data-answered="false">
+          <div class="quiz-q-text">¿Para qué tamaños de problema puede demostrarse Grover en hardware NISQ actual como IBM Quantum?</div>
+          <div class="quiz-opts" data-correct="0">
+            <button class="quiz-opt" data-idx="0"><span class="quiz-opt-letter">A</span> Casos pequeños: n = 3–4 qubits (N = 8–16 elementos)</button>
+            <button class="quiz-opt" data-idx="1"><span class="quiz-opt-letter">B</span> Hasta n = 50 qubits con los procesadores actuales de 127 qubits</button>
+            <button class="quiz-opt" data-idx="2"><span class="quiz-opt-letter">C</span> No puede demostrarse en hardware actual — solo en simuladores</button>
+          </div>
+          <div class="quiz-fb ok">✓ ¡Perfecto! Para n=3 o 4 qubits solo se necesita 1–2 iteraciones, lo que significa muy pocas puertas y poco error acumulado. Los resultados son visibles en hardware real aunque ruidoso. Para n&gt;10 ya el ruido domina.</div>
+          <div class="quiz-fb err">✗ No es correcto. El hardware actual puede demostrar Grover para n=3–4 qubits (1–2 iteraciones, circuito corto y poco ruido). Para n grande el circuito se vuelve demasiado profundo y el ruido destruye el resultado antes de que Grover converja.</div>
+        </div>
+        <div class="quiz-score" id="qs-5"><div class="quiz-score-left"><h3 id="qs-5-title">Puntuación</h3><p id="qs-5-sub"></p></div><div class="quiz-score-stars" id="qs-5-stars"></div></div>
+        <button class="btn btn-primary complete-btn" data-lesson="5">Completar lección y ganar XP →</button>
+        <div class="lesson-nav"><button class="btn btn-ghost btn-sm" onclick="COURSE.go(4)">← Anterior</button><button class="btn btn-ghost btn-sm" onclick="COURSE.go(6)">Siguiente →</button></div>
+      </div>
+    </section>
+
+    <!-- ══════════ LECCIÓN 7 ══════════ -->
+    <section class="cl-lesson" id="lesson-6">
+      <div class="lh">
+        <div class="lh-badge">07</div>
+        <div class="lh-info">
+          <h1>Aplicaciones reales del algoritmo</h1>
+          <div class="lh-meta"><span>⏱ 18 min</span><span>🟡 Intermedio</span><span>✨ Gratis</span><span>🏁 Final</span></div>
+        </div>
+      </div>
+      <div class="lb">
+        <p>La ventaja cuadrática de Grover, aunque no es exponencial como la de Shor, tiene aplicaciones concretas en múltiples áreas. En muchos problemas prácticos, pasar de O(N) a O(√N) consultas puede ser la diferencia entre un problema computacionalmente intratable y uno que se puede resolver en tiempo razonable.</p>
+
+        <h2>Criptografía: búsqueda de preimagen en hash</h2>
+        <p>Las funciones hash (SHA-256, SHA-3) son usadas en firmas digitales, blockchains y contraseñas. Encontrar una preimagen (una entrada que produce un hash dado) requiere explorar el espacio de entradas de tamaño N = 2ⁿ. Grover lo hace en O(2^(n/2)) en lugar de O(2ⁿ), efectivamente reduciendo la seguridad de n bits a n/2 bits. Por eso SHA-256 sigue siendo seguro (se necesitan 2¹²⁸ operaciones cuánticas) pero SHA-1 (160 bits → 80 bits efectivos) se desaconseja.</p>
+
+        <h2>Satisfacibilidad (SAT) y optimización combinatoria</h2>
+        <p>El problema SAT (¿existe una asignación de variables booleanas que satisfaga una fórmula?) es NP-completo. Grover da una ventaja cuadrática incluso para SAT: en lugar de explorar las 2ⁿ asignaciones posibles, solo se necesitan O(2^(n/2)) consultas al oráculo que verifica si una asignación satisface la fórmula.</p>
+        <p>Lo mismo aplica a otros problemas NP como el viajante de comercio (TSP), coloración de grafos o empaquetamiento de mochila. La ventaja cuadrática no hace estos problemas polinomiales, pero puede dar speedups prácticos significativos.</p>
+
+        <div class="concept-box">
+          <div class="cb-tag">Grover no hace NP ⊆ BQP</div>
+          <p>Aunque Grover da ventaja cuadrática en NP, <strong>no prueba que todos los problemas NP sean resolubles eficientemente</strong> por ordenadores cuánticos. Incluso con Grover, SAT sigue siendo O(2^(n/2)) — exponencial. La pregunta de si NP ⊆ BQP (problemas NP resolubles en tiempo polinomial cuántico) sigue abierta, y la mayoría de expertos creen que la respuesta es no.</p>
+        </div>
+
+        <h2>Inteligencia artificial y machine learning</h2>
+        <p>Varias subrrutinas de machine learning pueden beneficiarse de Grover: búsqueda del vecino más cercano, encontrar el máximo de una función de coste, y aceleración de la búsqueda en árboles de decisión. El algoritmo de Grover forma parte del "toolbox" de speedups cuánticos para ML junto con la QFT y la estimación de fase.</p>
+
+        <h2>Bases de datos no estructuradas en la práctica</h2>
+        <p>En bases de datos reales (SQL, NoSQL) las consultas son eficientes porque hay índices y estructura. La búsqueda no estructurada pura es menos común. Sin embargo, hay escenarios donde Grover aplica directamente: búsqueda en espacio de configuraciones de un problema de optimización, generación de números pseudoaleatorios cuánticos, y verificación de soluciones en problemas de decisión.</p>
+
+        <div class="fact-box">
+          <span class="fact-icon">🚀</span>
+          <p><strong>Hacia el futuro:</strong> Grover es uno de los algoritmos más implementados en IBM Quantum y otros procesadores cuánticos. Aunque el hardware actual solo puede ejecutarlo para N pequeño, sirve como banco de pruebas fundamental para medir la calidad del hardware. Cuando lleguen los ordenadores cuánticos tolerantes a fallos, Grover se convertirá en una subrutina estándar en muchos algoritmos cuánticos prácticos.</p>
+        </div>
+      </div>
+      <div class="quiz-block">
+        <h2>🧠 Comprueba lo que has aprendido</h2>
+        <p>¡Última lección! ¡A por las 3 estrellas!</p>
+        <div class="quiz-q" data-answered="false">
+          <div class="quiz-q-text">¿Qué efecto tiene Grover sobre la seguridad de SHA-256 (una función hash de 256 bits)?</div>
+          <div class="quiz-opts" data-correct="1">
+            <button class="quiz-opt" data-idx="0"><span class="quiz-opt-letter">A</span> SHA-256 queda completamente roto — búsqueda de preimagen en tiempo polinomial</button>
+            <button class="quiz-opt" data-idx="1"><span class="quiz-opt-letter">B</span> La seguridad se reduce de 256 a 128 bits efectivos — sigue siendo seguro</button>
+            <button class="quiz-opt" data-idx="2"><span class="quiz-opt-letter">C</span> Grover no afecta a las funciones hash, solo a la factorización</button>
+          </div>
+          <div class="quiz-fb ok">✓ ¡Correcto! Grover reduce la seguridad de SHA-256 a 128 bits efectivos (√2²⁵⁶ = 2¹²⁸). 2¹²⁸ operaciones cuánticas es completamente inviable con cualquier tecnología imaginable. SHA-256 es seguro en la era cuántica.</div>
+          <div class="quiz-fb err">✗ No es correcto. Grover reduce la seguridad de SHA-256 a la mitad: de 256 bits a 128 bits efectivos. Sigue requiriendo 2¹²⁸ operaciones cuánticas — completamente inviable. SHA-256 se considera seguro poscuántico.</div>
+        </div>
+        <div class="quiz-q" data-answered="false">
+          <div class="quiz-q-text">¿Puede Grover resolver todos los problemas NP eficientemente (en tiempo polinomial)?</div>
+          <div class="quiz-opts" data-correct="2">
+            <button class="quiz-opt" data-idx="0"><span class="quiz-opt-letter">A</span> Sí — la ventaja cuadrática convierte los exponenciales en polinomiales</button>
+            <button class="quiz-opt" data-idx="1"><span class="quiz-opt-letter">B</span> Solo para NP-completos que tengan estructura especial explotable</button>
+            <button class="quiz-opt" data-idx="2"><span class="quiz-opt-letter">C</span> No — la ventaja cuadrática no convierte O(2ⁿ) en polinomial, sigue siendo O(2^(n/2))</button>
+          </div>
+          <div class="quiz-fb ok">✓ ¡Exacto! Grover da speedup cuadrático: O(2ⁿ) → O(2^(n/2)). Pero O(2^(n/2)) sigue siendo exponencial. Grover no coloca NP dentro de BQP. La pregunta NP⊆BQP sigue abierta y la mayoría de expertos creen que NP⊄BQP.</div>
+          <div class="quiz-fb err">✗ No es correcto. La ventaja cuadrática significa que O(2ⁿ) se convierte en O(2^(n/2)), que sigue siendo exponencial. Grover no hace los problemas NP polinomiales. No se sabe si NP ⊆ BQP, pero la mayoría de expertos creen que no.</div>
+        </div>
+        <div class="quiz-q" data-answered="false">
+          <div class="quiz-q-text">¿En qué área de la IA puede aplicarse directamente el algoritmo de Grover?</div>
+          <div class="quiz-opts" data-correct="0">
+            <button class="quiz-opt" data-idx="0"><span class="quiz-opt-letter">A</span> Búsqueda del vecino más cercano y encontrar el máximo de funciones de coste</button>
+            <button class="quiz-opt" data-idx="1"><span class="quiz-opt-letter">B</span> Entrenamiento de redes neuronales mediante retropropagación cuántica</button>
+            <button class="quiz-opt" data-idx="2"><span class="quiz-opt-letter">C</span> Generación de lenguaje natural cuántica</button>
+          </div>
+          <div class="quiz-fb ok">✓ ¡Perfecto! Grover acelera subrrutinas de ML como búsqueda del vecino más cercano (k-NN cuántico) y encontrar el máximo de funciones de coste en espacios de búsqueda grandes. Es parte del toolbox de speedups cuánticos para IA junto a la QFT.</div>
+          <div class="quiz-fb err">✗ No es correcto. Grover aplica directamente a búsqueda del vecino más cercano y encontrar máximos/mínimos de funciones. La retropropagación y el lenguaje natural no tienen aceleraciones cuánticas conocidas basadas en Grover.</div>
+        </div>
+        <div class="quiz-score" id="qs-6"><div class="quiz-score-left"><h3 id="qs-6-title">Puntuación</h3><p id="qs-6-sub"></p></div><div class="quiz-score-stars" id="qs-6-stars"></div></div>
+        <button class="btn btn-primary complete-btn" data-lesson="6">Completar lección y ganar XP →</button>
+        <div class="lesson-nav"><button class="btn btn-ghost btn-sm" onclick="COURSE.go(5)">← Anterior</button><span></span></div>
+      </div>
+    </section>
+
+    <!-- ══════════ COMPLETADO ══════════ -->
+    <section class="cl-lesson" id="lesson-done">
+      <div style="text-align:center;padding:48px 24px;">
+        <span style="font-size:5rem;display:block;margin-bottom:12px;">🔍</span>
+        <div class="label" style="margin-bottom:14px;">Curso completado</div>
+        <h1 style="font-size:clamp(1.6rem,4vw,2.6rem);margin-bottom:16px;">¡Eres un Maestro de la Búsqueda Cuántica!</h1>
+        <p style="color:var(--text-2);max-width:480px;margin:0 auto 36px;line-height:1.75;font-size:0.98rem;">Has dominado el algoritmo de Grover: superposición uniforme, oráculo cuántico, operador de difusión, análisis de complejidad y aplicaciones reales. La ventaja cuadrática ya no tiene secretos para ti.</p>
+        <div style="background:var(--bg-2);border:1px solid var(--border-md);border-radius:var(--r);padding:28px;max-width:460px;margin:0 auto 36px;text-align:left;">
+          <div class="label" style="margin-bottom:12px;">Tu progreso</div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:10px;font-size:0.88rem;"><span style="color:var(--text-2);">Lecciones completadas</span><span id="done-lessons" style="font-weight:700;">7/7</span></div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:10px;font-size:0.88rem;"><span style="color:var(--text-2);">XP ganados</span><span id="done-xp" style="font-weight:700;color:var(--cyan);">0 XP</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:0.88rem;"><span style="color:var(--text-2);">Nivel alcanzado</span><span id="done-level" style="font-weight:700;">—</span></div>
+        </div>
+        <div style="display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin-bottom:40px;" id="done-badges-row"></div>
+        <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
+          <a href="qubits-circuitos.html" class="btn btn-primary btn-lg">Siguiente: Qubits y Circuitos →</a>
+          <a href="../catalogue.html" class="btn btn-ghost btn-lg">Ver catálogo completo</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<button class="sidebar-fab" id="sidebar-fab" aria-label="Ver lecciones">☰</button>
+
+<div id="badge-modal">
+  <div class="bm-box">
+    <span class="bm-emoji" id="bm-emoji">🏅</span>
+    <div class="bm-tag">Nueva insignia desbloqueada</div>
+    <div class="bm-name" id="bm-name">Nombre</div>
+    <div class="bm-desc" id="bm-desc">Descripción</div>
+    <button class="btn btn-primary" id="bm-close" style="width:100%;justify-content:center;">¡Genial, a seguir!</button>
+  </div>
+</div>
+<div id="xp-toast">
+  <span class="toast-icon" id="toast-icon">⚡</span>
+  <div><div class="toast-title" id="toast-title">+50 XP</div><div class="toast-sub" id="toast-sub">¡Lección completada!</div></div>
+</div>
+<div id="confetti"></div>
+
+<script src="../js/main.js"></script>
+<script>
+const COURSE = (function () {
+  const KEY='qb-grover-v1', GLOBAL_XP='qb-xp', TOTAL_LESSONS=7, XP_LESSON=50, XP_PERFECT=25;
+  const LEVELS=[{min:0,max:99,label:'⚗️ Novato',pct:(x)=>x/100},{min:100,max:249,label:'🔬 Aprendiz',pct:(x)=>(x-100)/150},{min:250,max:499,label:'🌌 Explorador',pct:(x)=>(x-250)/250},{min:500,max:9999,label:'⚛️ Maestro',pct:(x)=>Math.min((x-500)/500,1)}];
+  const BADGES=[
+    {id:'grover-inicio',    emoji:'🚀',name:'Primer Paso',       desc:'Completaste tu primera lección. ¡El viaje cuántico comienza!',           hbIdx:0,check:(s)=>s.done.length>=1},
+    {id:'grover-explorador',emoji:'🔭',name:'Explorador',         desc:'Completaste 4 lecciones. ¡Ya entiendes el oráculo y la difusión!',       hbIdx:1,check:(s)=>s.done.length>=4},
+    {id:'grover-perfecto',  emoji:'⭐',name:'Quiz Perfecto',       desc:'3/3 correctas en un quiz. ¡Mente cuántica!',                             hbIdx:2,check:(s)=>s.perfectCount>=1},
+    {id:'grover-racha',     emoji:'🔥',name:'En Racha',            desc:'Estudiaste 2 días seguidos. ¡Constancia cuántica!',                      hbIdx:3,check:(s)=>s.streak>=2},
+    {id:'grover-maestro',   emoji:'🔍',name:'Maestro de Grover',   desc:'Completaste el curso completo. ¡Ya buscas en √N pasos!',                 hbIdx:4,check:(s)=>s.done.length>=7},
+  ];
+  let state;
+  function defaultState(){return{done:[],current:0,perfectCount:0,streak:0,streakDate:'',badges:[]};}
+  function load(){try{state=JSON.parse(localStorage.getItem(KEY))||defaultState();}catch(e){state=defaultState();}updateStreak();}
+  function save(){localStorage.setItem(KEY,JSON.stringify(state));}
+  function updateStreak(){const today=new Date().toDateString(),last=state.streakDate;if(!last){state.streak=1;state.streakDate=today;}else if(last===today){}else{const d=(new Date(today)-new Date(last))/86400000;state.streak=d<=1.5?state.streak+1:1;state.streakDate=today;}}
+  function getXP(){return parseInt(localStorage.getItem(GLOBAL_XP)||'0');}
+  function addXP(n){localStorage.setItem(GLOBAL_XP,getXP()+n);}
+  function getLevel(xp){for(let i=LEVELS.length-1;i>=0;i--)if(xp>=LEVELS[i].min)return LEVELS[i];return LEVELS[0];}
+  function updateHUD(){const xp=getXP(),lvl=getLevel(xp);document.getElementById('hud-level').textContent=lvl.label;document.getElementById('hud-xp-label').textContent=xp+' XP';document.getElementById('hud-xp-fill').style.width=(lvl.pct(xp)*100).toFixed(1)+'%';document.getElementById('hud-streak').textContent='🔥 '+state.streak+' día'+(state.streak!==1?'s':'');BADGES.forEach((b,i)=>{const el=document.getElementById('hb-'+i);if(el)el.classList.toggle('earned',state.badges.includes(b.id));});}
+  function updateSidebar(){const pct=Math.round((state.done.length/TOTAL_LESSONS)*100);document.getElementById('cl-prog').style.width=pct+'%';document.getElementById('cl-prog-text').textContent=state.done.length+' / '+TOTAL_LESSONS+' lecciones';document.querySelectorAll('.cl-item').forEach(li=>{const idx=parseInt(li.dataset.lesson);li.classList.toggle('done',state.done.includes(idx));li.classList.toggle('active',idx===state.current);const ck=document.getElementById('ck-'+idx);if(ck)ck.textContent=state.done.includes(idx)?'✓':idx+1;});}
+  function go(idx){state.current=idx;save();document.querySelectorAll('.cl-lesson').forEach(l=>l.classList.remove('active'));const t=idx==='done'?document.getElementById('lesson-done'):document.getElementById('lesson-'+idx);if(t)t.classList.add('active');updateSidebar();window.scrollTo({top:0,behavior:'smooth'});if(window.innerWidth<=860)document.getElementById('cl-sidebar').classList.remove('open');}
+  function showDone(){document.querySelectorAll('.cl-lesson').forEach(l=>l.classList.remove('active'));document.getElementById('lesson-done').classList.add('active');window.scrollTo({top:0,behavior:'smooth'});const xp=getXP(),lvl=getLevel(xp);document.getElementById('done-lessons').textContent=state.done.length+'/7';document.getElementById('done-xp').textContent=xp+' XP';document.getElementById('done-level').textContent=lvl.label;const row=document.getElementById('done-badges-row');row.innerHTML='';BADGES.forEach(b=>{if(state.badges.includes(b.id))row.innerHTML+=`<div style="background:var(--bg-card);border:1px solid var(--border-md);border-radius:var(--r);padding:16px 14px;text-align:center;min-width:90px;"><span style="font-size:2rem;display:block;margin-bottom:6px;">${b.emoji}</span><p style="font-size:0.72rem;font-weight:600;color:var(--text-2);">${b.name}</p></div>`;});}
+  let badgeQueue=[],badgeShowing=false;
+  function checkBadges(){BADGES.forEach(b=>{if(!state.badges.includes(b.id)&&b.check(state)){state.badges.push(b.id);badgeQueue.push(b);}});save();updateHUD();processBadgeQueue();}
+  function processBadgeQueue(){if(badgeShowing||badgeQueue.length===0)return;badgeShowing=true;showBadge(badgeQueue.shift());}
+  function showBadge(badge){document.getElementById('bm-emoji').textContent=badge.emoji;document.getElementById('bm-name').textContent=badge.name;document.getElementById('bm-desc').textContent=badge.desc;document.getElementById('badge-modal').classList.add('show');}
+  document.getElementById('bm-close').addEventListener('click',()=>{document.getElementById('badge-modal').classList.remove('show');badgeShowing=false;setTimeout(processBadgeQueue,300);});
+  let toastTimer;
+  function showToast(title,sub,icon){document.getElementById('toast-title').textContent=title;document.getElementById('toast-sub').textContent=sub;document.getElementById('toast-icon').textContent=icon;const t=document.getElementById('xp-toast');t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),3200);}
+  const COLORS=['#9333ea','#f59e0b','#10b981','#e2e8f0','#60a5fa'];
+  function launchConfetti(){const c=document.getElementById('confetti');c.innerHTML='';for(let i=0;i<70;i++){const p=document.createElement('div');p.className='cp';const tx=(Math.random()-0.5)*200;p.style.cssText=['left:'+(Math.random()*100)+'%','background:'+COLORS[Math.floor(Math.random()*COLORS.length)],'--tx:'+tx+'px','width:'+(4+Math.random()*5)+'px','height:'+(4+Math.random()*7)+'px','animation-delay:'+(Math.random()*0.5)+'s','animation-duration:'+(0.9+Math.random()*0.8)+'s','border-radius:'+(Math.random()>0.5?'50%':'2px')].join(';');c.appendChild(p);}setTimeout(()=>c.innerHTML='',2500);}
+  function showScore(li,c,tot){const el=document.getElementById('qs-'+li);if(!el)return;el.classList.add('show');document.getElementById('qs-'+li+'-stars').textContent=c===tot?'⭐⭐⭐':c>=2?'⭐⭐':'⭐';document.getElementById('qs-'+li+'-title').textContent=c===tot?'¡Quiz perfecto!':c>=2?'¡Casi perfecto!':'¡Sigue practicando!';document.getElementById('qs-'+li+'-sub').textContent=c===tot?'+25 XP de bonus!':c>=2?'Una más y sería perfecto':'Repasa el contenido y vuelve a intentarlo';}
+  function completeLesson(idx,correct,total){if(!state.done.includes(idx))state.done.push(idx);if(correct===total)state.perfectCount++;const xpEarned=XP_LESSON+(correct===total?XP_PERFECT:0);addXP(xpEarned);save();updateHUD();updateSidebar();showToast('+'+xpEarned+' XP',correct===total?'¡Quiz perfecto! Bonus +25 XP':correct+'/'+total+' respuestas correctas',correct===total?'⭐':'⚡');if(correct===total||correct>=2)launchConfetti();checkBadges();setTimeout(()=>{if(idx<TOTAL_LESSONS-1){go(idx+1);}else{showDone();launchConfetti();}},1600);}
+  function initQuizzes(){document.querySelectorAll('.quiz-opts').forEach(opts=>{const ci=parseInt(opts.dataset.correct),q=opts.closest('.quiz-q'),fbOk=q.querySelector('.quiz-fb.ok'),fbErr=q.querySelector('.quiz-fb.err'),btns=opts.querySelectorAll('.quiz-opt');btns.forEach(btn=>{btn.addEventListener('click',()=>{if(q.dataset.answered==='true')return;q.dataset.answered='true';const cl=parseInt(btn.dataset.idx);btns.forEach(b=>b.disabled=true);if(cl===ci){btn.classList.add('correct');fbOk.classList.add('show');q.dataset.result='correct';}else{btn.classList.add('wrong');btns[ci].classList.add('correct');fbErr.classList.add('show');q.dataset.result='wrong';}const quiz=q.closest('.quiz-block');const allDone=[...quiz.querySelectorAll('.quiz-q')].every(q=>q.dataset.answered==='true');if(allDone){const c=[...quiz.querySelectorAll('.quiz-q')].filter(q=>q.dataset.result==='correct').length;const tot=quiz.querySelectorAll('.quiz-q').length;const b2=quiz.querySelector('.complete-btn');b2.classList.add('ready');showScore(parseInt(b2.dataset.lesson),c,tot);}});});});document.querySelectorAll('.complete-btn').forEach(btn=>{btn.addEventListener('click',()=>{if(!btn.classList.contains('ready'))return;const li=parseInt(btn.dataset.lesson);const qb=btn.closest('.quiz-block');const c=[...qb.querySelectorAll('.quiz-q')].filter(q=>q.dataset.result==='correct').length;const tot=qb.querySelectorAll('.quiz-q').length;completeLesson(li,c,tot);});});}
+  document.querySelectorAll('.cl-item').forEach(li=>{li.addEventListener('click',()=>go(parseInt(li.dataset.lesson)));});
+  const fab=document.getElementById('sidebar-fab'),sb=document.getElementById('cl-sidebar');
+  if(fab&&sb){fab.addEventListener('click',()=>sb.classList.toggle('open'));document.addEventListener('click',(e)=>{if(!sb.contains(e.target)&&e.target!==fab)sb.classList.remove('open');});}
+  load();updateHUD();updateSidebar();initQuizzes();go(state.current);
+  return{go};
+})();
+</script>
+</body>
+</html>
