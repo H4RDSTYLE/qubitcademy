@@ -1,0 +1,1784 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fundamentos de la Mecánica Cuántica — Qubitcademy</title>
+  <meta name="description" content="Aprende los fundamentos de la mecánica cuántica: cuantización, dualidad onda-partícula, principio de incertidumbre, función de onda, superposición y entrelazamiento." />
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/course.css" />
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════════ NAV -->
+<nav>
+  <div class="container">
+    <div class="nav-inner">
+      <a href="../index.html" class="nav-logo">
+        <div class="nav-logo-mark">QB</div>
+        Qubitcademy
+      </a>
+      <ul class="nav-links">
+        <li><a href="../index.html" data-i18n="nav.home">Inicio</a></li>
+        <li><a href="../catalogue.html" class="active" data-i18n="nav.catalogue">Catálogo</a></li>
+        <li><a href="../paths.html" data-i18n="nav.paths">Rutas</a></li>
+        <li><a href="../faq.html" data-i18n="nav.faq">FAQ</a></li>
+      </ul>
+      <div class="nav-right">
+        <div class="lang-switcher">
+          <button class="lang-btn" data-lang="es">ES</button>
+          <div class="lang-sep"></div>
+          <button class="lang-btn" data-lang="en">EN</button>
+        </div>
+        <a href="#" class="nav-login" data-i18n="nav.login">Iniciar sesión</a>
+        <a href="#" class="btn btn-primary btn-sm" data-i18n="nav.cta">Empezar gratis</a>
+      </div>
+      <button class="nav-toggle" aria-label="Menú" aria-expanded="false">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="6" x2="19" y2="6"/><line x1="3" y1="11" x2="19" y2="11"/><line x1="3" y1="16" x2="19" y2="16"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+  <div class="nav-mobile">
+    <a href="../index.html" data-i18n="nav.home">Inicio</a>
+    <a href="../catalogue.html" data-i18n="nav.catalogue">Catálogo</a>
+    <a href="../paths.html" data-i18n="nav.paths">Rutas</a>
+    <a href="../faq.html" data-i18n="nav.faq">FAQ</a>
+    <div class="nav-mobile-footer">
+      <a href="#" class="btn btn-ghost btn-sm" data-i18n="nav.login">Iniciar sesión</a>
+      <a href="#" class="btn btn-primary btn-sm" data-i18n="nav.cta">Empezar gratis</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════════════════════════════ LAYOUT -->
+<div class="course-layout">
+
+  <!-- ── SIDEBAR ─────────────────────────────────────────────────── -->
+  <aside class="course-sidebar" id="sidebar">
+
+    <a href="../catalogue.html" class="sidebar-back">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="9 2 4 7 9 12"/>
+      </svg>
+      Volver al catálogo
+    </a>
+
+    <div class="sidebar-course-title">⚛️ Fundamentos de la Mecánica Cuántica</div>
+
+    <!-- HUD -->
+    <div class="hud-card">
+      <div class="hud-top">
+        <div class="hud-level">
+          <span class="hud-level-badge" id="level-badge">Nv.1</span>
+          <span class="hud-level-name" id="level-name">Electrón</span>
+        </div>
+        <div class="hud-streak">
+          🔥 <span class="hud-streak-num" id="streak-count">0</span>
+        </div>
+      </div>
+      <div>
+        <div class="hud-xp-row">
+          <span>XP</span>
+          <span class="hud-xp-val"><span id="xp-current">0</span> / <span id="xp-next">200</span></span>
+        </div>
+        <div class="xp-bar-track">
+          <div class="xp-bar-fill" id="xp-bar" style="width:0%"></div>
+        </div>
+      </div>
+      <div>
+        <div class="hud-progress-label">
+          <span>Progreso del curso</span>
+          <span class="hud-progress-pct" id="progress-pct">0%</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" id="progress-bar" style="width:0%"></div>
+        </div>
+      </div>
+      <div class="hud-motivation" id="hud-motivation">
+        Completa la primera lección y gana tus primeros 50 XP ⚡
+      </div>
+    </div>
+
+    <!-- Lesson list -->
+    <div class="sidebar-section-label">8 Lecciones</div>
+    <div class="lesson-list" id="lesson-list">
+      <!-- Rendered by JS -->
+    </div>
+
+    <!-- Badges -->
+    <div class="sidebar-section-label">Logros</div>
+    <div class="badges-grid" id="badges-grid">
+      <!-- Rendered by JS -->
+    </div>
+
+  </aside>
+
+  <!-- ── MAIN CONTENT ─────────────────────────────────────────────── -->
+  <main class="course-main" id="course-main">
+    <div id="lesson-content-area">
+      <!-- Rendered by JS -->
+    </div>
+  </main>
+
+</div>
+
+<!-- ── MOBILE SIDEBAR TOGGLE ──────────────────────────────────────── -->
+<button class="sidebar-toggle" id="sidebar-toggle" aria-label="Abrir menú">☰</button>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<!-- ── XP TOAST ───────────────────────────────────────────────────── -->
+<div class="xp-toast" id="xp-toast">
+  <div class="xp-toast-icon" id="xp-toast-icon">⚡</div>
+  <div class="xp-toast-text">
+    <div class="xp-toast-label" id="xp-toast-label">XP ganados</div>
+    <div class="xp-toast-amount" id="xp-toast-amount">+50 XP</div>
+  </div>
+</div>
+
+<!-- ── LEVEL UP OVERLAY ───────────────────────────────────────────── -->
+<div class="levelup-overlay" id="levelup-overlay">
+  <div class="levelup-card">
+    <div class="lu-stars">✨⚡✨</div>
+    <div class="lu-label">¡Subiste de nivel!</div>
+    <div class="lu-title" id="lu-new-level">Fotón</div>
+    <div class="lu-subtitle" id="lu-subtitle">Sigues avanzando en tu camino cuántico.<br>¡El conocimiento es tu superpoder!</div>
+    <button class="lu-close-btn" id="lu-close">¡Seguir aprendiendo! →</button>
+  </div>
+</div>
+
+<!-- ── BADGE MODAL ────────────────────────────────────────────────── -->
+<div class="badge-modal" id="badge-modal">
+  <div class="bm-icon" id="bm-icon">🏆</div>
+  <div>
+    <div class="bm-label">🎖️ Badge desbloqueado</div>
+    <div class="bm-name" id="bm-name">Primer Fotón</div>
+    <div class="bm-desc" id="bm-desc">Completaste tu primera lección</div>
+  </div>
+</div>
+
+<!-- ── STREAK BANNER ──────────────────────────────────────────────── -->
+<div class="streak-banner" id="streak-banner">
+  <div class="sb-emoji">🔥</div>
+  <div class="sb-text">
+    <div class="sb-title" id="sb-title">¡No pierdas tu racha!</div>
+    <div class="sb-sub" id="sb-sub">Completa al menos 1 lección hoy para mantener los 3 días seguidos.</div>
+  </div>
+  <button class="sb-close" id="sb-close">✕</button>
+</div>
+
+<!-- ── COMBO FLASH ────────────────────────────────────────────────── -->
+<div class="combo-flash" id="combo-flash">🔥 COMBO x2!</div>
+
+<!-- ── CONFETTI CANVAS ────────────────────────────────────────────── -->
+<canvas id="confetti-canvas"></canvas>
+
+<!-- ═══════════════════════════════════════════════════════ SCRIPTS -->
+<script src="../js/main.js"></script>
+<script>
+/* ================================================================
+   QUBITCADEMY — Course Engine: Fundamentos de la Mecánica Cuántica
+   Gamification: XP · Levels · Streak · Badges · Combo · Confetti
+   ================================================================ */
+
+/* ── COURSE DATA ─────────────────────────────────────────────────── */
+const LESSONS = [
+  {
+    id: 1, emoji: '⚛️', title: '¿Qué es la Mecánica Cuántica?',
+    duration: '12 min', xp: 50, hasQuiz: false,
+    content: `
+      <div class="social-proof">
+        <span class="sp-dot"></span>
+        <span id="sp-count-1">54 estudiantes estudiaron esto hoy</span>
+      </div>
+      <div class="lesson-header">
+        <div class="lesson-emoji-title">
+          <div class="lesson-big-emoji">⚛️</div>
+          <div class="lesson-title-block">
+            <h1>¿Qué es la Mecánica Cuántica?</h1>
+            <div class="lesson-chips">
+              <span class="lesson-chip chip-dur">⏱ 12 min</span>
+              <span class="lesson-chip chip-xp">+50 XP</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="lesson-body">
+
+        <p>Estás a punto de adentrarte en la teoría física más exitosa y perturbadora que la humanidad ha producido. La <strong>mecánica cuántica</strong> describe el comportamiento de la materia y la energía a las escalas más pequeñas: átomos, electrones, fotones y quarks.</p>
+
+        <div class="concept-box">
+          <div class="cb-label">📌 Concepto clave</div>
+          <p>La mecánica cuántica no es solo una teoría abstracta. Es el fundamento de tecnologías que usas a diario: semiconductores, láseres, resonancias magnéticas, LEDs y, próximamente, los <strong>computadores cuánticos</strong>.</p>
+        </div>
+
+        <h2>El mundo antes del quantum</h2>
+        <p>A finales del siglo XIX, los físicos creían haber resuelto casi todo. La <strong>mecánica clásica de Newton</strong> explicaba el movimiento de planetas y proyectiles. El <strong>electromagnetismo de Maxwell</strong> unificaba electricidad, magnetismo y luz. Solo quedaban algunos "problemas menores"...</p>
+        <p>Esos "pequeños problemas" eran la catástrofe ultravioleta, el efecto fotoeléctrico y los espectros atómicos discretos. Cada uno de ellos destruiría la física clásica y abriría la puerta a un nuevo mundo.</p>
+
+        <h2>La revolución cuántica</h2>
+        <div class="timeline">
+          <div class="tl-item">
+            <div class="tl-year">1900</div>
+            <div class="tl-content">
+              <h4>Max Planck y la cuantización de la energía</h4>
+              <p>Planck propone que la energía solo puede emitirse en "paquetes" discretos llamados <em>cuantos</em>. Nace la constante de Planck: h = 6.626 × 10⁻³⁴ J·s.</p>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-year">1905</div>
+            <div class="tl-content">
+              <h4>Einstein y el efecto fotoeléctrico</h4>
+              <p>Einstein usa los cuantos de Planck para explicar por qué la luz arranca electrones de los metales solo por encima de cierta frecuencia. Le valdrá el Nobel en 1921.</p>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-year">1913</div>
+            <div class="tl-content">
+              <h4>Bohr y el átomo cuantizado</h4>
+              <p>Bohr propone que los electrones solo pueden estar en órbitas discretas con energías específicas. Explica el espectro del hidrógeno.</p>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-year">1924</div>
+            <div class="tl-content">
+              <h4>de Broglie: la materia como onda</h4>
+              <p>Louis de Broglie propone que toda materia, no solo la luz, tiene una longitud de onda asociada: λ = h/p. Los electrones son también ondas.</p>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-year">1925–26</div>
+            <div class="tl-content">
+              <h4>Heisenberg y Schrödinger formalizan la teoría</h4>
+              <p>Heisenberg desarrolla la mecánica matricial. Schrödinger formula su famosa ecuación de onda. Nace la mecánica cuántica moderna.</p>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-year">1927</div>
+            <div class="tl-content">
+              <h4>El principio de incertidumbre de Heisenberg</h4>
+              <p>Es imposible conocer simultáneamente con precisión arbitraria la posición y el momento de una partícula. Esta limitación es <em>fundamental</em>, no tecnológica.</p>
+            </div>
+          </div>
+        </div>
+
+        <h2>¿Qué hace tan especial a la mecánica cuántica?</h2>
+        <p>La mecánica cuántica rompe con todas nuestras intuiciones clásicas. Aquí están sus ideas más sorprendentes:</p>
+
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="ic-title">🌊 Dualidad onda-partícula</div>
+            <p>La luz y la materia se comportan como ondas Y como partículas, dependiendo de cómo las observamos.</p>
+          </div>
+          <div class="info-card">
+            <div class="ic-title">🎲 Probabilismo fundamental</div>
+            <p>No podemos predecir con certeza dónde estará una partícula, solo la probabilidad de encontrarla en cada lugar.</p>
+          </div>
+          <div class="info-card">
+            <div class="ic-title">📦 Cuantización</div>
+            <p>La energía, el espín y otras magnitudes no varían continuamente: solo pueden tomar valores discretos específicos.</p>
+          </div>
+          <div class="info-card">
+            <div class="ic-title">🔗 Entrelazamiento</div>
+            <p>Dos partículas pueden estar "conectadas" de tal forma que medir una afecta instantáneamente a la otra, sin importar la distancia.</p>
+          </div>
+        </div>
+
+        <div class="tip-box">
+          <div class="tb-label">💡 Dato curioso</div>
+          <p>La mecánica cuántica es la teoría más precisa de la física. La anomalía del momento magnético del electrón se ha calculado con hasta 12 dígitos de precisión, coincidiendo con el experimento hasta 1 parte en 10 billones.</p>
+        </div>
+
+        <h2>¿Por qué aprender mecánica cuántica hoy?</h2>
+        <p>Vivimos al inicio de la <strong>segunda revolución cuántica</strong>. Mientras la primera nos dio el transistor, el láser y el MRI, la segunda nos dará:</p>
+        <ul>
+          <li><strong>Computadores cuánticos</strong> capaces de resolver problemas intratables para las máquinas clásicas</li>
+          <li><strong>Criptografía cuántica</strong> con seguridad garantizada por las leyes de la física</li>
+          <li><strong>Sensores cuánticos</strong> con precisión sin precedentes para medicina y navegación</li>
+          <li><strong>Simulaciones cuánticas</strong> para descubrir nuevos materiales y medicamentos</li>
+        </ul>
+
+        <div class="warning-box">
+          <div class="wb-label">⚡ Recuerda</div>
+          <p>La mecánica cuántica contradice el sentido común, y eso es perfectamente normal. El objetivo de este curso no es que "entiendas" la cuántica de forma intuitiva, sino que <strong>sepas usarla y predecir sus resultados</strong>. Como dijo Feynman: "Creo que puedo decir con seguridad que nadie entiende la mecánica cuántica."</p>
+        </div>
+
+      </div>
+      <button class="mark-complete-btn" id="complete-btn" onclick="completeLesson(1)">
+        ✅ Completar lección y ganar 50 XP →
+      </button>
+    `
+  },
+  {
+    id: 2, emoji: '🌡️', title: 'La Cuantización de la Energía',
+    duration: '18 min', xp: 50, hasQuiz: true, quizXp: 75,
+    content: `
+      <div class="social-proof">
+        <span class="sp-dot"></span>
+        <span id="sp-count-2">38 estudiantes estudiaron esto hoy</span>
+      </div>
+      <div class="lesson-header">
+        <div class="lesson-emoji-title">
+          <div class="lesson-big-emoji">🌡️</div>
+          <div class="lesson-title-block">
+            <h1>La Cuantización de la Energía</h1>
+            <div class="lesson-chips">
+              <span class="lesson-chip chip-dur">⏱ 18 min</span>
+              <span class="lesson-chip chip-xp">+50 XP</span>
+              <span class="lesson-chip chip-quiz">🧪 Quiz +75 XP</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="lesson-body">
+
+        <p>En 1900, Max Planck resolvió uno de los problemas más irritantes de la física: ¿por qué los objetos calientes brillan de determinada manera? Su solución fue tan radical que incluso él mismo tardó en aceptarla: <strong>la energía solo puede existir en paquetes discretos</strong>.</p>
+
+        <h2>El problema del cuerpo negro</h2>
+        <p>Un <strong>cuerpo negro</strong> es un objeto idealizado que absorbe toda la radiación que recibe y la reemite en función de su temperatura. Las hornos de cerámica y las estrellas se aproximan bien a este modelo.</p>
+        <p>La física clásica predecía que la intensidad de la radiación debería crecer sin límite a frecuencias altas (ultravioleta). Esto se conoce como la <strong>catástrofe ultravioleta</strong>: un resultado absurdo que predicía energías infinitas.</p>
+
+        <div class="history-box">
+          <div class="hb-label">📜 Historia</div>
+          <p>Lord Rayleigh y James Jeans derivaron la fórmula clásica. Funcionaba bien para frecuencias bajas (infrarrojas), pero divergía catastróficamente hacia el ultravioleta. Era un fracaso total de la física del siglo XIX.</p>
+        </div>
+
+        <h2>La hipótesis de Planck</h2>
+        <p>Desesperado por encontrar una fórmula matemática que describiera los datos experimentales, Planck hizo una suposición "de conveniencia" que cambiaría la física para siempre:</p>
+
+        <div class="concept-box">
+          <div class="cb-label">📌 Hipótesis de Planck (1900)</div>
+          <p>Los osciladores atómicos en un cuerpo negro <strong>solo pueden absorber o emitir energía en múltiplos enteros</strong> de una unidad fundamental llamada <em>cuanto</em>.</p>
+        </div>
+
+        <div class="formula-box">
+          <span class="formula-label">Energía de un cuanto</span>
+          E = h·f
+          <span class="formula-sub">E = energía (J) · h = constante de Planck (6.626×10⁻³⁴ J·s) · f = frecuencia (Hz)</span>
+        </div>
+
+        <p>Esta ecuación es deceptivamente simple pero profundamente revolucionaria. Dice que la energía no puede ser cualquier valor continuo: es un <strong>múltiplo entero de h·f</strong>. Cuanta más alta la frecuencia, mayor es el "precio" de un cuanto, lo que suprime las frecuencias altas y elimina la catástrofe ultravioleta.</p>
+
+        <h2>Einstein y el efecto fotoeléctrico</h2>
+        <p>En 1905, Einstein fue más lejos que Planck. Mientras Planck pensaba que la cuantización era solo una propiedad de los osciladores materiales, Einstein propuso que <strong>la propia luz está compuesta de cuantos de energía</strong>: los <em>fotones</em>.</p>
+
+        <p>El <strong>efecto fotoeléctrico</strong> era otro misterio: cuando luz ultravioleta incide sobre un metal, expulsa electrones. Pero:</p>
+        <ul>
+          <li>Solo ocurre a partir de cierta frecuencia mínima (independiente de la intensidad)</li>
+          <li>La energía de los electrones expulsados depende de la frecuencia de la luz, no de su intensidad</li>
+          <li>El efecto es instantáneo, sin retardo</li>
+        </ul>
+
+        <p>La física de ondas clásica no podía explicar esto. Pero si la luz son fotones con energía E = hf, todo encaja: un fotón debe tener suficiente energía (suficiente frecuencia) para arrancar un electrón. La intensidad solo afecta cuántos fotones hay, no la energía de cada uno.</p>
+
+        <div class="formula-box">
+          <span class="formula-label">Efecto fotoeléctrico (Einstein)</span>
+          E<sub>k</sub> = hf − φ
+          <span class="formula-sub">E_k = energía cinética del electrón · hf = energía del fotón · φ = función de trabajo del metal</span>
+        </div>
+
+        <div class="tip-box">
+          <div class="tb-label">💡 Nobel de Física 1921</div>
+          <p>Einstein recibió el Premio Nobel no por la relatividad, sino precisamente por la explicación del efecto fotoeléctrico. La cuantización de la luz fue tan radical que tardó años en ser aceptada.</p>
+        </div>
+
+        <h2>El efecto Compton (1923)</h2>
+        <p>Arthur Compton selló la naturaleza corpuscular de la luz. Al dispersar rayos X en electrones libres, observó que los rayos X <strong>cambian de longitud de onda</strong> como si fueran partículas que chocan elásticamente. Esto no tenía explicación ondulatoria clásica.</p>
+
+        <div class="concept-box">
+          <div class="cb-label">📌 Resumen</div>
+          <p>La energía está <strong>cuantizada</strong>. La luz, antes considerada una onda pura, también es un conjunto de partículas discretas: los <strong>fotones</strong>. Cada fotón lleva una energía E = hf, proporcional a su frecuencia. Esta idea fue el primer ladrillo de la mecánica cuántica moderna.</p>
+        </div>
+
+      </div>
+      <button class="mark-complete-btn" id="complete-btn" onclick="completeLesson(2)">
+        ✅ Completar lección y ganar 50 XP →
+      </button>
+    `
+  },
+  {
+    id: 3, emoji: '〰️', title: 'Dualidad Onda-Partícula',
+    duration: '20 min', xp: 50, hasQuiz: true, quizXp: 75,
+    content: `
+      <div class="social-proof">
+        <span class="sp-dot"></span>
+        <span id="sp-count-3">61 estudiantes estudiaron esto hoy</span>
+      </div>
+      <div class="lesson-header">
+        <div class="lesson-emoji-title">
+          <div class="lesson-big-emoji">〰️</div>
+          <div class="lesson-title-block">
+            <h1>Dualidad Onda-Partícula</h1>
+            <div class="lesson-chips">
+              <span class="lesson-chip chip-dur">⏱ 20 min</span>
+              <span class="lesson-chip chip-xp">+50 XP</span>
+              <span class="lesson-chip chip-quiz">🧪 Quiz +75 XP</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="lesson-body">
+
+        <p>¿Qué es la luz? ¿Una onda o una partícula? La respuesta de la mecánica cuántica es desafiante: <strong>es ambas cosas</strong>, dependiendo de cómo la observamos. Y no solo la luz: todo en el universo subatómico exhibe esta schizofrénica naturaleza dual.</p>
+
+        <h2>El experimento de la doble rendija</h2>
+        <p>Este experimento, que Feynman llamó "el único misterio de la mecánica cuántica", revela de forma directa la extrañeza cuántica.</p>
+
+        <p><strong>Configuración:</strong> Una fuente dispara partículas (electrones, fotones, átomos...) hacia una barrera con dos ranuras. Detrás hay una pantalla detectora.</p>
+
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="ic-title">🔵 Si tapamos una rendija</div>
+            <p>Vemos una franja brillante detrás de la rendija abierta. Exactamente lo esperado para partículas.</p>
+          </div>
+          <div class="info-card">
+            <div class="ic-title">〰️ Con ambas rendijas abiertas</div>
+            <p>¡Aparece un <strong>patrón de interferencia</strong>! Franjas alternas de luz y oscuridad, como si fueran ondas.</p>
+          </div>
+          <div class="info-card">
+            <div class="ic-title">🔍 Disparando de uno en uno</div>
+            <p>Aunque disparemos UN electrón a la vez, el patrón de interferencia sigue apareciendo tras muchos disparos.</p>
+          </div>
+          <div class="info-card">
+            <div class="ic-title">👁️ Cuando miramos por qué rendija pasa</div>
+            <p>Si instalamos detectores para saber por qué rendija pasa, ¡el patrón de interferencia desaparece! La observación altera el resultado.</p>
+          </div>
+        </div>
+
+        <div class="warning-box">
+          <div class="wb-label">🤯 La conclusión perturbadora</div>
+          <p>Cada electrón <strong>pasa por las dos rendijas a la vez</strong> como una onda, interfiere consigo mismo, y solo "decide" dónde aterrizar cuando toca la pantalla. La observación colapsa esta superposición.</p>
+        </div>
+
+        <h2>La hipótesis de de Broglie (1924)</h2>
+        <p>Louis de Broglie, en su tesis doctoral, generalizó la dualidad: si la luz puede comportarse como partícula (fotón), ¿por qué la materia no puede comportarse como onda?</p>
+
+        <div class="formula-box">
+          <span class="formula-label">Longitud de onda de de Broglie</span>
+          λ = h / p
+          <span class="formula-sub">λ = longitud de onda (m) · h = constante de Planck · p = momento lineal (kg·m/s)</span>
+        </div>
+
+        <p>Para un electrón a baja velocidad, λ es del orden de los ángstrom (10⁻¹⁰ m), comparable al tamaño atómico. Por eso los electrones muestran difracción en cristales. Para un objeto macroscópico como una pelota de tenis, λ es tan pequeño (10⁻³⁴ m) que jamás podremos observar su naturaleza ondulatoria.</p>
+
+        <div class="tip-box">
+          <div class="tb-label">💡 Experimento de Davisson-Germer (1927)</div>
+          <p>Clinton Davisson y Lester Germer confirmaron experimentalmente la hipótesis de de Broglie: dispararon electrones sobre un cristal de níquel y observaron el patrón de difracción predicho por la longitud de onda de de Broglie. Nobel para Davisson en 1937.</p>
+        </div>
+
+        <h2>El principio de complementariedad de Bohr</h2>
+        <p>Niels Bohr formalizó esta paradoja con su <strong>principio de complementariedad</strong>: el comportamiento ondulatorio y corpuscular de la materia son complementarios, no contradictorios. Nunca podemos observar ambos simultáneamente en el mismo experimento.</p>
+
+        <div class="concept-box">
+          <div class="cb-label">📌 Principio de complementariedad</div>
+          <p>Los aspectos ondulatorio y corpuscular de los sistemas cuánticos son <strong>mutuamente excluyentes</strong>: el experimento que muestra uno destruye la evidencia del otro. Esto no es un defecto de nuestra tecnología, es una propiedad fundamental de la naturaleza.</p>
+        </div>
+
+        <h2>¿Por qué no vemos ondas en el mundo macroscópico?</h2>
+        <p>La constante de Planck h es extremadamente pequeña (6.626 × 10⁻³⁴ J·s). Para objetos con momento grande (masas grandes o velocidades altas), λ = h/p es tan pequeña que los efectos cuánticos son completamente inobservables. La mecánica cuántica no "desaparece" a escalas grandes: simplemente sus predicciones coinciden con la mecánica clásica.</p>
+
+      </div>
+      <button class="mark-complete-btn" id="complete-btn" onclick="completeLesson(3)">
+        ✅ Completar lección y ganar 50 XP →
+      </button>
+    `
+  },
+  {
+    id: 4, emoji: '🌫️', title: 'El Principio de Incertidumbre',
+    duration: '18 min', xp: 50, hasQuiz: true, quizXp: 75,
+    content: `
+      <div class="social-proof">
+        <span class="sp-dot"></span>
+        <span id="sp-count-4">47 estudiantes estudiaron esto hoy</span>
+      </div>
+      <div class="lesson-header">
+        <div class="lesson-emoji-title">
+          <div class="lesson-big-emoji">🌫️</div>
+          <div class="lesson-title-block">
+            <h1>El Principio de Incertidumbre</h1>
+            <div class="lesson-chips">
+              <span class="lesson-chip chip-dur">⏱ 18 min</span>
+              <span class="lesson-chip chip-xp">+50 XP</span>
+              <span class="lesson-chip chip-quiz">🧪 Quiz +75 XP</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="lesson-body">
+
+        <p>En 1927, Werner Heisenberg formuló uno de los principios más profundos de la física: hay un <strong>límite fundamental e ineliminable</strong> a la precisión con la que podemos conocer simultáneamente ciertas propiedades de una partícula. Este no es un problema tecnológico; es una propiedad intrínseca de la naturaleza.</p>
+
+        <h2>La formulación matemática</h2>
+        <p>La incertidumbre más famosa involucra la posición (x) y el momento lineal (p):</p>
+
+        <div class="formula-box">
+          <span class="formula-label">Principio de incertidumbre posición-momento</span>
+          Δx · Δp ≥ ℏ/2
+          <span class="formula-sub">Δx = incertidumbre en posición · Δp = incertidumbre en momento · ℏ = h/2π = 1.055×10⁻³⁴ J·s</span>
+        </div>
+
+        <p>También existe una relación análoga para la energía y el tiempo:</p>
+
+        <div class="formula-box">
+          <span class="formula-label">Principio de incertidumbre energía-tiempo</span>
+          ΔE · Δt ≥ ℏ/2
+          <span class="formula-sub">ΔE = incertidumbre en energía · Δt = tiempo de vida del estado</span>
+        </div>
+
+        <h2>¿Por qué existe esta incertidumbre?</h2>
+        <p>La razón profunda es la <strong>naturaleza ondulatoria de la materia</strong>. Considera una onda: para definir bien su longitud de onda (relacionada con el momento p = h/λ), necesitas muchos ciclos, lo que implica una posición mal definida (la onda está "extendida"). Por el contrario, para localizar bien una posición, necesitas un paquete de onda muy estrecho, que por su naturaleza tiene muchas longitudes de onda superpuestas (momento mal definido).</p>
+
+        <div class="concept-box">
+          <div class="cb-label">📌 Concepto crucial</div>
+          <p>La incertidumbre de Heisenberg <strong>NO es debida a instrumentos imperfectos</strong>. Es una propiedad intrínseca de la naturaleza cuántica. Incluso con la tecnología perfecta imaginable, el producto ΔxΔp nunca puede ser menor que ℏ/2.</p>
+        </div>
+
+        <h2>Consecuencias físicas reales</h2>
+
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="ic-title">⚡ Energía de punto cero</div>
+            <p>Un oscilador cuántico nunca puede estar completamente en reposo. Siempre tiene una energía mínima E₀ = ℏω/2, llamada energía del punto cero.</p>
+          </div>
+          <div class="info-card">
+            <div class="ic-title">🌟 Tamaño del átomo</div>
+            <p>El principio de incertidumbre explica por qué los electrones no caen en el núcleo: si estuvieran confinados cerca, su momento sería tan grande que se escaparían.</p>
+          </div>
+          <div class="info-card">
+            <div class="ic-title">☢️ Túnel cuántico</div>
+            <p>Una partícula puede "atravesar" una barrera de energía que clasicamente no podría superar, gracias a la imprecisión en su energía. Esto es la base de los diodos de efecto túnel y la fusión nuclear estelar.</p>
+          </div>
+          <div class="info-card">
+            <div class="ic-title">💊 Líneas espectrales</div>
+            <p>El ensanchamiento de las líneas espectrales se debe a ΔE·Δt ≥ ℏ/2: estados con vida corta tienen mayor incertidumbre en energía, dando líneas más anchas.</p>
+          </div>
+        </div>
+
+        <h2>Un experimento mental clásico</h2>
+        <p>Imagina que intentas medir la posición de un electrón usando luz de longitud de onda λ. Para localizarlo con precisión Δx ~ λ, necesitas un fotón de longitud de onda corta. Pero un fotón de longitud de onda corta tiene gran momento (p = h/λ), y al interactuar con el electrón, le transfiere un momento impredecible Δp ~ h/λ. Así: Δx · Δp ~ λ · (h/λ) = h. La precisión en posición viene siempre a costa de incertidumbre en momento.</p>
+
+        <div class="warning-box">
+          <div class="wb-label">⚠️ Error común</div>
+          <p>Mucha gente piensa que la incertidumbre se debe a que "la medición perturba el sistema". Esta es una comprensión parcial. La incertidumbre es más profunda: las propiedades de posición y momento <strong>simplemente no existen con valores definidos simultáneos</strong> en el mundo cuántico, independientemente de cualquier medición.</p>
+        </div>
+
+        <div class="tip-box">
+          <div class="tb-label">💡 ¿Por qué no lo notamos?</div>
+          <p>Para una pelota de 100g, ΔxΔp ≥ ℏ/2 ≈ 5×10⁻³⁵ m·kg/s. Si conocemos su posición con precisión de 1 mm (Δx = 0.001 m), la incertidumbre en velocidad es Δv ≈ 5×10⁻³² m/s. ¡Completamente indetectable! Por eso vivimos aparentemente en un mundo clásico.</p>
+        </div>
+
+      </div>
+      <button class="mark-complete-btn" id="complete-btn" onclick="completeLesson(4)">
+        ✅ Completar lección y ganar 50 XP →
+      </button>
+    `
+  },
+  {
+    id: 5, emoji: '🌊', title: 'La Función de Onda',
+    duration: '22 min', xp: 50, hasQuiz: true, quizXp: 75,
+    content: `
+      <div class="social-proof">
+        <span class="sp-dot"></span>
+        <span id="sp-count-5">29 estudiantes estudiaron esto hoy</span>
+      </div>
+      <div class="lesson-header">
+        <div class="lesson-emoji-title">
+          <div class="lesson-big-emoji">🌊</div>
+          <div class="lesson-title-block">
+            <h1>La Función de Onda</h1>
+            <div class="lesson-chips">
+              <span class="lesson-chip chip-dur">⏱ 22 min</span>
+              <span class="lesson-chip chip-xp">+50 XP</span>
+              <span class="lesson-chip chip-quiz">🧪 Quiz +75 XP</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="lesson-body">
+
+        <p>El corazón matemático de la mecánica cuántica es la <strong>función de onda</strong> ψ (psi). Esta función contiene toda la información cuántica que existe sobre un sistema. No describe la posición de una partícula, sino la distribución de probabilidad de encontrarla en diferentes lugares.</p>
+
+        <h2>La ecuación de Schrödinger</h2>
+        <p>Erwin Schrödinger formuló en 1926 la ecuación diferencial que gobierna la evolución temporal de la función de onda:</p>
+
+        <div class="formula-box">
+          <span class="formula-label">Ecuación de Schrödinger dependiente del tiempo</span>
+          iℏ ∂ψ/∂t = Ĥψ
+          <span class="formula-sub">i = unidad imaginaria · ℏ = h/2π · ψ = función de onda · Ĥ = operador hamiltoniano (energía total)</span>
+        </div>
+
+        <p>Para sistemas estacionarios (energía bien definida), la ecuación se simplifica a la <strong>ecuación de Schrödinger independiente del tiempo</strong>:</p>
+
+        <div class="formula-box">
+          <span class="formula-label">Ecuación de Schrödinger independiente del tiempo</span>
+          Ĥψ = Eψ
+          <span class="formula-sub">Esta es una ecuación de valores propios: ψ son los estados estacionarios y E sus energías</span>
+        </div>
+
+        <h2>¿Qué es exactamente ψ?</h2>
+        <p>La función de onda ψ es en general un número <strong>complejo</strong>: ψ = a + bi. Por sí misma no tiene interpretación física directa. La interpretación la dio Max Born en 1926:</p>
+
+        <div class="concept-box">
+          <div class="cb-label">📌 Interpretación de Born</div>
+          <p>El módulo al cuadrado de la función de onda, <strong>|ψ(x)|²</strong>, da la <em>densidad de probabilidad</em> de encontrar la partícula en la posición x. Es decir, la probabilidad de encontrarla entre x y x+dx es |ψ(x)|² dx.</p>
+        </div>
+
+        <h2>La condición de normalización</h2>
+        <p>Si sumamos (integramos) la probabilidad de encontrar la partícula en todos los lugares posibles, debe dar exactamente 1 (la partícula está <em>en algún lado</em>):</p>
+
+        <div class="formula-box">
+          <span class="formula-label">Normalización de la función de onda</span>
+          ∫|ψ(x)|² dx = 1
+          <span class="formula-sub">La integral es sobre todo el espacio. Una función de onda válida debe satisfacer esta condición.</span>
+        </div>
+
+        <h2>El ejemplo más simple: partícula en una caja</h2>
+        <p>Considera una partícula atrapada en una caja unidimensional de longitud L (paredes infinitas). Fuera de la caja, ψ = 0. Dentro, la ecuación de Schrödinger da soluciones cuantizadas:</p>
+
+        <div class="formula-box">
+          <span class="formula-label">Funciones de onda en la caja (n = 1, 2, 3...)</span>
+          ψₙ(x) = √(2/L) · sin(nπx/L)
+          <span class="formula-sub">Energías: Eₙ = n²π²ℏ²/(2mL²) — ¡solo valores discretos permitidos!</span>
+        </div>
+
+        <div class="tip-box">
+          <div class="tb-label">💡 Intuición visual</div>
+          <p>Las funciones de onda en la caja son exactamente como las armónicas de una cuerda de guitarra: el estado fundamental (n=1) tiene un solo "lóbulo", n=2 tiene dos, etc. Las condiciones de frontera (ψ=0 en las paredes) son como fijar los extremos de la cuerda. La cuantización de la energía emerge naturalmente.</p>
+        </div>
+
+        <h2>Propiedades de la función de onda</h2>
+        <ul>
+          <li><strong>Continua y derivable</strong> (excepto en discontinuidades infinitas del potencial)</li>
+          <li><strong>Cuadrado integrable</strong>: ∫|ψ|²dx debe converger (sea finita)</li>
+          <li><strong>Puede ser compleja</strong>: la parte imaginaria es tan física como la real</li>
+          <li><strong>Puede superponerse</strong>: si ψ₁ y ψ₂ son soluciones, αψ₁ + βψ₂ también lo es</li>
+        </ul>
+
+        <div class="warning-box">
+          <div class="wb-label">⚠️ No confundas ψ con |ψ|²</div>
+          <p>La función de onda ψ puede ser negativa o compleja, y eso es perfectamente válido. Solo tiene sentido físico directo su módulo al cuadrado |ψ|², que siempre es real y no negativo, como corresponde a una probabilidad.</p>
+        </div>
+
+        <h2>El operador de posición y las mediciones</h2>
+        <p>En mecánica cuántica, las cantidades observables (posición, momento, energía) están representadas por <strong>operadores</strong>. El resultado de una medición no está predeterminado: la mecánica cuántica solo predice la distribución de probabilidad de los resultados posibles.</p>
+
+        <div class="concept-box">
+          <div class="cb-label">📌 La clave</div>
+          <p>La función de onda no describe <em>dónde está</em> la partícula. Describe <em>las probabilidades de encontrarla</em> en diferentes lugares si la buscamos. Antes de la medición, la partícula no tiene una posición definida: existe en una superposición de posiciones.</p>
+        </div>
+
+      </div>
+      <button class="mark-complete-btn" id="complete-btn" onclick="completeLesson(5)">
+        ✅ Completar lección y ganar 50 XP →
+      </button>
+    `
+  },
+  {
+    id: 6, emoji: '🐱', title: 'Superposición Cuántica',
+    duration: '20 min', xp: 50, hasQuiz: true, quizXp: 100,
+    content: `
+      <div class="social-proof">
+        <span class="sp-dot"></span>
+        <span id="sp-count-6">73 estudiantes estudiaron esto hoy</span>
+      </div>
+      <div class="lesson-header">
+        <div class="lesson-emoji-title">
+          <div class="lesson-big-emoji">🐱</div>
+          <div class="lesson-title-block">
+            <h1>Superposición Cuántica</h1>
+            <div class="lesson-chips">
+              <span class="lesson-chip chip-dur">⏱ 20 min</span>
+              <span class="lesson-chip chip-xp">+50 XP</span>
+              <span class="lesson-chip chip-quiz">🧪 Quiz +100 XP</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="lesson-body">
+
+        <p>El <strong>principio de superposición</strong> es uno de los conceptos más fundamentales —y extraños— de la mecánica cuántica. Establece que un sistema cuántico puede existir simultáneamente en múltiples estados hasta que es medido. Este principio es la base del poder exponencial de los computadores cuánticos.</p>
+
+        <h2>El principio de superposición</h2>
+        <p>La ecuación de Schrödinger es una ecuación <strong>lineal</strong>. Esto tiene una consecuencia profunda: si ψ₁ y ψ₂ son estados físicos válidos, entonces cualquier combinación lineal αψ₁ + βψ₂ también es un estado físico válido.</p>
+
+        <div class="concept-box">
+          <div class="cb-label">📌 Principio de superposición</div>
+          <p>Un sistema cuántico puede existir en una <strong>superposición</strong> de múltiples estados base simultáneamente. Esta superposición no es una mezcla ni una ignorancia sobre el estado "real": el sistema genuinamente <em>es</em> todos los estados a la vez.</p>
+        </div>
+
+        <h2>La notación de Dirac (bra-ket)</h2>
+        <p>Paul Dirac introdujo una notación elegante para los estados cuánticos. Un estado se escribe como un "ket": |ψ⟩. Para un qubit (bit cuántico), los dos estados base son:</p>
+
+        <div class="formula-box">
+          <span class="formula-label">Estado general de un qubit</span>
+          |ψ⟩ = α|0⟩ + β|1⟩
+          <span class="formula-sub">|α|² = prob. de medir 0 · |β|² = prob. de medir 1 · condición: |α|² + |β|² = 1</span>
+        </div>
+
+        <p>Un qubit puede estar en |0⟩, en |1⟩, o en cualquier superposición. El estado |+⟩ = (|0⟩ + |1⟩)/√2 tiene 50% de probabilidad de dar 0 y 50% de dar 1 al ser medido.</p>
+
+        <h2>El poder exponencial</h2>
+        <p>¿Por qué es tan poderosa la superposición? Un registro de n qubits puede representar <strong>2ⁿ estados simultáneamente</strong>:</p>
+
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="ic-title">🖥️ 1 qubit</div>
+            <p>Puede representar 2 estados (0 y 1) simultáneamente en superposición.</p>
+          </div>
+          <div class="info-card">
+            <div class="ic-title">🖥️ 10 qubits</div>
+            <p>Puede representar 1.024 estados simultáneamente. Un registro clásico solo puede tener 1 de esos estados.</p>
+          </div>
+          <div class="info-card">
+            <div class="ic-title">🖥️ 50 qubits</div>
+            <p>Puede representar más de 10¹⁵ estados a la vez. Supera la capacidad de almacenamiento de cualquier computador clásico actual.</p>
+          </div>
+          <div class="info-card">
+            <div class="ic-title">🖥️ 300 qubits</div>
+            <p>Puede representar más estados simultáneos que hay átomos en el universo observable (≈10⁸⁰).</p>
+          </div>
+        </div>
+
+        <h2>El colapso de la función de onda</h2>
+        <p>Cuando medimos un sistema en superposición, la superposición "colapsa" a uno de los estados posibles, con probabilidades dadas por |α|² y |β|². Tras la medición, el estado es definido.</p>
+
+        <div class="warning-box">
+          <div class="wb-label">⚠️ Trampa común</div>
+          <p>Leer un registro de n qubits en superposición da <strong>solo un resultado clásico</strong>, como lanzar una moneda n veces. El arte del algoritmo cuántico está en <em>manipular las amplitudes</em> antes de medir, de forma que los estados correctos tengan alta probabilidad y los incorrectos, baja.</p>
+        </div>
+
+        <h2>El gato de Schrödinger</h2>
+        <p>En 1935, Erwin Schrödinger ideó un experimento mental para ilustrar lo absurdo de aplicar la superposición cuántica al mundo macroscópico.</p>
+
+        <p>Un gato está en una caja sellada junto a un átomo radiactivo, un detector Geiger y un frasco de veneno. Si el átomo se desintegra (estado cuántico |1⟩), el detector activa un martillo que rompe el frasco y mata al gato. Si no se desintegra (|0⟩), el gato vive.</p>
+
+        <p>Según la mecánica cuántica estándar, mientras la caja esté cerrada, el átomo está en superposición |0⟩ + |1⟩. ¿Significa esto que el gato está en superposición de vivo y muerto?</p>
+
+        <div class="concept-box">
+          <div class="cb-label">📌 La paradoja</div>
+          <p>El gato de Schrödinger ilustra el <strong>problema de la medición</strong>: ¿en qué momento ocurre el colapso? ¿Cuando lo mira el detector? ¿El gato? ¿El observador humano? La mecánica cuántica estándar (interpretación de Copenhague) dice que la superposición colapsa al observar, pero no define qué es "observar" con precisión matemática.</p>
+        </div>
+
+        <div class="tip-box">
+          <div class="tb-label">💡 La decoherencia</div>
+          <p>La física moderna explica por qué no vemos gatos en superposición: la <strong>decoherencia cuántica</strong>. Los sistemas macroscópicos interactúan con billones de partículas del entorno, y esta interacción destruye la superposición en tiempos extremadamente cortos (10⁻²³ s para un objeto de 1g). Los qubits se aíslan cuidadosamente para preservar su superposición.</p>
+        </div>
+
+      </div>
+      <button class="mark-complete-btn" id="complete-btn" onclick="completeLesson(6)">
+        ✅ Completar lección y ganar 50 XP →
+      </button>
+    `
+  },
+  {
+    id: 7, emoji: '🔗', title: 'El Entrelazamiento Cuántico',
+    duration: '22 min', xp: 50, hasQuiz: true, quizXp: 100,
+    content: `
+      <div class="social-proof">
+        <span class="sp-dot"></span>
+        <span id="sp-count-7">45 estudiantes estudiaron esto hoy</span>
+      </div>
+      <div class="lesson-header">
+        <div class="lesson-emoji-title">
+          <div class="lesson-big-emoji">🔗</div>
+          <div class="lesson-title-block">
+            <h1>El Entrelazamiento Cuántico</h1>
+            <div class="lesson-chips">
+              <span class="lesson-chip chip-dur">⏱ 22 min</span>
+              <span class="lesson-chip chip-xp">+50 XP</span>
+              <span class="lesson-chip chip-quiz">🧪 Quiz +100 XP</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="lesson-body">
+
+        <p>Einstein lo llamó "acción fantasmal a distancia" y estuvo convencido de que demostraba la incompletitud de la mecánica cuántica. Hoy, el <strong>entrelazamiento cuántico</strong> es uno de los recursos más valiosos de la física cuántica aplicada, con usos en criptografía, teleportación de estados y computación cuántica.</p>
+
+        <h2>¿Qué es el entrelazamiento?</h2>
+        <p>Dos partículas están <strong>entrelazadas</strong> cuando su estado cuántico conjunto no puede escribirse como producto de los estados individuales. Son inseparables cuánticamente.</p>
+
+        <div class="formula-box">
+          <span class="formula-label">Estado de Bell (par entrelazado máximo)</span>
+          |Φ⁺⟩ = (|00⟩ + |11⟩) / √2
+          <span class="formula-sub">Este estado NO puede escribirse como |ψ_A⟩ ⊗ |ψ_B⟩ para ningún par de estados individuales</span>
+        </div>
+
+        <p>En el estado |Φ⁺⟩, si medimos la partícula A y obtenemos |0⟩, la partícula B colapsa instantáneamente a |0⟩. Si A da |1⟩, B da |1⟩. Las mediciones están perfectamente correlacionadas, sin importar la distancia entre las partículas.</p>
+
+        <h2>La paradoja EPR (1935)</h2>
+        <p>Einstein, Podolsky y Rosen (EPR) publicaron en 1935 un argumento para demostrar que la mecánica cuántica estaba incompleta. Su razonamiento:</p>
+        <ul>
+          <li>Si medir A afecta instantáneamente a B (sin señal posible entre ellos), se viola la localidad</li>
+          <li>Si no hay comunicación, entonces los resultados de la medición de B deben haber estado predeterminados desde el inicio</li>
+          <li>Pero la mecánica cuántica no predice esos "valores ocultos": luego, la QM es incompleta</li>
+        </ul>
+
+        <div class="history-box">
+          <div class="hb-label">📜 El debate Einstein-Bohr</div>
+          <p>Bohr respondió que la pregunta de Einstein asume que las propiedades físicas tienen valores definidos independientemente de cómo se miden. En la mecánica cuántica, no. El debate duró décadas y definió la filosofía de la física del siglo XX.</p>
+        </div>
+
+        <h2>El teorema de Bell (1964): el experimento decisivo</h2>
+        <p>John Bell encontró en 1964 una forma de distinguir experimentalmente entre la mecánica cuántica y cualquier teoría de "variables ocultas locales". Formuló <strong>desigualdades</strong> que toda teoría clásica local debe satisfacer.</p>
+
+        <div class="concept-box">
+          <div class="cb-label">📌 Resultado experimental</div>
+          <p>Los experimentos de Aspect (1982), y definitivamente los de Hensen et al. (2015) cerrando todos los "loopholes", han mostrado que las <strong>desigualdades de Bell son violadas</strong> por la naturaleza. Einstein estaba equivocado: la naturaleza es no-local de forma fundamental.</p>
+        </div>
+
+        <h2>¿Permite el entrelazamiento comunicar más rápido que la luz?</h2>
+        <p>Esta es la pregunta que todo el mundo se hace. La respuesta es <strong>no</strong>. Aunque la correlación es instantánea, los resultados individuales de la medición son aleatorios. El receptor de B no puede controlar qué resultado obtiene, y por tanto no puede extraer ninguna información de las correlaciones. Para comparar los resultados, necesitan un canal clásico (más lento que la luz).</p>
+
+        <div class="warning-box">
+          <div class="wb-label">⚠️ El entrelazamiento NO permite</div>
+          <p>Comunicación superlumínica · Teletransportación de materia · Transmisión de información más rápida que la luz. El entrelazamiento viola la localidad estadística, pero respeta la causalidad relativista.</p>
+        </div>
+
+        <h2>Aplicaciones del entrelazamiento</h2>
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="ic-title">🔐 Criptografía cuántica (QKD)</div>
+            <p>Protocolo BB84 y E91: distribuir claves criptográficas con seguridad garantizada por la física. Cualquier espionaje perturba el estado entrelazado y es detectable.</p>
+          </div>
+          <div class="info-card">
+            <div class="ic-title">📡 Teleportación cuántica</div>
+            <p>Transferir el estado cuántico completo de una partícula a otra distante, usando entrelazamiento + un canal clásico. Demostrada experimentalmente.</p>
+          </div>
+          <div class="info-card">
+            <div class="ic-title">⚡ Computación cuántica</div>
+            <p>El entrelazamiento entre qubits es esencial para la ventaja cuántica. Sin entrelazamiento, un computador cuántico no podría superar a uno clásico.</p>
+          </div>
+          <div class="info-card">
+            <div class="ic-title">🔭 Sensores cuánticos</div>
+            <p>Pares entrelazados permiten medir campos gravitacionales y magnéticos con precisión mucho mayor que los límites clásicos.</p>
+          </div>
+        </div>
+
+        <div class="tip-box">
+          <div class="tb-label">💡 El futuro: Internet Cuántico</div>
+          <p>Se trabaja en construir redes de repetidores cuánticos que distribuyan entrelazamiento a escala global. Esto permitiría comunicaciones cuánticas absolutamente seguras y redes de computadores cuánticos interconectados.</p>
+        </div>
+
+      </div>
+      <button class="mark-complete-btn" id="complete-btn" onclick="completeLesson(7)">
+        ✅ Completar lección y ganar 50 XP →
+      </button>
+    `
+  },
+  {
+    id: 8, emoji: '🏁', title: 'Medición Cuántica y Aplicaciones',
+    duration: '25 min', xp: 75, hasQuiz: true, quizXp: 125, isFinal: true,
+    content: `
+      <div class="social-proof">
+        <span class="sp-dot"></span>
+        <span id="sp-count-8">32 estudiantes completaron el curso esta semana</span>
+      </div>
+      <div class="lesson-header">
+        <div class="lesson-emoji-title">
+          <div class="lesson-big-emoji">🏁</div>
+          <div class="lesson-title-block">
+            <h1>Medición Cuántica y Aplicaciones</h1>
+            <div class="lesson-chips">
+              <span class="lesson-chip chip-dur">⏱ 25 min</span>
+              <span class="lesson-chip chip-xp">+75 XP</span>
+              <span class="lesson-chip chip-quiz">🏆 Examen Final +125 XP</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="lesson-body">
+
+        <p>Hemos llegado al núcleo filosófico de la mecánica cuántica: ¿qué ocurre exactamente cuando medimos un sistema cuántico? Este "problema de la medición" ha generado décadas de debate y las más diversas interpretaciones. Terminaremos con las aplicaciones que hacen que todo este aprendizaje tenga un impacto real en el mundo.</p>
+
+        <h2>El problema de la medición</h2>
+        <p>La ecuación de Schrödinger describe una evolución <strong>continua, determinista y reversible</strong> de la función de onda. Sin embargo, cuando medimos, obtenemos un resultado <strong>discreto, aleatorio e irreversible</strong>. ¿Qué fórmula describe esta transición?</p>
+
+        <div class="concept-box">
+          <div class="cb-label">📌 El problema de la medición</div>
+          <p>La mecánica cuántica predice perfectamente las probabilidades de los resultados de las mediciones, pero no explica dentro de sí misma <em>cómo y cuándo</em> la superposición colapsa a un resultado definido. Esto es el "problema de la medición".</p>
+        </div>
+
+        <h2>Interpretaciones de la mecánica cuántica</h2>
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="ic-title">🇩🇰 Copenhague</div>
+            <p>La función de onda es solo una herramienta matemática, no una realidad física. Colapsa al medir. No preguntes qué pasa "entre mediciones".</p>
+          </div>
+          <div class="info-card">
+            <div class="ic-title">🌌 Muchos Mundos</div>
+            <p>La función de onda nunca colapsa. Al medir, el universo se bifurca: cada resultado ocurre en una rama diferente. Todos los resultados son reales.</p>
+          </div>
+          <div class="info-card">
+            <div class="ic-title">🎯 Variables ocultas (Bohm)</div>
+            <p>Las partículas tienen posiciones definidas guiadas por una "onda piloto". La aleatoriedad refleja ignorancia, no indeterminismo fundamental.</p>
+          </div>
+          <div class="info-card">
+            <div class="ic-title">🧠 Decoherencia</div>
+            <p>La interacción con el entorno destruye las superposiciones macroscópicas. No hay colapso misterioso; la apariencia de colapso emerge del entrelazamiento con el entorno.</p>
+          </div>
+        </div>
+
+        <div class="tip-box">
+          <div class="tb-label">💡 Consenso pragmático</div>
+          <p>La mayoría de los físicos adoptan el enfoque de "¡cállate y calcula!" (<em>shut up and calculate</em>): usan la mecánica cuántica para hacer predicciones sin preocuparse demasiado por la interpretación. Todas las interpretaciones dan las mismas predicciones experimentales.</p>
+        </div>
+
+        <h2>Aplicaciones de la mecánica cuántica</h2>
+        <p>La mecánica cuántica no es solo filosofía abstracta. Es la base de gran parte de la tecnología moderna:</p>
+
+        <div class="timeline">
+          <div class="tl-item">
+            <div class="tl-year">1947</div>
+            <div class="tl-content">
+              <h4>El transistor</h4>
+              <p>Inventado en Bell Labs usando la teoría cuántica de bandas en semiconductores. Es el componente fundamental de todos los dispositivos electrónicos. Los procesadores modernos contienen miles de millones de transistores.</p>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-year">1960</div>
+            <div class="tl-content">
+              <h4>El láser</h4>
+              <p>Basado en la emisión estimulada de radiación, predicha por Einstein en 1917. Hoy tiene usos en telecomunicaciones, cirugía, almacenamiento de datos, fabricación industrial y lidar.</p>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-year">1973</div>
+            <div class="tl-content">
+              <h4>Resonancia magnética (MRI)</h4>
+              <p>Usa el espín nuclear cuántico para obtener imágenes de tejidos blandos. Ha revolucionado el diagnóstico médico sin radiación ionizante.</p>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-year">1994</div>
+            <div class="tl-content">
+              <h4>Algoritmo de Shor</h4>
+              <p>Peter Shor demuestra que un computador cuántico puede factorizar números enteros exponencialmente más rápido que cualquier algoritmo clásico conocido, amenazando la criptografía RSA.</p>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-year">2019</div>
+            <div class="tl-content">
+              <h4>Supremacía cuántica (Google)</h4>
+              <p>El procesador Sycamore de 53 qubits realizó en 200 segundos un cálculo que los mejores supercomputadores necesitarían 10.000 años. El debate sobre la validez de la comparación continúa.</p>
+            </div>
+          </div>
+        </div>
+
+        <h2>¿Qué sigue después de este curso?</h2>
+        <p>Ahora tienes una base sólida en los fundamentos de la mecánica cuántica. Tu camino cuántico puede continuar hacia:</p>
+        <ul>
+          <li><strong>Qubits y Circuitos Cuánticos</strong>: aprende a construir algoritmos cuánticos con puertas lógicas cuánticas</li>
+          <li><strong>Programación con Qiskit</strong>: ejecuta circuitos reales en computadores cuánticos de IBM</li>
+          <li><strong>Algoritmo de Grover</strong>: aceleración cuántica de búsqueda en bases de datos</li>
+          <li><strong>Algoritmo de Shor</strong>: factorización cuántica y sus implicaciones criptográficas</li>
+        </ul>
+
+        <div class="concept-box">
+          <div class="cb-label">🎓 Estás listo</div>
+          <p>Has recorrido un camino extraordinario: de la crisis del cuerpo negro en 1900 hasta el entrelazamiento y las aplicaciones modernas. Ahora supera el examen final y obtén tu certificado de Fundamentos de Mecánica Cuántica.</p>
+        </div>
+
+      </div>
+      <button class="mark-complete-btn" id="complete-btn" onclick="completeLesson(8)">
+        ✅ Completar lección y ganar 75 XP →
+      </button>
+    `
+  }
+];
+
+/* ── QUIZ DATA ────────────────────────────────────────────────────── */
+const QUIZZES = {
+  2: {
+    questions: [
+      {
+        text: '¿Quién propuso por primera vez que la energía se emite en "cuantos" discretos para resolver el problema del cuerpo negro?',
+        options: ['Albert Einstein', 'Max Planck', 'Niels Bohr', 'Werner Heisenberg'],
+        correct: 1,
+        explanation: 'Max Planck propuso en 1900 que los osciladores atómicos solo podían emitir/absorber energía en múltiplos de h·f, donde h es la constante de Planck. Esta fue la hipótesis fundacional de la mecánica cuántica.'
+      },
+      {
+        text: '¿Cuál es la relación correcta entre la energía de un fotón y su frecuencia?',
+        options: ['E = mc²', 'E = h/λ', 'E = hf', 'E = p/h'],
+        correct: 2,
+        explanation: 'La energía de un fotón es E = hf, donde h es la constante de Planck (6.626×10⁻³⁴ J·s) y f es la frecuencia. También puede escribirse como E = hc/λ, donde c es la velocidad de la luz y λ la longitud de onda.'
+      },
+      {
+        text: 'El efecto fotoeléctrico demostró que la luz puede comportarse como:',
+        options: ['Una onda sonora', 'Un campo eléctrico oscilante', 'Un flujo de partículas (fotones) con energía cuantizada', 'Una onda de probabilidad'],
+        correct: 2,
+        explanation: 'Einstein explicó el efecto fotoeléctrico proponiendo que la luz está compuesta de fotones (cuantos de luz), cada uno con energía E = hf. Solo los fotones con suficiente frecuencia (energía) pueden arrancar electrones del metal, independientemente de la intensidad.'
+      }
+    ]
+  },
+  3: {
+    questions: [
+      {
+        text: 'En el experimento de la doble rendija con electrones disparados uno a uno, ¿qué se observa tras acumular muchos impactos?',
+        options: ['Dos franjas brillantes detrás de cada rendija', 'Un patrón de interferencia con múltiples franjas', 'Una distribución uniforme en toda la pantalla', 'Nada observable'],
+        correct: 1,
+        explanation: 'Aunque los electrones se disparan uno a uno (sin posibilidad de interferir entre sí), aparece un patrón de interferencia. Cada electrón interfiere consigo mismo al pasar simultáneamente por ambas rendijas como una onda, revelando la naturaleza dual onda-partícula.'
+      },
+      {
+        text: '¿Cuál es la fórmula correcta para la longitud de onda de de Broglie?',
+        options: ['λ = E·h', 'λ = h/m', 'λ = h/p', 'λ = p·h'],
+        correct: 2,
+        explanation: 'La longitud de onda de de Broglie es λ = h/p, donde h es la constante de Planck y p es el momento lineal de la partícula (p = mv). Esta relación fue propuesta por Louis de Broglie en 1924 en su tesis doctoral.'
+      },
+      {
+        text: 'El principio de complementariedad de Bohr establece que:',
+        options: ['Toda partícula muestra siempre comportamiento ondulatorio y corpuscular al mismo tiempo', 'El comportamiento ondulatorio y corpuscular son complementarios y mutuamente excluyentes en cualquier experimento', 'La dualidad onda-partícula es solo una aproximación matemática', 'El comportamiento cuántico desaparece a temperaturas altas'],
+        correct: 1,
+        explanation: 'Bohr estableció que las propiedades ondulatoria y corpuscular de los sistemas cuánticos son complementarias: el experimento que revela una destruye la evidencia de la otra. Esto no es una limitación tecnológica, sino una propiedad fundamental de la naturaleza cuántica.'
+      }
+    ]
+  },
+  4: {
+    questions: [
+      {
+        text: 'El principio de incertidumbre de Heisenberg para posición y momento establece que:',
+        options: ['La posición de una partícula siempre es incierta', 'El producto Δx·Δp no puede ser menor que ℏ/2', 'Solo se aplica a partículas muy rápidas', 'La incertidumbre disminuye con mejores instrumentos'],
+        correct: 1,
+        explanation: 'Heisenberg demostró que Δx·Δp ≥ ℏ/2, donde ℏ = h/2π. Este es un límite fundamental, no tecnológico. No importa cuán perfectos sean los instrumentos, el producto de las incertidumbres en posición y momento jamás puede ser cero.'
+      },
+      {
+        text: 'Si medimos la posición de un electrón con mayor precisión (menor Δx), ¿qué le ocurre a la incertidumbre en su momento (Δp)?',
+        options: ['Δp también disminuye proporcionalmente', 'Δp permanece constante', 'Δp aumenta para mantener Δx·Δp ≥ ℏ/2', 'Δp se hace exactamente cero'],
+        correct: 2,
+        explanation: 'Por el principio de incertidumbre, si Δx disminuye, Δp debe aumentar para que el producto siga siendo ≥ ℏ/2. No podemos conocer simultáneamente posición y momento con precisión arbitraria.'
+      },
+      {
+        text: 'La incertidumbre de Heisenberg es fundamentalmente consecuencia de:',
+        options: ['La imprecisión inevitable de cualquier instrumento de medida', 'El hecho de que la medición perturba siempre el sistema', 'La naturaleza ondulatoria de la materia: posición y momento son variables conjugadas', 'La velocidad finita de la luz'],
+        correct: 2,
+        explanation: 'La razón profunda es la dualidad onda-partícula. Posición y momento son variables "conjugadas" en el formalismo matemático. Una función de onda bien localizada (buen Δx) requiere superposición de muchas frecuencias (mal Δp), y viceversa. Es intrínseco a la naturaleza cuántica, no a limitaciones prácticas.'
+      }
+    ]
+  },
+  5: {
+    questions: [
+      {
+        text: '¿Qué representa físicamente |ψ(x)|² en mecánica cuántica?',
+        options: ['La velocidad de la partícula en el punto x', 'La energía potencial en x', 'La densidad de probabilidad de encontrar la partícula en x', 'La longitud de onda local de la partícula'],
+        correct: 2,
+        explanation: 'Según la interpretación de Born (1926), |ψ(x)|² es la densidad de probabilidad de posición. La probabilidad de encontrar la partícula entre x y x+dx es |ψ(x)|²·dx. La función de onda ψ no describe la posición de la partícula, sino la distribución de probabilidad de encontrarla.'
+      },
+      {
+        text: 'La ecuación de Schrödinger describe:',
+        options: ['Solo la energía estacionaria de los átomos', 'La evolución temporal de la función de onda de un sistema cuántico', 'La posición exacta de una partícula en todo momento', 'Solo funciona para fotones, no para electrones'],
+        correct: 1,
+        explanation: 'La ecuación de Schrödinger iℏ∂ψ/∂t = Ĥψ gobierna la evolución temporal de la función de onda. Es la ley fundamental de la dinámica cuántica, análoga a la segunda ley de Newton en mecánica clásica, pero aplicada a la función de onda en lugar de a la posición.'
+      },
+      {
+        text: 'Una función de onda ψ válida debe obligatoriamente satisfacer:',
+        options: ['ψ(x) ≥ 0 para todo x', 'ψ(x) ≤ 1 para todo x', '∫|ψ(x)|² dx = 1 (condición de normalización)', 'ψ(x) debe ser una función periódica'],
+        correct: 2,
+        explanation: 'La condición de normalización ∫|ψ|²dx = 1 garantiza que la probabilidad total de encontrar la partícula en todo el espacio es 1 (la partícula existe en algún lugar). Una función de onda no normalizada no tiene interpretación probabilística directa.'
+      }
+    ]
+  },
+  6: {
+    questions: [
+      {
+        text: 'Un qubit en el estado |ψ⟩ = α|0⟩ + β|1⟩ debe satisfacer:',
+        options: ['α = β necesariamente', '|α|² + |β|² = 1', 'α + β = 0', 'α y β deben ser números reales'],
+        correct: 1,
+        explanation: 'La condición |α|² + |β|² = 1 es la normalización: la probabilidad de medir |0⟩ es |α|² y la de medir |1⟩ es |β|². Como la partícula debe dar algún resultado al medirla, la suma de probabilidades es 1. α y β pueden ser complejos.'
+      },
+      {
+        text: '¿Qué ocurre con la superposición cuántica cuando medimos el estado del sistema?',
+        options: ['La superposición se mantiene intacta y sigue evolucionando', 'La superposición se amplifica, dando resultados más claros', 'La superposición colapsa a uno de los estados posibles con probabilidades |α|² y |β|²', 'La superposición desaparece sin dar ningún resultado'],
+        correct: 2,
+        explanation: 'La medición provoca el "colapso de la función de onda": la superposición se reduce al instante a uno de los estados propios del observable medido, con la probabilidad correspondiente. Este proceso irreversible es la base del postulado de la medición en mecánica cuántica.'
+      },
+      {
+        text: 'El experimento mental del gato de Schrödinger fue diseñado para ilustrar:',
+        options: ['Que los gatos tienen propiedades cuánticas especiales', 'La paradoja de aplicar la superposición cuántica a objetos macroscópicos y el problema de la medición', 'Que la observación mata literalmente al gato mediante rayos cuánticos', 'Un experimento que Schrödinger realizó en su laboratorio en 1935'],
+        correct: 1,
+        explanation: 'Schrödinger diseñó este experimento mental como crítica para mostrar lo absurdo (a su juicio) de aplicar la superposición cuántica a sistemas macroscópicos. El "gato vivo y muerto" ilustra el problema de la medición: ¿en qué punto colapsa la superposición?'
+      },
+      {
+        text: '¿Cuántos estados distintos puede representar simultáneamente en superposición un registro de 3 qubits?',
+        options: ['3 estados', '6 estados', '8 estados (2³)', '16 estados (2⁴)'],
+        correct: 2,
+        explanation: 'n qubits en superposición pueden representar 2ⁿ estados simultáneamente. Con 3 qubits: 2³ = 8 estados ({|000⟩, |001⟩, |010⟩, |011⟩, |100⟩, |101⟩, |110⟩, |111⟩}). Esta escalabilidad exponencial es la base del poder de los computadores cuánticos.'
+      }
+    ]
+  },
+  7: {
+    questions: [
+      {
+        text: 'Dos partículas están cuánticamente entrelazadas cuando:',
+        options: ['Están conectadas por una fuerza física como un resorte', 'Su estado cuántico conjunto no puede describirse como producto de estados individuales', 'Son partículas idénticas del mismo tipo (electrones, etc.)', 'Tienen la misma carga eléctrica y giran juntas'],
+        correct: 1,
+        explanation: 'El entrelazamiento ocurre cuando el estado del sistema no factoriza: |Ψ_AB⟩ ≠ |ψ_A⟩⊗|ψ_B⟩. Esto significa que las propiedades de las dos partículas están correlacionadas cuánticamente de forma irreducible, independientemente de su separación espacial.'
+      },
+      {
+        text: 'El teorema de Bell (1964) demostró experimentalmente que:',
+        options: ['La mecánica cuántica es una teoría incompleta, como decía Einstein', 'Ninguna teoría de variables ocultas locales puede reproducir todas las predicciones cuánticas', 'El entrelazamiento viola la relatividad especial de Einstein', 'Einstein tenía razón en el debate EPR con Bohr'],
+        correct: 1,
+        explanation: 'Bell formuló desigualdades que debe satisfacer cualquier teoría local con variables ocultas. Los experimentos (desde Aspect 1982 hasta los loophole-free de 2015) muestran que estas desigualdades son violadas exactamente como predice la mecánica cuántica. No hay variables ocultas locales.'
+      },
+      {
+        text: 'En el estado de Bell |Φ⁺⟩ = (|00⟩+|11⟩)/√2, si medimos la partícula A y obtenemos |1⟩, ¿en qué estado queda la partícula B?',
+        options: ['B queda en superposición (|0⟩+|1⟩)/√2', 'B queda en el estado |0⟩', 'B queda en el estado |1⟩', 'B no se altera y permanece indefinida'],
+        correct: 2,
+        explanation: 'En el estado |Φ⁺⟩ = (|00⟩+|11⟩)/√2, las mediciones están perfectamente correlacionadas: si A→|0⟩ entonces B→|0⟩, y si A→|1⟩ entonces B→|1⟩. Al medir A y obtener |1⟩, B colapsa instantáneamente a |1⟩, independientemente de la distancia.'
+      },
+      {
+        text: '¿Cuál de estas afirmaciones sobre el entrelazamiento cuántico es CORRECTA?',
+        options: ['Permite enviar información a velocidad superior a la de la luz', 'Permite teletransportar personas a distancia', 'No permite comunicación superlumínica, pero sí es útil para criptografía cuántica', 'Solo funciona a distancias menores que 1 metro'],
+        correct: 2,
+        explanation: 'El entrelazamiento NO permite comunicación superlumínica: los resultados individuales son aleatorios y no controlables, requiriendo un canal clásico para extraer información de las correlaciones. Sin embargo, SÍ es útil para QKD (criptografía cuántica), teleportación de estados y computación cuántica.'
+      }
+    ]
+  },
+  8: {
+    questions: [
+      {
+        text: 'El "problema de la medición" en mecánica cuántica se refiere a:',
+        options: ['La falta de precisión en los instrumentos de laboratorio cuántico', 'La ausencia de una explicación dentro de la QM de cómo y cuándo la superposición colapsa a un resultado definido', 'Los errores en los cálculos de las funciones de onda', 'La imposibilidad práctica de medir partículas tan pequeñas como electrones'],
+        correct: 1,
+        explanation: 'La ecuación de Schrödinger describe evolución unitaria y continua, pero la medición produce colapso aleatorio e irreversible. La QM predice perfectamente las probabilidades pero no explica internamente el colapso. Distintas interpretaciones (Copenhague, Many Worlds, Bohm...) intentan resolver esto de formas diferentes.'
+      },
+      {
+        text: '¿Cuál de estos dispositivos tecnológicos NO se basa directamente en principios de mecánica cuántica?',
+        options: ['Láser (emisión estimulada de fotones)', 'Transistor (bandas en semiconductores)', 'Motor de combustión interna', 'Resonancia magnética MRI (espín nuclear)'],
+        correct: 2,
+        explanation: 'El motor de combustión interna se basa en termodinámica y mecánica clásica. El láser (emisión estimulada), el transistor (mecánica cuántica de bandas) y el MRI (precesión del espín nuclear) son tecnologías directamente basadas en efectos cuánticos.'
+      },
+      {
+        text: 'La interpretación de Copenhague de la mecánica cuántica establece que:',
+        options: ['La función de onda es una entidad física real que existe en el espacio', 'La función de onda es solo una herramienta calculatoria; no tiene sentido preguntar qué ocurre entre mediciones', 'Existen múltiples universos paralelos, uno por cada resultado posible', 'Las partículas tienen posiciones definidas ocultas que aún no conocemos'],
+        correct: 1,
+        explanation: 'La interpretación de Copenhague (Bohr, Heisenberg) dice que la función de onda es solo un instrumento matemático para calcular probabilidades de resultados de medición. No tiene sentido físico preguntar qué hace el electrón "entre mediciones". Solo existe lo que se mide.'
+      },
+      {
+        text: 'Un computador cuántico de 50 qubits puede representar simultáneamente en superposición aproximadamente:',
+        options: ['50 estados diferentes', '100 estados (50×2)', '2⁵⁰ ≈ 10¹⁵ estados', 'Un número infinito de estados'],
+        correct: 2,
+        explanation: '50 qubits en superposición representan 2⁵⁰ ≈ 1.126 × 10¹⁵ estados simultáneamente. Esto supera la capacidad de memoria de cualquier supercomputador clásico actual. Esta escalabilidad exponencial es la fuente de la ventaja cuántica potencial para ciertos problemas.'
+      },
+      {
+        text: '¿Cuál fue la primera evidencia experimental directa de que la energía está cuantizada?',
+        options: ['El efecto Compton (1923): dispersión de rayos X por electrones', 'La ley de radiación del cuerpo negro de Planck (1900)', 'El experimento de la doble rendija con electrones (1927)', 'El modelo atómico de Bohr con órbitas discretas (1913)'],
+        correct: 1,
+        explanation: 'Planck derivó en 1900 su ley de radiación del cuerpo negro asumiendo que los osciladores solo podían emitir energía en cuantos de hf. Fue el primer éxito cuantitativo de la cuantización. El efecto fotoeléctrico (Einstein, 1905) y el efecto Compton confirmaron y extendieron esta idea a la luz misma.'
+      }
+    ]
+  }
+};
+
+/* ── BADGE DATA ───────────────────────────────────────────────────── */
+const BADGES = [
+  { id: 'first_step',   icon: '⚡', name: 'Primer Fotón',     desc: 'Completa tu primera lección',         condition: s => s.completed.length >= 1 },
+  { id: 'on_fire',      icon: '🔥', name: 'En Racha',         desc: '3 respuestas correctas seguidas',      condition: s => s.maxCombo >= 3 },
+  { id: 'half_way',     icon: '🌗', name: 'A Mitad de Camino',desc: 'Completa 4 lecciones',                 condition: s => s.completed.length >= 4 },
+  { id: 'quiz_ace',     icon: '🎯', name: 'Mente Aguda',      desc: 'Saca 100% en cualquier quiz',          condition: s => s.perfectQuizzes >= 1 },
+  { id: 'speedrunner',  icon: '⚡', name: 'Speedrunner',       desc: 'Completa 3 lecciones en una sesión',   condition: s => s.sessionLessons >= 3 },
+  { id: 'master',       icon: '🏆', name: 'Maestro Cuántico', desc: 'Completa el curso completo',           condition: s => s.completed.length >= 8 },
+];
+
+/* ── LEVELS ───────────────────────────────────────────────────────── */
+const LEVELS = [
+  { name: 'Electrón',      min: 0,    max: 200,  badge: 'Nv.1' },
+  { name: 'Fotón',         min: 200,  max: 450,  badge: 'Nv.2' },
+  { name: 'Qubit',         min: 450,  max: 750,  badge: 'Nv.3' },
+  { name: 'Entrelazado',   min: 750,  max: 1100, badge: 'Nv.4' },
+  { name: 'Maestro Cuántico', min: 1100, max: 9999, badge: 'Nv.5' },
+];
+
+const MOTIVATIONS = [
+  'Llevas {done} de 8 lecciones. ¡Sigue así!',
+  '¡Solo {left} lecciones más para el certificado! 🏆',
+  '¡Estás al {pct}% del curso!',
+  'Llevas {xp} XP acumulados. ¡Vas genial!',
+  '¡A mitad de camino hacia Maestro Cuántico! 🌟',
+  'Cada lección que completas te acerca al futuro de la computación.',
+];
+
+/* ── STATE ────────────────────────────────────────────────────────── */
+const STATE_KEY = 'qb-mc-state';
+function loadState() {
+  try {
+    return JSON.parse(localStorage.getItem(STATE_KEY)) || defaultState();
+  } catch { return defaultState(); }
+}
+function defaultState() {
+  return {
+    xp: 0,
+    completed: [],
+    earnedBadges: [],
+    streak: 0,
+    lastStudyDate: null,
+    currentLesson: 1,
+    comboCount: 0,
+    maxCombo: 0,
+    perfectQuizzes: 0,
+    sessionLessons: 0,
+  };
+}
+function saveState(s) { localStorage.setItem(STATE_KEY, JSON.stringify(s)); }
+let state = loadState();
+
+/* Update streak on load */
+(function checkStreak() {
+  const today = new Date().toDateString();
+  const last  = state.lastStudyDate;
+  if (!last) return; // first visit
+  const yesterday = new Date(Date.now() - 86400000).toDateString();
+  if (last === today) return; // already counted today
+  if (last === yesterday) { /* streak continues, will update on lesson completion */ return; }
+  // Streak broken
+  if (state.streak > 0) {
+    state.streak = 0;
+    saveState(state);
+    showStreakBanner(false);
+  }
+})();
+
+/* ── HELPERS ──────────────────────────────────────────────────────── */
+function getLevel(xp) {
+  return LEVELS.slice().reverse().find(l => xp >= l.min) || LEVELS[0];
+}
+function getLevelProgress(xp) {
+  const lvl = getLevel(xp);
+  const next = LEVELS[LEVELS.indexOf(lvl) + 1];
+  if (!next) return 100;
+  return Math.round(((xp - lvl.min) / (next.min - lvl.min)) * 100);
+}
+function randomSocialProof(max) {
+  return Math.floor(Math.random() * (max - 15)) + 15;
+}
+
+/* ── RENDER SIDEBAR ───────────────────────────────────────────────── */
+function renderSidebar() {
+  const lvl = getLevel(state.xp);
+  const nextLvl = LEVELS[LEVELS.indexOf(lvl) + 1];
+  const xpNext = nextLvl ? nextLvl.min : state.xp;
+  const xpPct = nextLvl ? getLevelProgress(state.xp) : 100;
+
+  document.getElementById('level-badge').textContent = lvl.badge;
+  document.getElementById('level-name').textContent = lvl.name;
+  document.getElementById('streak-count').textContent = state.streak;
+  document.getElementById('xp-current').textContent = state.xp;
+  document.getElementById('xp-next').textContent = xpNext;
+  document.getElementById('xp-bar').style.width = xpPct + '%';
+
+  const done = state.completed.length;
+  const pct = Math.round((done / 8) * 100);
+  document.getElementById('progress-pct').textContent = pct + '%';
+  document.getElementById('progress-bar').style.width = pct + '%';
+
+  // Motivation message
+  const left = 8 - done;
+  const templates = MOTIVATIONS;
+  const msg = templates[done % templates.length]
+    .replace('{done}', done)
+    .replace('{left}', left)
+    .replace('{pct}', pct)
+    .replace('{xp}', state.xp);
+  document.getElementById('hud-motivation').textContent = msg;
+
+  // Lesson list
+  const list = document.getElementById('lesson-list');
+  list.innerHTML = LESSONS.map(l => {
+    const isCompleted = state.completed.includes(l.id);
+    const isCurrent = state.currentLesson === l.id;
+    const isLocked = !isCompleted && l.id > (state.completed.length ? Math.max(...state.completed) + 1 : 1);
+    let cls = 'lesson-item';
+    if (isCompleted) cls += ' completed';
+    else if (isCurrent) cls += ' current';
+    else if (isLocked) cls += ' locked';
+
+    const icon = isCompleted ? '✓' : isCurrent ? `${l.id}` : l.emoji;
+    const xpText = isCompleted ? `✓ ${l.xp}XP` : `+${l.xp}XP`;
+    return `<div class="${cls}" onclick="navigateToLesson(${l.id})" tabindex="0" onkeydown="if(event.key==='Enter')navigateToLesson(${l.id})">
+      <div class="li-icon">${icon}</div>
+      <div class="li-info">
+        <div class="li-title">${l.title}</div>
+        <div class="li-meta">⏱ ${l.duration}${l.hasQuiz ? ' · 🧪 Quiz' : ''}</div>
+      </div>
+      <div class="li-xp">${xpText}</div>
+    </div>`;
+  }).join('');
+
+  // Badges
+  const badgeGrid = document.getElementById('badges-grid');
+  badgeGrid.innerHTML = BADGES.map(b => {
+    const earned = state.earnedBadges.includes(b.id);
+    return `<div class="badge-item ${earned ? 'earned' : 'locked-badge'}" title="${b.desc}">
+      <div class="badge-icon">${b.icon}</div>
+      <div class="badge-name">${b.name}</div>
+    </div>`;
+  }).join('');
+}
+
+/* ── RENDER LESSON ────────────────────────────────────────────────── */
+function renderLesson(id) {
+  state.currentLesson = id;
+  saveState(state);
+
+  const lesson = LESSONS.find(l => l.id === id);
+  if (!lesson) return;
+
+  // Determine available lessons
+  const maxUnlocked = state.completed.length ? Math.max(...state.completed) + 1 : 1;
+  if (id > maxUnlocked && !state.completed.includes(id)) {
+    // Show locked message
+    document.getElementById('lesson-content-area').innerHTML = `
+      <div style="padding:60px 20px;text-align:center;">
+        <div style="font-size:3rem;margin-bottom:16px;">🔒</div>
+        <h2 style="margin-bottom:12px;">Lección bloqueada</h2>
+        <p style="color:var(--text-2);margin-bottom:24px;">Completa las lecciones anteriores para desbloquear esta.</p>
+        <button class="btn btn-primary" onclick="navigateToLesson(${maxUnlocked})">
+          Ir a la lección ${maxUnlocked} →
+        </button>
+      </div>`;
+    return;
+  }
+
+  const isCompleted = state.completed.includes(id);
+  const prevId = id > 1 ? id - 1 : null;
+  const nextId = id < 8 ? id + 1 : null;
+
+  const area = document.getElementById('lesson-content-area');
+  area.innerHTML = `
+    <div class="lesson-content" id="lc-${id}">
+      ${lesson.content}
+      <div class="lesson-nav">
+        ${prevId ? `<button class="btn btn-ghost" onclick="navigateToLesson(${prevId})">← Lección ${prevId}</button>` : '<div></div>'}
+        <div class="lesson-nav-info">${id} de 8</div>
+        ${nextId && isCompleted ? `<button class="btn btn-primary" onclick="navigateToLesson(${nextId})">Lección ${nextId} →</button>` : (nextId ? '<div></div>' : '<a href="../catalogue.html" class="btn btn-violet">Ver más cursos →</a>')}
+      </div>
+    </div>
+  `;
+
+  // Update complete button appearance
+  const btn = document.getElementById('complete-btn');
+  if (btn && isCompleted) {
+    btn.textContent = '✅ Lección completada';
+    btn.style.background = 'var(--green-dim)';
+    btn.style.color = 'var(--green)';
+    btn.style.border = '1px solid rgba(16,185,129,0.3)';
+    btn.disabled = true;
+  }
+
+  // Render quiz if needed
+  if (lesson.hasQuiz) {
+    setTimeout(() => renderQuiz(id), 50);
+  }
+
+  // Update social proof numbers
+  const spEl = document.getElementById(`sp-count-${id}`);
+  if (spEl) {
+    const counts = { 1:54,2:38,3:61,4:47,5:29,6:73,7:45,8:32 };
+    const base = counts[id] || 40;
+    spEl.textContent = `${base + Math.floor(Math.random()*5)} estudiantes ${id===8?'completaron el curso esta semana':'estudiaron esto hoy'}`;
+  }
+
+  renderSidebar();
+  window.scrollTo(0, 0);
+}
+
+/* ── QUIZ ENGINE ──────────────────────────────────────────────────── */
+let quizState = {};
+function renderQuiz(lessonId) {
+  const quiz = QUIZZES[lessonId];
+  if (!quiz) return;
+  const lesson = LESSONS.find(l => l.id === lessonId);
+
+  quizState = {
+    lessonId,
+    currentQ: 0,
+    answers: Array(quiz.questions.length).fill(null),
+    correct: 0,
+    done: false,
+    combo: 0,
+  };
+
+  const quizXp = lesson.quizXp || 75;
+  const isFinal = lesson.isFinal;
+
+  // Insert quiz section after complete button
+  const btn = document.getElementById('complete-btn');
+  if (!btn) return;
+
+  const quizSection = document.createElement('div');
+  quizSection.className = 'quiz-section';
+  quizSection.id = 'quiz-section';
+  quizSection.innerHTML = `
+    <div class="quiz-header">
+      <div class="quiz-title-row">
+        <div class="quiz-icon">${isFinal ? '🏆' : '🧪'}</div>
+        <div>
+          <div class="quiz-title-text">${isFinal ? 'Examen Final' : 'Quiz de la Lección'}</div>
+          <div class="quiz-subtitle">${quiz.questions.length} preguntas · Responde para ganar XP</div>
+        </div>
+      </div>
+      <div class="quiz-xp-badge">+${quizXp} XP disponibles</div>
+    </div>
+    <div class="quiz-dots" id="quiz-dots">
+      ${quiz.questions.map((_, i) => `<div class="quiz-dot ${i===0?'active':''}" id="qdot-${i}">${i+1}</div>`).join('')}
+    </div>
+    <div class="quiz-body" id="quiz-body">
+      <!-- rendered per question -->
+    </div>
+  `;
+
+  btn.parentNode.insertBefore(quizSection, btn.nextSibling);
+  renderQuestion(lessonId, 0);
+}
+
+function renderQuestion(lessonId, qIdx) {
+  const quiz = QUIZZES[lessonId];
+  const q = quiz.questions[qIdx];
+  const letters = ['A', 'B', 'C', 'D'];
+
+  document.getElementById('quiz-body').innerHTML = `
+    <div class="question-number">Pregunta ${qIdx + 1} de ${quiz.questions.length}</div>
+    <div class="question-text">${q.text}</div>
+    <div class="options-grid">
+      ${q.options.map((opt, i) => `
+        <button class="option-btn" data-idx="${i}" onclick="answerQuestion(${lessonId}, ${qIdx}, ${i})">
+          <span class="opt-letter">${letters[i]}</span>
+          ${opt}
+        </button>
+      `).join('')}
+    </div>
+    <div class="question-feedback" id="q-feedback" style="display:none"></div>
+    <button class="quiz-next-btn" id="quiz-next-btn" style="display:none" onclick="nextQuestion(${lessonId}, ${qIdx})">
+      ${qIdx < quiz.questions.length - 1 ? 'Siguiente pregunta →' : 'Ver resultados →'}
+    </button>
+  `;
+}
+
+function answerQuestion(lessonId, qIdx, selectedIdx) {
+  const quiz = QUIZZES[lessonId];
+  const q = quiz.questions[qIdx];
+  const isCorrect = selectedIdx === q.correct;
+
+  // Disable all buttons
+  document.querySelectorAll('.option-btn').forEach((btn, i) => {
+    btn.disabled = true;
+    if (i === q.correct) btn.classList.add('correct');
+    else if (i === selectedIdx && !isCorrect) btn.classList.add('wrong');
+  });
+
+  // Update state
+  quizState.answers[qIdx] = selectedIdx;
+  if (isCorrect) {
+    quizState.correct++;
+    quizState.combo++;
+    state.comboCount++;
+    if (state.comboCount > state.maxCombo) state.maxCombo = state.comboCount;
+  } else {
+    quizState.combo = 0;
+    state.comboCount = 0;
+  }
+
+  // Update dot
+  const dot = document.getElementById(`qdot-${qIdx}`);
+  if (dot) {
+    dot.classList.remove('active');
+    dot.classList.add(isCorrect ? 'correct' : 'wrong');
+  }
+
+  // Show feedback
+  const fb = document.getElementById('q-feedback');
+  fb.style.display = 'block';
+  fb.className = 'question-feedback ' + (isCorrect ? 'feedback-correct' : 'feedback-wrong');
+  fb.innerHTML = `<div class="fb-title">${isCorrect ? '✅ ¡Correcto!' : '❌ Incorrecto'}</div>${q.explanation}`;
+
+  // Combo flash
+  if (isCorrect && quizState.combo >= 3) {
+    showComboFlash('🔥 COMBO x' + quizState.combo + '!');
+  } else if (isCorrect) {
+    showXpToast('⚡', `+${Math.round(LESSONS.find(l=>l.id===lessonId).quizXp / quiz.questions.length)} XP`, 'Respuesta correcta');
+  }
+
+  // Show next button
+  document.getElementById('quiz-next-btn').style.display = 'block';
+  saveState(state);
+}
+
+function nextQuestion(lessonId, qIdx) {
+  const quiz = QUIZZES[lessonId];
+  if (qIdx + 1 < quiz.questions.length) {
+    // Activate next dot
+    const nextDot = document.getElementById(`qdot-${qIdx + 1}`);
+    if (nextDot) nextDot.classList.add('active');
+    renderQuestion(lessonId, qIdx + 1);
+  } else {
+    finishQuiz(lessonId);
+  }
+}
+
+function finishQuiz(lessonId) {
+  const quiz = QUIZZES[lessonId];
+  const lesson = LESSONS.find(l => l.id === lessonId);
+  const score = quizState.correct;
+  const total = quiz.questions.length;
+  const pct = Math.round((score / total) * 100);
+  const xpEarned = Math.round(lesson.quizXp * (score / total));
+  const isPerfect = score === total;
+
+  // Update state with quiz XP
+  const oldLevel = getLevel(state.xp);
+  state.xp += xpEarned;
+  if (isPerfect) state.perfectQuizzes++;
+  state.comboCount = 0;
+  saveState(state);
+
+  // Check level up
+  const newLevel = getLevel(state.xp);
+  if (newLevel.name !== oldLevel.name) {
+    setTimeout(() => showLevelUp(newLevel), 600);
+  }
+
+  // Check badges
+  checkBadges();
+
+  const trophy = pct === 100 ? '🏆' : pct >= 70 ? '🥈' : '🎖️';
+  const nextLesson = LESSONS.find(l => l.id === lessonId + 1);
+
+  document.getElementById('quiz-body').innerHTML = `
+    <div class="quiz-complete">
+      <div class="qc-trophy">${trophy}</div>
+      <div class="qc-title">${isPerfect ? '¡Perfecto! 🌟' : pct >= 70 ? '¡Muy bien!' : '¡Buen intento!'}</div>
+      <div class="qc-score">${score} de ${total} correctas · ${pct}%</div>
+      <div class="qc-xp-earned">⚡ +${xpEarned} XP ganados</div>
+      ${nextLesson ? `<div class="qc-next-prompt">
+        ¡Solo <strong>${8 - state.completed.length} lección${8-state.completed.length!==1?'es':''} más</strong> para completar el curso y obtener tu certificado! 🏅
+      </div>` : `<div class="qc-next-prompt">
+        <strong>¡Has completado todo el curso! 🎓</strong> Descarga tu certificado o explora más cursos.
+      </div>`}
+      ${nextLesson ? `<button class="btn btn-primary" style="width:100%;justify-content:center;padding:14px;" onclick="navigateToLesson(${lessonId + 1})">
+        Continuar con "${nextLesson.title}" →
+      </button>` : `<a href="../catalogue.html" class="btn btn-violet" style="width:100%;justify-content:center;padding:14px;">
+        🚀 Explorar más cursos
+      </a>`}
+    </div>
+  `;
+
+  // Confetti for good results
+  if (pct >= 70) launchConfetti(pct === 100 ? 200 : 80);
+  showXpToast('⚡', `+${xpEarned} XP`, 'Quiz completado');
+  renderSidebar();
+}
+
+/* ── COMPLETE LESSON ─────────────────────────────────────────────── */
+function completeLesson(id) {
+  if (state.completed.includes(id)) return;
+
+  const lesson = LESSONS.find(l => l.id === id);
+  const today = new Date().toDateString();
+  const oldLevel = getLevel(state.xp);
+
+  state.completed.push(id);
+  state.xp += lesson.xp;
+  state.sessionLessons++;
+
+  // Streak logic
+  if (state.lastStudyDate !== today) {
+    const yesterday = new Date(Date.now() - 86400000).toDateString();
+    if (state.lastStudyDate === yesterday) {
+      state.streak++;
+    } else if (!state.lastStudyDate) {
+      state.streak = 1;
+    } else {
+      state.streak = 1; // reset
+    }
+    state.lastStudyDate = today;
+  }
+
+  saveState(state);
+  checkBadges();
+
+  // Check level up
+  const newLevel = getLevel(state.xp);
+  if (newLevel.name !== oldLevel.name) {
+    setTimeout(() => showLevelUp(newLevel), 400);
+  } else {
+    showXpToast('⚡', `+${lesson.xp} XP`, `Lección ${id} completada`);
+  }
+
+  // Streak celebration
+  if (state.streak >= 3) {
+    setTimeout(() => showStreakBanner(true), 1200);
+  }
+
+  // Update button
+  const btn = document.getElementById('complete-btn');
+  if (btn) {
+    btn.textContent = '✅ ¡Lección completada!';
+    btn.style.background = 'var(--green-dim)';
+    btn.style.color = 'var(--green)';
+    btn.style.border = '1px solid rgba(16,185,129,0.3)';
+    btn.disabled = true;
+  }
+
+  // Re-render sidebar
+  renderSidebar();
+
+  // Scroll to quiz if it has one
+  if (lesson.hasQuiz) {
+    const qs = document.getElementById('quiz-section');
+    if (qs) setTimeout(() => qs.scrollIntoView({ behavior: 'smooth', block: 'start' }), 300);
+  }
+}
+
+/* ── NAVIGATION ──────────────────────────────────────────────────── */
+function navigateToLesson(id) {
+  renderLesson(id);
+  closeMobileSidebar();
+}
+
+/* ── BADGE CHECK ──────────────────────────────────────────────────── */
+function checkBadges() {
+  BADGES.forEach(b => {
+    if (!state.earnedBadges.includes(b.id) && b.condition(state)) {
+      state.earnedBadges.push(b.id);
+      saveState(state);
+      setTimeout(() => showBadgeModal(b), 800);
+    }
+  });
+}
+
+/* ── UI EFFECTS ──────────────────────────────────────────────────── */
+function showXpToast(icon, amount, label) {
+  const el = document.getElementById('xp-toast');
+  document.getElementById('xp-toast-icon').textContent = icon;
+  document.getElementById('xp-toast-amount').textContent = amount;
+  document.getElementById('xp-toast-label').textContent = label;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 3000);
+}
+
+function showLevelUp(level) {
+  document.getElementById('lu-new-level').textContent = level.name;
+  const msgs = {
+    'Fotón':            '¡La energía viaja en cuantos y tú también avanzas a saltos! ✨',
+    'Qubit':            '¡Ahora existes en superposición de conocimiento y potencial! 🌟',
+    'Entrelazado':      '¡Tu conocimiento está entrelazado con el universo cuántico! 🔗',
+    'Maestro Cuántico': '¡Has alcanzado el nivel supremo! El quantum te da la bienvenida. 🏆',
+  };
+  document.getElementById('lu-subtitle').textContent = msgs[level.name] || '¡Sigues avanzando en tu camino cuántico!';
+  document.getElementById('levelup-overlay').classList.add('show');
+  launchConfetti(120);
+}
+
+document.getElementById('lu-close').addEventListener('click', () => {
+  document.getElementById('levelup-overlay').classList.remove('show');
+});
+
+function showBadgeModal(badge) {
+  document.getElementById('bm-icon').textContent = badge.icon;
+  document.getElementById('bm-name').textContent = badge.name;
+  document.getElementById('bm-desc').textContent = badge.desc;
+  const el = document.getElementById('badge-modal');
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 4500);
+}
+
+function showStreakBanner(isKeeping) {
+  const el = document.getElementById('streak-banner');
+  if (isKeeping) {
+    document.getElementById('sb-title').textContent = `🔥 ¡${state.streak} días de racha!`;
+    document.getElementById('sb-sub').textContent = `¡Impresionante! Llevas ${state.streak} días seguidos estudiando. ¡Mañana suma otro día!`;
+  } else {
+    document.getElementById('sb-title').textContent = '⚠️ ¡Tu racha está en peligro!';
+    document.getElementById('sb-sub').textContent = `Llevabas una racha de ${state.streak} días. Completa una lección hoy para no perderla.`;
+  }
+  el.classList.add('show');
+}
+
+document.getElementById('sb-close').addEventListener('click', () => {
+  document.getElementById('streak-banner').classList.remove('show');
+});
+
+function showComboFlash(text) {
+  const el = document.getElementById('combo-flash');
+  el.textContent = text;
+  el.classList.remove('show');
+  void el.offsetWidth; // force reflow
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 1200);
+}
+
+/* ── CONFETTI ─────────────────────────────────────────────────────── */
+function launchConfetti(count = 80) {
+  const canvas = document.getElementById('confetti-canvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  const particles = [];
+  const colors = ['#9333ea','#f59e0b','#10b981','#e2e8f0','#60a5fa','#f472b6'];
+  for (let i = 0; i < count; i++) {
+    particles.push({
+      x: Math.random() * canvas.width,
+      y: -20 - Math.random() * 60,
+      vx: (Math.random() - 0.5) * 4,
+      vy: 2 + Math.random() * 4,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      w: 6 + Math.random() * 8,
+      h: 8 + Math.random() * 10,
+      rot: Math.random() * Math.PI * 2,
+      rotV: (Math.random() - 0.5) * 0.15,
+    });
+  }
+
+  let frame;
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    let alive = false;
+    particles.forEach(p => {
+      p.x += p.vx; p.y += p.vy; p.vy += 0.06; p.rot += p.rotV;
+      if (p.y < canvas.height + 20) alive = true;
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.rot);
+      ctx.fillStyle = p.color;
+      ctx.globalAlpha = Math.max(0, 1 - (p.y / canvas.height));
+      ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
+      ctx.restore();
+    });
+    if (alive) frame = requestAnimationFrame(draw);
+    else ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+  cancelAnimationFrame(frame);
+  requestAnimationFrame(draw);
+}
+
+/* ── MOBILE SIDEBAR ──────────────────────────────────────────────── */
+const sidebarToggle = document.getElementById('sidebar-toggle');
+const sidebarOverlay = document.getElementById('sidebar-overlay');
+const sidebar = document.getElementById('sidebar');
+
+sidebarToggle.addEventListener('click', () => {
+  sidebar.classList.toggle('open');
+  sidebarOverlay.classList.toggle('open');
+});
+sidebarOverlay.addEventListener('click', closeMobileSidebar);
+
+function closeMobileSidebar() {
+  sidebar.classList.remove('open');
+  sidebarOverlay.classList.remove('open');
+}
+
+/* ── INIT ─────────────────────────────────────────────────────────── */
+document.addEventListener('DOMContentLoaded', () => {
+  renderSidebar();
+  renderLesson(state.currentLesson);
+
+  // Show streak warning if streak > 0 and hasn't studied today
+  const today = new Date().toDateString();
+  if (state.streak > 0 && state.lastStudyDate !== today) {
+    setTimeout(() => showStreakBanner(false), 2000);
+  }
+});
+</script>
+</body>
+</html>

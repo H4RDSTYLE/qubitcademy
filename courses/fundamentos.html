@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Fundamentos de Mecánica Cuántica — Qubitcademy. Superposición, entrelazamiento e interferencia desde cero." />
+  <title>Fundamentos de Mecánica Cuántica — Qubitcademy</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%239333ea'/><text x='50%' y='55%' text-anchor='middle' dominant-baseline='middle' font-family='monospace' font-size='14' font-weight='600' fill='%23fff'>Q</text></svg>" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <style>
+    /* ── Course-page specific styles ─────────────────────────── */
+
+    /* Hero banner */
+    .course-hero {
+      padding: calc(var(--nav-h) + 56px) 0 0;
+      position: relative;
+      background: var(--bg-2);
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
+    }
+    .course-hero-bg {
+      position: absolute; inset: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 60% 80% at 80% 50%, rgba(147,51,234,0.07) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 60% at 10% 80%, rgba(245,158,11,0.05) 0%, transparent 70%);
+    }
+    .course-hero-grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(147,51,234,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(147,51,234,0.025) 1px, transparent 1px);
+      background-size: 56px 56px;
+      mask-image: radial-gradient(ellipse 100% 100% at 50% 0%, black 10%, transparent 80%);
+    }
+
+    .course-hero-inner {
+      position: relative; z-index: 1;
+      display: grid; grid-template-columns: 1fr 380px;
+      gap: 48px; align-items: end;
+      padding-bottom: 0;
+    }
+
+    .course-breadcrumb {
+      display: flex; align-items: center; gap: 8px;
+      font-family: var(--font-m); font-size: 0.72rem; color: var(--text-3);
+      margin-bottom: 22px;
+    }
+    .course-breadcrumb a { color: var(--text-3); transition: color 0.18s; }
+    .course-breadcrumb a:hover { color: var(--cyan); }
+    .course-breadcrumb span { color: var(--text-3); }
+
+    .course-meta-row {
+      display: flex; align-items: center; gap: 10px;
+      flex-wrap: wrap; margin-bottom: 18px;
+    }
+
+    .course-hero h1 {
+      font-size: clamp(1.9rem, 4vw, 3rem);
+      margin-bottom: 18px; line-height: 1.12;
+    }
+    .course-hero-desc {
+      font-size: 1.02rem; color: var(--text-2);
+      max-width: 560px; line-height: 1.72; margin-bottom: 28px;
+    }
+
+    .course-stats-row {
+      display: flex; align-items: center; gap: 24px;
+      flex-wrap: wrap; padding-bottom: 40px;
+    }
+    .cstat { display: flex; align-items: center; gap: 7px; font-size: 0.84rem; color: var(--text-2); }
+    .cstat-icon { font-size: 0.9rem; }
+    .cstat strong { color: var(--text); font-weight: 600; }
+
+    /* Sticky enroll card (right column in hero) */
+    .enroll-card {
+      background: var(--bg-card); border: 1px solid var(--border-md);
+      border-radius: 16px; padding: 28px;
+      position: relative; top: 0; /* becomes sticky in layout below */
+      box-shadow: 0 24px 60px rgba(0,0,0,0.4);
+      transform: translateY(40px);
+    }
+    .enroll-price-row {
+      display: flex; align-items: baseline; gap: 10px; margin-bottom: 8px;
+    }
+    .enroll-price-free {
+      font-family: var(--font-h); font-size: 2rem; font-weight: 700; color: var(--green);
+    }
+    .enroll-price-sub {
+      font-size: 0.8rem; color: var(--text-3);
+    }
+    .enroll-card .btn { width: 100%; justify-content: center; margin-bottom: 14px; }
+    .enroll-includes {
+      list-style: none; display: flex; flex-direction: column; gap: 10px;
+      padding-top: 18px; border-top: 1px solid var(--border); margin-top: 6px;
+    }
+    .enroll-includes li {
+      display: flex; align-items: center; gap: 9px;
+      font-size: 0.83rem; color: var(--text-2);
+    }
+    .enroll-includes li::before { content: '✓'; color: var(--green); font-weight: 700; font-size: 0.85rem; }
+
+    /* ── Course body layout ───────────────────────────────────── */
+    .course-body-wrap {
+      display: grid; grid-template-columns: 1fr 380px;
+      gap: 48px; align-items: start;
+      padding: 56px 0 96px;
+    }
+    .course-main { min-width: 0; }
+
+    /* Sticky sidebar */
+    .course-sidebar {
+      position: sticky; top: calc(var(--nav-h) + 24px);
+    }
+
+    /* What you'll learn */
+    .learn-box {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--r); padding: 28px; margin-bottom: 40px;
+    }
+    .learn-box h2 { font-size: 1.1rem; margin-bottom: 18px; }
+    .learn-list {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 10px 24px; list-style: none;
+    }
+    .learn-list li {
+      display: flex; align-items: flex-start; gap: 9px;
+      font-size: 0.86rem; color: var(--text-2); line-height: 1.5;
+    }
+    .learn-list li::before { content: '⚛'; font-size: 0.8rem; flex-shrink: 0; margin-top: 2px; }
+
+    /* Requirements */
+    .req-box { margin-bottom: 40px; }
+    .req-box h2 { font-size: 1.1rem; margin-bottom: 14px; }
+    .req-list { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+    .req-list li {
+      display: flex; align-items: flex-start; gap: 9px;
+      font-size: 0.86rem; color: var(--text-2); line-height: 1.5;
+    }
+    .req-list li::before { content: '→'; color: var(--text-3); font-family: var(--font-m); }
+
+    /* Lessons list */
+    .lessons-section h2 { font-size: 1.1rem; margin-bottom: 6px; }
+    .lessons-meta { font-size: 0.82rem; color: var(--text-3); font-family: var(--font-m); margin-bottom: 20px; }
+
+    .lessons-list { list-style: none; display: flex; flex-direction: column; gap: 1px; background: var(--border); border-radius: var(--r); overflow: hidden; }
+
+    .lesson-item {
+      background: var(--bg-card);
+      display: flex; align-items: center; gap: 16px;
+      padding: 16px 22px;
+      transition: background 0.18s; cursor: pointer;
+      text-decoration: none; color: inherit;
+    }
+    .lesson-item:hover { background: var(--bg-3); }
+    .lesson-item.lesson-active { background: rgba(147,51,234,0.07); border-left: 2px solid var(--cyan); }
+
+    .lesson-num {
+      font-family: var(--font-m); font-size: 0.72rem; color: var(--text-3);
+      width: 22px; flex-shrink: 0; text-align: right;
+    }
+    .lesson-play {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: var(--bg-3); border: 1px solid var(--border-md);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; font-size: 0.6rem; color: var(--text-3);
+      transition: all 0.18s;
+    }
+    .lesson-item:hover .lesson-play { background: var(--cyan-dim); border-color: rgba(147,51,234,0.3); color: var(--cyan); }
+    .lesson-item.lesson-active .lesson-play { background: var(--cyan-dim); border-color: var(--cyan); color: var(--cyan); }
+    .lesson-play-icon { display: inline-block; margin-left: 2px; }
+
+    .lesson-info { flex: 1; min-width: 0; }
+    .lesson-info h4 { font-size: 0.9rem; font-weight: 600; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .lesson-info p { font-size: 0.76rem; color: var(--text-3); }
+    .lesson-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+    .lesson-dur { font-family: var(--font-m); font-size: 0.73rem; color: var(--text-3); }
+    .lesson-free-tag {
+      font-family: var(--font-m); font-size: 0.65rem; font-weight: 600;
+      color: var(--green); background: rgba(16,185,129,0.1);
+      border: 1px solid rgba(16,185,129,0.2); border-radius: 4px;
+      padding: 2px 7px;
+    }
+
+    /* Instructor card (sidebar) */
+    .instructor-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--r); padding: 24px; margin-bottom: 20px;
+    }
+    .instructor-card h3 { font-size: 0.72rem; font-family: var(--font-m); font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-3); margin-bottom: 16px; }
+    .instructor-row { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+    .instructor-av {
+      width: 44px; height: 44px; border-radius: 50%; flex-shrink: 0;
+      background: linear-gradient(135deg, var(--cyan), var(--violet));
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-h); font-size: 0.92rem; font-weight: 700; color: var(--bg);
+    }
+    .instructor-name { font-size: 0.92rem; font-weight: 600; }
+    .instructor-title { font-size: 0.78rem; color: var(--text-3); margin-top: 2px; }
+    .instructor-bio { font-size: 0.82rem; color: var(--text-2); line-height: 1.65; }
+
+    /* Share / related */
+    .sidebar-chip-row { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 14px; }
+    .sidebar-chip {
+      font-family: var(--font-m); font-size: 0.7rem; color: var(--text-3);
+      background: var(--bg-3); border: 1px solid var(--border);
+      border-radius: 6px; padding: 4px 10px;
+    }
+
+    /* ── Responsive ──────────────────────────────────────────── */
+    @media (max-width: 960px) {
+      .course-hero-inner,
+      .course-body-wrap { grid-template-columns: 1fr; }
+      .enroll-card { transform: none; margin-top: 32px; }
+      .course-sidebar { position: static; }
+      .learn-list { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 640px) {
+      .course-hero { padding-top: calc(var(--nav-h) + 32px); }
+      .course-stats-row { gap: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ════════════════════════════ NAV ════════════════════════════ -->
+<nav id="nav">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="../index.html" class="nav-logo" aria-label="Qubitcademy">
+        <div class="nav-logo-mark">|ψ⟩</div>
+        <span>qubitcademy</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="../index.html" data-i18n="nav.home">Inicio</a></li>
+        <li><a href="../catalogue.html" class="active" data-i18n="nav.catalogue">Catálogo</a></li>
+        <li><a href="../paths.html" data-i18n="nav.paths">Rutas</a></li>
+        <li><a href="../faq.html" data-i18n="nav.faq">FAQ</a></li>
+      </ul>
+      <div class="nav-right">
+        <div class="lang-switcher">
+          <button class="lang-btn active" data-lang="es">ES</button>
+          <div class="lang-sep"></div>
+          <button class="lang-btn" data-lang="en">EN</button>
+        </div>
+        <a href="#" class="nav-login" data-i18n="nav.login">Iniciar sesión</a>
+        <a href="#" class="btn btn-primary btn-sm" data-i18n="nav.cta">Empezar gratis</a>
+      </div>
+      <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="6" x2="19" y2="6"/><line x1="3" y1="11" x2="19" y2="11"/><line x1="3" y1="16" x2="19" y2="16"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</nav>
+<div class="nav-mobile">
+  <a href="../index.html" data-i18n="nav.home">Inicio</a>
+  <a href="../catalogue.html" data-i18n="nav.catalogue">Catálogo</a>
+  <a href="../paths.html" data-i18n="nav.paths">Rutas</a>
+  <a href="../faq.html" data-i18n="nav.faq">FAQ</a>
+  <div class="nav-mobile-lang">
+    <button class="lang-btn active" data-lang="es">ES</button>
+    <div class="lang-sep"></div>
+    <button class="lang-btn" data-lang="en">EN</button>
+  </div>
+  <div class="nav-mobile-footer">
+    <a href="#" class="btn btn-ghost" data-i18n="nav.login">Iniciar sesión</a>
+    <a href="#" class="btn btn-primary" data-i18n="nav.cta">Empezar gratis</a>
+  </div>
+</div>
+
+
+<!-- ════════════════════════ COURSE HERO ════════════════════════ -->
+<div class="course-hero">
+  <div class="course-hero-bg"></div>
+  <div class="course-hero-grid"></div>
+  <div class="container">
+    <div class="course-hero-inner">
+
+      <!-- Left: course info -->
+      <div class="course-hero-text">
+
+        <nav class="course-breadcrumb" aria-label="Ruta de navegación">
+          <a href="../catalogue.html">Catálogo</a>
+          <span>›</span>
+          <span>Fundamentos</span>
+          <span>›</span>
+          <span>Fundamentos de Mecánica Cuántica</span>
+        </nav>
+
+        <div class="course-meta-row">
+          <span class="lvl-badge lvl-b">Principiante</span>
+          <span class="ctag">fundamentos</span>
+          <span class="cprice-free" style="font-size:0.88rem;">Gratis</span>
+        </div>
+
+        <h1>Fundamentos de<br>Mecánica Cuántica</h1>
+
+        <p class="course-hero-desc">
+          Domina los pilares de la física cuántica: superposición, entrelazamiento e interferencia.
+          Matemáticas accesibles, ejemplos visuales y el puente directo hacia la computación cuántica.
+          Sin conocimientos previos de física requeridos.
+        </p>
+
+        <div class="course-stats-row">
+          <div class="cstat">
+            <span class="cstat-icon">⏱</span>
+            <span><strong>3 horas</strong> de contenido</span>
+          </div>
+          <div class="cstat">
+            <span class="cstat-icon">📚</span>
+            <span><strong>8 lecciones</strong></span>
+          </div>
+          <div class="cstat">
+            <span class="cstat-icon">🌐</span>
+            <span><strong>ES · EN</strong></span>
+          </div>
+          <div class="cstat">
+            <span class="cstat-icon">♾️</span>
+            <span>Acceso <strong>de por vida</strong></span>
+          </div>
+          <div class="cstat">
+            <span class="cstat-icon">🏅</span>
+            <span>Certificado de <strong>finalización</strong></span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Right: enroll card -->
+      <div>
+        <div class="enroll-card">
+          <div class="enroll-price-row">
+            <span class="enroll-price-free">Gratis</span>
+            <span class="enroll-price-sub">Sin tarjeta de crédito</span>
+          </div>
+          <a href="#lessons" class="btn btn-primary btn-lg">Empezar ahora →</a>
+          <a href="#" class="btn btn-ghost">Añadir a mi lista</a>
+          <ul class="enroll-includes">
+            <li>8 lecciones con texto y diagramas</li>
+            <li>Ejercicios de autoevaluación</li>
+            <li>Acceso al foro de la comunidad</li>
+            <li>Certificado de finalización</li>
+            <li>Acceso de por vida</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- ════════════════════════ COURSE BODY ════════════════════════ -->
+<div class="container">
+  <div class="course-body-wrap">
+
+    <!-- ── Main column ──────────────────────────────────────── -->
+    <div class="course-main">
+
+      <!-- What you'll learn -->
+      <div class="learn-box">
+        <h2>Lo que aprenderás</h2>
+        <ul class="learn-list">
+          <li>El experimento de la doble rendija y la naturaleza ondulatoria de la materia</li>
+          <li>El principio de superposición cuántica y la notación de Dirac |ψ⟩</li>
+          <li>Entrelazamiento cuántico y correlaciones no locales (EPR)</li>
+          <li>Interferencia constructiva y destructiva a nivel cuántico</li>
+          <li>El principio de incertidumbre de Heisenberg y sus implicaciones</li>
+          <li>Medición cuántica y el colapso de la función de onda</li>
+          <li>La esfera de Bloch como representación geométrica del qubit</li>
+          <li>Cómo estos fundamentos dan lugar a la computación cuántica</li>
+        </ul>
+      </div>
+
+      <!-- Requirements -->
+      <div class="req-box">
+        <h2>Requisitos</h2>
+        <ul class="req-list">
+          <li>Matemáticas de bachillerato (álgebra básica y números complejos elementales)</li>
+          <li>No se necesitan conocimientos previos de física cuántica ni de programación</li>
+          <li>Curiosidad y disposición para pensar de forma no intuitiva</li>
+        </ul>
+      </div>
+
+      <!-- Lessons -->
+      <div class="lessons-section" id="lessons">
+        <h2>Lecciones del curso</h2>
+        <p class="lessons-meta">8 lecciones · 3h de contenido · todas gratuitas</p>
+
+        <ul class="lessons-list">
+
+          <!-- Lección 1 -->
+          <li>
+            <a href="#" class="lesson-item lesson-active">
+              <span class="lesson-num">01</span>
+              <div class="lesson-play"><span class="lesson-play-icon">▶</span></div>
+              <div class="lesson-info">
+                <h4>¿Qué es la mecánica cuántica?</h4>
+                <p>Historia, motivación y por qué la física clásica no es suficiente</p>
+              </div>
+              <div class="lesson-right">
+                <span class="lesson-dur">15 min</span>
+                <span class="lesson-free-tag">Gratis</span>
+              </div>
+            </a>
+          </li>
+
+          <!-- Lección 2 -->
+          <li>
+            <a href="#" class="lesson-item">
+              <span class="lesson-num">02</span>
+              <div class="lesson-play"><span class="lesson-play-icon">▶</span></div>
+              <div class="lesson-info">
+                <h4>El experimento de la doble rendija</h4>
+                <p>La naturaleza ondulatoria de los electrones y el misterio de la medición</p>
+              </div>
+              <div class="lesson-right">
+                <span class="lesson-dur">22 min</span>
+                <span class="lesson-free-tag">Gratis</span>
+              </div>
+            </a>
+          </li>
+
+          <!-- Lección 3 -->
+          <li>
+            <a href="#" class="lesson-item">
+              <span class="lesson-num">03</span>
+              <div class="lesson-play"><span class="lesson-play-icon">▶</span></div>
+              <div class="lesson-info">
+                <h4>Superposición cuántica</h4>
+                <p>Estados |0⟩ y |1⟩, combinaciones lineales y la notación de Dirac</p>
+              </div>
+              <div class="lesson-right">
+                <span class="lesson-dur">25 min</span>
+                <span class="lesson-free-tag">Gratis</span>
+              </div>
+            </a>
+          </li>
+
+          <!-- Lección 4 -->
+          <li>
+            <a href="#" class="lesson-item">
+              <span class="lesson-num">04</span>
+              <div class="lesson-play"><span class="lesson-play-icon">▶</span></div>
+              <div class="lesson-info">
+                <h4>El principio de incertidumbre de Heisenberg</h4>
+                <p>Posición y momento: por qué no puedes conocerlos simultáneamente con precisión infinita</p>
+              </div>
+              <div class="lesson-right">
+                <span class="lesson-dur">20 min</span>
+                <span class="lesson-free-tag">Gratis</span>
+              </div>
+            </a>
+          </li>
+
+          <!-- Lección 5 -->
+          <li>
+            <a href="#" class="lesson-item">
+              <span class="lesson-num">05</span>
+              <div class="lesson-play"><span class="lesson-play-icon">▶</span></div>
+              <div class="lesson-info">
+                <h4>Entrelazamiento cuántico</h4>
+                <p>Pares EPR, correlaciones no locales y la "acción fantasmal a distancia"</p>
+              </div>
+              <div class="lesson-right">
+                <span class="lesson-dur">26 min</span>
+                <span class="lesson-free-tag">Gratis</span>
+              </div>
+            </a>
+          </li>
+
+          <!-- Lección 6 -->
+          <li>
+            <a href="#" class="lesson-item">
+              <span class="lesson-num">06</span>
+              <div class="lesson-play"><span class="lesson-play-icon">▶</span></div>
+              <div class="lesson-info">
+                <h4>Interferencia cuántica</h4>
+                <p>Amplitudes de probabilidad, interferencia constructiva y destructiva</p>
+              </div>
+              <div class="lesson-right">
+                <span class="lesson-dur">20 min</span>
+                <span class="lesson-free-tag">Gratis</span>
+              </div>
+            </a>
+          </li>
+
+          <!-- Lección 7 -->
+          <li>
+            <a href="#" class="lesson-item">
+              <span class="lesson-num">07</span>
+              <div class="lesson-play"><span class="lesson-play-icon">▶</span></div>
+              <div class="lesson-info">
+                <h4>Medición y colapso de la función de onda</h4>
+                <p>El papel del observador, el postulado de medición y la esfera de Bloch</p>
+              </div>
+              <div class="lesson-right">
+                <span class="lesson-dur">24 min</span>
+                <span class="lesson-free-tag">Gratis</span>
+              </div>
+            </a>
+          </li>
+
+          <!-- Lección 8 -->
+          <li>
+            <a href="#" class="lesson-item">
+              <span class="lesson-num">08</span>
+              <div class="lesson-play"><span class="lesson-play-icon">▶</span></div>
+              <div class="lesson-info">
+                <h4>De la mecánica cuántica a la computación cuántica</h4>
+                <p>El qubit, las puertas cuánticas y el puente hacia el siguiente curso</p>
+              </div>
+              <div class="lesson-right">
+                <span class="lesson-dur">28 min</span>
+                <span class="lesson-free-tag">Gratis</span>
+              </div>
+            </a>
+          </li>
+
+        </ul>
+      </div>
+
+    </div><!-- /course-main -->
+
+
+    <!-- ── Sidebar ───────────────────────────────────────────── -->
+    <aside class="course-sidebar">
+
+      <!-- Instructor -->
+      <div class="instructor-card">
+        <h3>Instructor</h3>
+        <div class="instructor-row">
+          <div class="instructor-av">DR</div>
+          <div>
+            <div class="instructor-name">Dr. Rafael Moreno</div>
+            <div class="instructor-title">Investigador en Física Cuántica · UAM</div>
+          </div>
+        </div>
+        <p class="instructor-bio">
+          Doctor en Física por la Universidad Autónoma de Madrid con estancia postdoctoral en el
+          Instituto Max Planck. Más de 10 años divulgando mecánica cuántica a audiencias no especializadas.
+        </p>
+      </div>
+
+      <!-- Tags -->
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:22px;">
+        <h3 style="font-size:0.72rem;font-family:var(--font-m);font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-3);margin-bottom:14px;">Incluido en la ruta</h3>
+        <a href="../paths.html" style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--bg-3);border-radius:8px;transition:background 0.18s;" onmouseover="this.style.background='var(--bg-2)'" onmouseout="this.style.background='var(--bg-3)'">
+          <span style="font-size:1.1rem;">🌱</span>
+          <div>
+            <div style="font-size:0.86rem;font-weight:600;">Quantum Starter</div>
+            <div style="font-size:0.74rem;color:var(--text-3);">Módulo 1 de 3</div>
+          </div>
+        </a>
+        <div class="sidebar-chip-row" style="margin-top:16px;">
+          <span class="sidebar-chip">fundamentos</span>
+          <span class="sidebar-chip">mecánica cuántica</span>
+          <span class="sidebar-chip">superposición</span>
+          <span class="sidebar-chip">entrelazamiento</span>
+          <span class="sidebar-chip">qubits</span>
+        </div>
+      </div>
+
+    </aside>
+
+  </div>
+</div>
+
+
+<!-- ══════════════════════ NEXT COURSE CTA ══════════════════════ -->
+<div style="background:var(--bg-2);border-top:1px solid var(--border);padding:56px 0;">
+  <div class="container">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;">
+      <div>
+        <div class="label" style="margin-bottom:10px;">Siguiente en la ruta Quantum Starter</div>
+        <h2 style="font-size:1.45rem;margin-bottom:8px;">Qubits y Circuitos Cuánticos</h2>
+        <p style="font-size:0.9rem;color:var(--text-2);">Puertas cuánticas, circuitos y el modelo de computación basado en qubits. · 4h · 10 lecciones</p>
+      </div>
+      <a href="../catalogue.html" class="btn btn-primary btn-lg" style="flex-shrink:0;">Ver siguiente curso →</a>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════ FOOTER ══════════════════════════════ -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="../index.html" class="nav-logo">
+          <div class="nav-logo-mark">|ψ⟩</div>
+          <span>qubitcademy</span>
+        </a>
+        <p data-i18n="ft.desc">La plataforma de aprendizaje cuántico más completa en español.</p>
+      </div>
+      <div class="footer-col">
+        <h4 data-i18n="ft.col1">Cursos</h4>
+        <ul>
+          <li><a href="../catalogue.html" data-i18n="ft.1a">Fundamentos</a></li>
+          <li><a href="../catalogue.html" data-i18n="ft.1b">Algoritmos</a></li>
+          <li><a href="../catalogue.html" data-i18n="ft.1c">Programación</a></li>
+          <li><a href="../catalogue.html" data-i18n="ft.1d">Criptografía</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4 data-i18n="ft.col2">Plataforma</h4>
+        <ul>
+          <li><a href="../catalogue.html" data-i18n="ft.2a">Catálogo</a></li>
+          <li><a href="../paths.html" data-i18n="ft.2b">Rutas</a></li>
+          <li><a href="#" data-i18n="ft.2c">Certificados</a></li>
+          <li><a href="../faq.html" data-i18n="ft.2d">FAQ</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4 data-i18n="ft.col3">Empresa</h4>
+        <ul>
+          <li><a href="#" data-i18n="ft.3a">Sobre nosotros</a></li>
+          <li><a href="#" data-i18n="ft.3b">Blog</a></li>
+          <li><a href="../faq.html" data-i18n="ft.3c">Contacto</a></li>
+          <li><a href="#" data-i18n="ft.3d">Afiliados</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span data-i18n="ft.copy">© 2025 Qubitcademy. Todos los derechos reservados.</span>
+      <div style="display:flex;gap:16px;">
+        <a href="#">Privacidad</a>
+        <a href="#">Términos</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="../js/main.js"></script>
+</body>
+</html>
