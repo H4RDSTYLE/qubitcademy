@@ -1,101 +1,885 @@
-<!DOCTYPE html><html lang="es"><head>
-  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Algoritmo de Shor — Qubitcademy</title>
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%239333ea'/><text x='50%' y='55%' text-anchor='middle' dominant-baseline='middle' font-family='monospace' font-size='14' font-weight='600' fill='%23fff'>Q</text></svg>"/>
-  <link rel="stylesheet" href="../css/style.css"/>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%239333ea'/><text x='50%' y='55%' text-anchor='middle' dominant-baseline='middle' font-family='monospace' font-size='14' font-weight='600' fill='%23fff'>Q</text></svg>" />
+  <link rel="stylesheet" href="../css/style.css" />
   <style>
-    .ch{padding:calc(var(--nav-h) + 56px) 0 56px;position:relative;background:var(--bg-2);border-bottom:1px solid var(--border);overflow-x:hidden}
-    .ch-bg{position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 80% 50%,rgba(245,158,11,.07) 0%,transparent 70%),radial-gradient(ellipse 40% 60% at 10% 80%,rgba(147,51,234,.05) 0%,transparent 70%);pointer-events:none}
-    .chi{display:grid;grid-template-columns:1fr 360px;gap:48px;align-items:end;position:relative;z-index:1}
-    .cht{padding-bottom:40px}.bc{display:flex;align-items:center;gap:8px;font-family:var(--font-m);font-size:.72rem;color:var(--text-3);margin-bottom:20px}
-    .bc a{color:var(--text-3);transition:color .18s}.bc a:hover{color:var(--cyan)}
-    .chi h1{font-size:clamp(1.8rem,4vw,2.8rem);margin-bottom:16px}
-    .chi-d{font-size:1rem;color:var(--text-2);max-width:540px;line-height:1.75;margin-bottom:26px}
-    .chs{display:flex;gap:20px;flex-wrap:wrap}.cs{display:flex;align-items:center;gap:7px;font-size:.83rem;color:var(--text-2)}.cs strong{color:var(--text)}
-    .ec{background:var(--bg-card);border:1px solid var(--border-md);border-radius:16px;padding:26px;box-shadow:0 24px 60px rgba(0,0,0,.4)}
-    .ep{font-family:var(--font-h);font-size:2rem;font-weight:700;color:var(--green);margin-bottom:6px}
-    .ec .btn{width:100%;justify-content:center;margin-bottom:12px}
-    .el{list-style:none;border-top:1px solid var(--border);padding-top:16px;margin-top:6px;display:flex;flex-direction:column;gap:9px}
-    .el li{font-size:.82rem;color:var(--text-2);display:flex;gap:8px}.el li::before{content:'✓';color:var(--green);font-weight:700;flex-shrink:0}
-    .cb{display:grid;grid-template-columns:1fr 360px;gap:48px;padding:96px 0 96px;align-items:start}
-    .csb{position:sticky;top:calc(var(--nav-h) + 20px)}
-    .lb{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:26px;margin-bottom:36px}
-    .lb h2{font-size:1.05rem;margin-bottom:16px}
-    .lg{display:grid;grid-template-columns:1fr 1fr;gap:10px 20px;list-style:none}
-    .lg li{font-size:.85rem;color:var(--text-2);padding-left:16px;position:relative;line-height:1.5}
-    .lg li::before{content:'⚛';position:absolute;left:0;color:var(--cyan);font-size:.75rem}
-    .rb{margin-bottom:36px}.rb h2{font-size:1.05rem;margin-bottom:12px}
-    .rl{list-style:none;display:flex;flex-direction:column;gap:8px}
-    .rl li{font-size:.85rem;color:var(--text-2);padding-left:16px;position:relative}
-    .rl li::before{content:'→';position:absolute;left:0;color:var(--text-3);font-family:var(--font-m)}
-    .lw h2{font-size:1.05rem;margin-bottom:5px}
-    .lm{font-family:var(--font-m);font-size:.75rem;color:var(--text-3);margin-bottom:18px}
-    .ll{list-style:none;background:var(--border);border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column;gap:1px}
-    .lr{background:var(--bg-card);display:flex;align-items:center;gap:14px;padding:14px 20px;transition:background .18s;cursor:pointer;text-decoration:none;color:inherit}
-    .lr:hover{background:var(--bg-3)}.ln{font-family:var(--font-m);font-size:.7rem;color:var(--text-3);width:22px;flex-shrink:0}
-    .lp{width:26px;height:26px;border-radius:50%;background:var(--bg-3);border:1px solid var(--border-md);display:flex;align-items:center;justify-content:center;font-size:.55rem;color:var(--text-3);flex-shrink:0;transition:all .18s}
-    .lr:hover .lp{background:var(--cyan-dim);border-color:rgba(147,51,234,.3);color:var(--cyan)}
-    .lt{flex:1;font-size:.88rem;font-weight:500}.ld{font-family:var(--font-m);font-size:.7rem;color:var(--text-3);white-space:nowrap}
-    .ft{font-family:var(--font-m);font-size:.63rem;font-weight:600;color:var(--green);background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.2);border-radius:4px;padding:2px 6px}
-    .ic{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:22px;margin-bottom:18px}
-    .ic h3{font-family:var(--font-m);font-size:.7rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text-3);margin-bottom:14px}
-    .ir{display:flex;align-items:center;gap:11px;margin-bottom:11px}
-    .iav{width:42px;height:42px;border-radius:50%;flex-shrink:0;background:linear-gradient(135deg,var(--violet),var(--cyan));display:flex;align-items:center;justify-content:center;font-family:var(--font-h);font-size:.88rem;font-weight:700;color:var(--bg)}
-    .in{font-size:.9rem;font-weight:600}.it{font-size:.75rem;color:var(--text-3);margin-top:2px}
-    .ib{font-size:.81rem;color:var(--text-2);line-height:1.65}
-    .nb{background:var(--bg-2);border-top:1px solid var(--border);padding:48px 0}
-    @media(max-width:960px){.chi,.cb{grid-template-columns:1fr}.ec{margin-top:28px}.csb{position:static}.lg{grid-template-columns:1fr}}
+  #xp-hud { position:fixed;top:var(--nav-h);left:0;right:0;height:42px;background:rgba(14,9,26,0.97);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);z-index:90;display:flex;align-items:center;gap:18px;padding:0 22px; }
+  .hud-level { display:flex;align-items:center;gap:6px;font-family:var(--font-m);font-size:0.7rem;font-weight:600;white-space:nowrap;color:var(--cyan);background:var(--cyan-dim);border:1px solid rgba(147,51,234,0.3);border-radius:100px;padding:3px 11px; }
+  .hud-xp-wrap { display:flex;align-items:center;gap:9px;flex:1;max-width:260px; }
+  .hud-xp-label { font-family:var(--font-m);font-size:0.68rem;color:var(--text-3);white-space:nowrap; }
+  .hud-xp-track { flex:1;height:6px;background:var(--bg-3);border-radius:3px;overflow:hidden; }
+  .hud-xp-fill  { height:100%;border-radius:3px;background:linear-gradient(90deg,var(--cyan),var(--violet));transition:width 0.6s var(--ease); }
+  .hud-streak   { display:flex;align-items:center;gap:5px;font-family:var(--font-m);font-size:0.8rem;color:var(--amber);white-space:nowrap; }
+  .hud-badges   { display:flex;gap:6px;margin-left:auto; }
+  .hud-badge    { font-size:1.05rem;opacity:0.2;transition:opacity 0.4s,transform 0.4s; }
+  .hud-badge.earned { opacity:1;transform:scale(1.15); }
+  body { overflow-x:hidden; }
+  .cl-wrap { display:grid;grid-template-columns:272px 1fr;margin-top:calc(var(--nav-h) + 42px);min-height:calc(100vh - var(--nav-h) - 42px); }
+  .cl-sidebar { position:sticky;top:calc(var(--nav-h) + 42px);height:calc(100vh - var(--nav-h) - 42px);overflow-y:auto;border-right:1px solid var(--border);background:var(--bg-2);display:flex;flex-direction:column;scrollbar-width:thin;scrollbar-color:var(--bg-3) transparent; }
+  .cl-sb-head { padding:20px 18px 16px;border-bottom:1px solid var(--border); }
+  .cl-sb-title { font-size:0.83rem;font-weight:600;line-height:1.4;margin-bottom:14px;color:var(--text); }
+  .cl-prog-bar  { height:5px;background:var(--bg-3);border-radius:3px;overflow:hidden;margin-bottom:5px; }
+  .cl-prog-fill { height:100%;border-radius:3px;background:linear-gradient(90deg,var(--cyan),var(--violet));transition:width 0.6s var(--ease); }
+  .cl-prog-text { font-family:var(--font-m);font-size:0.67rem;color:var(--text-3); }
+  .cl-list { list-style:none;padding:8px 0 24px;flex:1; }
+  .cl-item { display:flex;align-items:center;gap:11px;padding:10px 18px;cursor:pointer;transition:background 0.18s;border-left:2px solid transparent; }
+  .cl-item:hover { background:var(--bg-3); }
+  .cl-item.active { background:rgba(147,51,234,0.08);border-left-color:var(--cyan); }
+  .cl-item.done   { opacity:0.72; }
+  .cl-check { width:22px;height:22px;border-radius:50%;flex-shrink:0;border:1.5px solid var(--border-md);display:flex;align-items:center;justify-content:center;font-size:0.62rem;transition:all 0.3s; }
+  .cl-item.done   .cl-check { background:rgba(16,185,129,0.15);border-color:var(--green);color:var(--green); }
+  .cl-item.active .cl-check { border-color:var(--cyan); }
+  .cl-item-info { flex:1;min-width:0; }
+  .cl-item-name { font-size:0.81rem;font-weight:500;line-height:1.35;color:var(--text); }
+  .cl-item-dur  { font-family:var(--font-m);font-size:0.66rem;color:var(--text-3);margin-top:2px; }
+  .cl-main { padding:44px 52px 96px;max-width:740px; }
+  .cl-lesson { display:none;animation:fadeUp 0.38s var(--ease); }
+  .cl-lesson.active { display:block; }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)} }
+  .lh { display:flex;align-items:center;gap:16px;margin-bottom:32px;padding-bottom:22px;border-bottom:1px solid var(--border); }
+  .lh-badge { width:46px;height:46px;border-radius:12px;flex-shrink:0;background:var(--cyan-dim);border:1px solid rgba(147,51,234,0.28);display:flex;align-items:center;justify-content:center;font-family:var(--font-m);font-size:0.8rem;font-weight:700;color:var(--cyan); }
+  .lh-info h1  { font-size:1.62rem;margin-bottom:5px; }
+  .lh-meta     { display:flex;gap:14px; }
+  .lh-meta span { font-family:var(--font-m);font-size:0.7rem;color:var(--text-3); }
+  .lb h2 { font-size:1.12rem;margin:30px 0 10px; }
+  .lb p  { font-size:0.93rem;color:var(--text-2);line-height:1.82;margin-bottom:14px; }
+  .lb strong { color:var(--text);font-weight:600; }
+  .lb ul { padding-left:0;list-style:none;margin:12px 0 18px;display:flex;flex-direction:column;gap:7px; }
+  .lb li { font-size:0.91rem;color:var(--text-2);padding-left:18px;position:relative;line-height:1.7; }
+  .lb li::before { content:'›';position:absolute;left:0;color:var(--cyan);font-weight:700; }
+  .concept-box { background:rgba(147,51,234,0.055);border:1px solid rgba(147,51,234,0.2);border-left:3px solid var(--cyan);border-radius:var(--r-sm);padding:16px 18px;margin:22px 0; }
+  .concept-box .cb-tag { font-family:var(--font-m);font-size:0.66rem;font-weight:600;color:var(--cyan);letter-spacing:0.13em;text-transform:uppercase;margin-bottom:7px; }
+  .concept-box p { font-size:0.88rem;color:var(--text-2);margin:0;line-height:1.78; }
+  .concept-box strong { color:var(--cyan); }
+  .fact-box { background:rgba(245,158,11,0.055);border:1px solid rgba(245,158,11,0.2);border-left:3px solid var(--violet);border-radius:var(--r-sm);padding:16px 18px;margin:22px 0;display:flex;gap:12px; }
+  .fact-icon { font-size:1.3rem;flex-shrink:0; }
+  .fact-box p { font-size:0.87rem;color:var(--text-2);margin:0;line-height:1.78; }
+  .fact-box strong { color:var(--violet); }
+  .math-box { background:var(--bg-3);border:1px solid var(--border-md);border-radius:var(--r-sm);padding:14px 18px;margin:18px 0;font-family:var(--font-m);font-size:1.05rem;color:var(--text);text-align:center;letter-spacing:0.04em; }
+  .quiz-block { background:var(--bg-2);border:1px solid var(--border-md);border-radius:var(--r);padding:30px;margin-top:44px; }
+  .quiz-block > h2   { font-size:1.05rem;margin-bottom:5px; }
+  .quiz-block > p    { font-size:0.8rem;color:var(--text-3);font-family:var(--font-m);margin-bottom:28px; }
+  .quiz-q            { margin-bottom:24px; }
+  .quiz-q-text       { font-size:0.92rem;font-weight:600;margin-bottom:12px;line-height:1.52; }
+  .quiz-opts         { display:flex;flex-direction:column;gap:7px; }
+  .quiz-opt { display:flex;align-items:center;gap:10px;padding:11px 15px;border-radius:var(--r-sm);border:1px solid var(--border-md);background:var(--bg-card);cursor:pointer;text-align:left;font-size:0.87rem;color:var(--text-2);font-family:var(--font-b);transition:all 0.18s;width:100%; }
+  .quiz-opt:hover:not(:disabled) { border-color:rgba(147,51,234,0.35);color:var(--text);background:rgba(147,51,234,0.05); }
+  .quiz-opt.correct { border-color:var(--green)!important;color:var(--green)!important;background:rgba(16,185,129,0.09)!important; }
+  .quiz-opt.wrong   { border-color:#ef4444!important;color:#ef4444!important;background:rgba(239,68,68,0.08)!important; }
+  .quiz-opt:disabled { cursor:default; }
+  .quiz-opt-letter  { width:22px;height:22px;border-radius:50%;border:1px solid currentColor;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:var(--font-m);font-size:0.68rem;font-weight:700; }
+  .quiz-fb { font-size:0.82rem;margin-top:9px;padding:9px 13px;border-radius:var(--r-sm);display:none;line-height:1.6; }
+  .quiz-fb.show { display:block; }
+  .quiz-fb.ok  { background:rgba(16,185,129,0.1);color:var(--green);border:1px solid rgba(16,185,129,0.22); }
+  .quiz-fb.err { background:rgba(239,68,68,0.08);color:#ef4444;border:1px solid rgba(239,68,68,0.18); }
+  .quiz-score { display:none;align-items:center;justify-content:space-between;gap:16px;padding:14px 16px;background:var(--bg-3);border-radius:var(--r-sm);margin:20px 0 0; }
+  .quiz-score.show { display:flex; }
+  .quiz-score-left h3 { font-size:0.92rem;margin-bottom:3px; }
+  .quiz-score-left p  { font-size:0.78rem;color:var(--text-3);font-family:var(--font-m); }
+  .quiz-score-stars   { font-size:1.4rem;letter-spacing:2px; }
+  .complete-btn { width:100%;justify-content:center;margin-top:20px;opacity:0.35;pointer-events:none;transition:opacity 0.3s;font-size:1rem;padding:14px; }
+  .complete-btn.ready { opacity:1;pointer-events:auto; }
+  .lesson-nav { display:flex;justify-content:space-between;margin-top:14px;gap:10px; }
+  #lesson-done { text-align:center;padding:48px 24px; }
+  #badge-modal { position:fixed;inset:0;background:rgba(0,0,0,0.72);display:flex;align-items:center;justify-content:center;z-index:500;opacity:0;pointer-events:none;transition:opacity 0.3s; }
+  #badge-modal.show { opacity:1;pointer-events:auto; }
+  .bm-box { background:var(--bg-2);border:1px solid var(--border-hi);border-radius:20px;padding:48px 40px;text-align:center;max-width:340px;width:90%;transform:scale(0.82);transition:transform 0.35s var(--ease);box-shadow:0 32px 80px rgba(147,51,234,0.25); }
+  #badge-modal.show .bm-box { transform:scale(1); }
+  .bm-emoji { font-size:4.5rem;display:block;margin-bottom:18px; }
+  .bm-tag   { font-family:var(--font-m);font-size:0.68rem;color:var(--cyan);letter-spacing:0.13em;text-transform:uppercase;margin-bottom:9px; }
+  .bm-name  { font-size:1.55rem;font-weight:700;margin-bottom:10px; }
+  .bm-desc  { font-size:0.88rem;color:var(--text-2);line-height:1.68;margin-bottom:26px; }
+  #xp-toast { position:fixed;bottom:26px;right:26px;background:var(--bg-2);border:1px solid var(--border-hi);border-radius:12px;padding:13px 18px;display:flex;align-items:center;gap:12px;z-index:600;transform:translateY(76px);opacity:0;transition:all 0.38s var(--ease);box-shadow:0 12px 40px rgba(147,51,234,0.2);min-width:210px; }
+  #xp-toast.show { transform:translateY(0);opacity:1; }
+  .toast-icon  { font-size:1.5rem;flex-shrink:0; }
+  .toast-title { font-size:0.92rem;font-weight:700;color:var(--text); }
+  .toast-sub   { font-size:0.76rem;color:var(--text-3);font-family:var(--font-m);margin-top:2px; }
+  #confetti { position:fixed;inset:0;pointer-events:none;z-index:700;overflow:hidden; }
+  .cp { position:absolute;top:-12px;border-radius:2px;animation:fall linear forwards; }
+  @keyframes fall { 0%{top:-12px;opacity:1;transform:rotate(0deg) translateX(0)}80%{opacity:1}100%{top:110vh;opacity:0;transform:rotate(800deg) translateX(var(--tx))} }
+  .sidebar-fab { display:none; }
+  @media (max-width:860px) {
+    .cl-wrap { grid-template-columns:1fr; }
+    .cl-sidebar { position:fixed;left:-280px;top:calc(var(--nav-h) + 42px);height:calc(100vh - var(--nav-h) - 42px);transition:left 0.32s var(--ease);z-index:80;box-shadow:6px 0 28px rgba(0,0,0,0.5);width:272px; }
+    .cl-sidebar.open { left:0; }
+    .cl-main { padding:30px 22px 80px; }
+    .sidebar-fab { display:flex;position:fixed;bottom:18px;left:18px;z-index:85;background:var(--cyan);color:var(--bg);border:none;border-radius:50%;width:48px;height:48px;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 20px rgba(147,51,234,0.45);font-size:1.2rem; }
+  }
+  @media (max-width:640px) {
+    .hud-streak,.hud-badges { display:none; }
+    .lh-info h1 { font-size:1.3rem; }
+    .cl-main { padding:24px 16px 80px; }
+  }
   </style>
 </head>
 <body>
-<nav id="nav"><div class="container"><div class="nav-inner"><a href="../index.html" class="nav-logo"><div class="nav-logo-mark">|ψ⟩</div><span>qubitcademy</span></a><ul class="nav-links"><li><a href="../index.html" data-i18n="nav.home">Inicio</a></li><li><a href="../catalogue.html" class="active" data-i18n="nav.catalogue">Catálogo</a></li><li><a href="../paths.html" data-i18n="nav.paths">Rutas</a></li><li><a href="../faq.html" data-i18n="nav.faq">FAQ</a></li></ul><div class="nav-right"><div class="lang-switcher"><button class="lang-btn active" data-lang="es">ES</button><div class="lang-sep"></div><button class="lang-btn" data-lang="en">EN</button></div><a href="#" class="nav-login" data-i18n="nav.login">Iniciar sesión</a><a href="#" class="btn btn-primary btn-sm" data-i18n="nav.cta">Empezar gratis</a></div><button class="nav-toggle" aria-label="Abrir menú"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="19" y2="6"/><line x1="3" y1="11" x2="19" y2="11"/><line x1="3" y1="16" x2="19" y2="16"/></svg></button></div></div></nav>
-<div class="nav-mobile"><a href="../index.html" data-i18n="nav.home">Inicio</a><a href="../catalogue.html" data-i18n="nav.catalogue">Catálogo</a><a href="../paths.html" data-i18n="nav.paths">Rutas</a><a href="../faq.html" data-i18n="nav.faq">FAQ</a><div class="nav-mobile-lang"><button class="lang-btn active" data-lang="es">ES</button><div class="lang-sep"></div><button class="lang-btn" data-lang="en">EN</button></div><div class="nav-mobile-footer"><a href="#" class="btn btn-ghost" data-i18n="nav.login">Iniciar sesión</a><a href="#" class="btn btn-primary" data-i18n="nav.cta">Empezar gratis</a></div></div>
 
-<div class="ch"><div class="ch-bg"></div><div class="container"><div class="chi">
-  <div class="cht">
-    <nav class="bc"><a href="../catalogue.html">Catálogo</a><span>›</span><span>Algoritmos</span><span>›</span><span>Algoritmo de Shor</span></nav>
-    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px;"><span class="lvl-badge lvl-i">Intermedio</span><span class="ctag">algoritmos</span><span class="cprice-free" style="font-size:.88rem;">Gratis</span></div>
-    <h1>Algoritmo de Shor</h1>
-    <p class="chi-d">El algoritmo que amenaza la criptografía RSA. Aprende cómo la transformada cuántica de Fourier y la estimación de fase permiten factorizar enteros grandes en tiempo polinomial.</p>
-    <div class="chs"><div class="cs"><span>⏱</span><span><strong>3 horas</strong></span></div><div class="cs"><span>📚</span><span><strong>6 lecciones</strong></span></div><div class="cs"><span>🐍</span><span><strong>Qiskit</strong></span></div><div class="cs"><span>♾️</span><span>Acceso <strong>de por vida</strong></span></div></div>
-  </div>
-  <div><div class="ec"><div class="ep">Gratis</div><p style="font-size:.78rem;color:var(--text-3);margin-bottom:14px;">Incluye implementación completa en Qiskit</p><a href="#lessons" class="btn btn-primary btn-lg">Comenzar ahora →</a><ul class="el"><li>Implementación paso a paso en Qiskit</li><li>Fundamentos matemáticos explicados</li><li>Código descargable de cada lección</li><li>Certificado de finalización</li></ul></div></div>
-</div></div></div>
-
-<div class="container"><div class="cb">
-  <div>
-    <div class="lb"><h2>Lo que aprenderás</h2><ul class="lg">
-      <li>La reducción de factorización a búsqueda de período</li><li>Aritmética modular y por qué la computación cuántica la acelera</li>
-      <li>La Transformada Cuántica de Fourier (QFT) desde cero</li><li>Estimación de fase cuántica (QPE) y su papel central</li>
-      <li>Construcción del circuito de exponenciación modular</li><li>Por qué Shor rompe RSA y su impacto en criptografía</li>
-      <li>Limitaciones actuales en hardware real</li><li>Post-quantum cryptography: el futuro después de Shor</li>
-    </ul></div>
-    <div class="rb"><h2>Requisitos</h2><ul class="rl">
-      <li>Qubits y Circuitos Cuánticos y Algoritmo de Grover (o equivalente)</li>
-      <li>Álgebra modular básica (congruencias, máximo común divisor)</li>
-      <li>Python intermedio. Qiskit instalado o acceso a IBM Quantum Lab.</li>
-    </ul></div>
-    <div class="lw" id="lessons"><h2>Lecciones del curso</h2><p class="lm">6 lecciones · 3h · todas gratuitas</p>
-      <ul class="ll">
-        <li><a href="#" class="lr"><span class="ln">01</span><div class="lp">▶</div><span class="lt">De factorización a búsqueda de período</span><span class="ld">25 min</span><span class="ft">Gratis</span></a></li>
-        <li><a href="#" class="lr"><span class="ln">02</span><div class="lp">▶</div><span class="lt">La Transformada Cuántica de Fourier</span><span class="ld">32 min</span><span class="ft">Gratis</span></a></li>
-        <li><a href="#" class="lr"><span class="ln">03</span><div class="lp">▶</div><span class="lt">Estimación de Fase Cuántica (QPE)</span><span class="ld">30 min</span><span class="ft">Gratis</span></a></li>
-        <li><a href="#" class="lr"><span class="ln">04</span><div class="lp">▶</div><span class="lt">Exponenciación modular cuántica</span><span class="ld">28 min</span><span class="ft">Gratis</span></a></li>
-        <li><a href="#" class="lr"><span class="ln">05</span><div class="lp">▶</div><span class="lt">Implementación completa en Qiskit</span><span class="ld">35 min</span><span class="ft">Gratis</span></a></li>
-        <li><a href="#" class="lr"><span class="ln">06</span><div class="lp">▶</div><span class="lt">Impacto criptográfico y criptografía post-cuántica</span><span class="ld">25 min</span><span class="ft">Gratis</span></a></li>
-      </ul>
+<nav id="nav">
+  <div class="container"><div class="nav-inner">
+    <a href="../index.html" class="nav-logo"><div class="nav-logo-mark">|ψ⟩</div><span>qubitcademy</span></a>
+    <ul class="nav-links">
+      <li><a href="../index.html" data-i18n="nav.home">Inicio</a></li>
+      <li><a href="../catalogue.html" class="active" data-i18n="nav.catalogue">Catálogo</a></li>
+      <li><a href="../paths.html" data-i18n="nav.paths">Rutas</a></li>
+      <li><a href="../faq.html" data-i18n="nav.faq">FAQ</a></li>
+    </ul>
+    <div class="nav-right">
+      <div class="lang-switcher"><button class="lang-btn active" data-lang="es">ES</button><div class="lang-sep"></div><button class="lang-btn" data-lang="en">EN</button></div>
+      <a href="#" class="nav-login" data-i18n="nav.login">Iniciar sesión</a>
+      <a href="#" class="btn btn-primary btn-sm" data-i18n="nav.cta">Empezar gratis</a>
     </div>
+    <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false">
+      <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="19" y2="6"/><line x1="3" y1="11" x2="19" y2="11"/><line x1="3" y1="16" x2="19" y2="16"/></svg>
+    </button>
+  </div></div>
+</nav>
+<div class="nav-mobile">
+  <a href="../index.html">Inicio</a><a href="../catalogue.html">Catálogo</a><a href="../paths.html">Rutas</a><a href="../faq.html">FAQ</a>
+  <div class="nav-mobile-lang"><button class="lang-btn active" data-lang="es">ES</button><div class="lang-sep"></div><button class="lang-btn" data-lang="en">EN</button></div>
+  <div class="nav-mobile-footer"><a href="#" class="btn btn-ghost">Iniciar sesión</a><a href="#" class="btn btn-primary">Empezar gratis</a></div>
+</div>
+
+<div id="xp-hud">
+  <div class="hud-level" id="hud-level">⚗️ Novato</div>
+  <div class="hud-xp-wrap">
+    <span class="hud-xp-label" id="hud-xp-label">0 XP</span>
+    <div class="hud-xp-track"><div class="hud-xp-fill" id="hud-xp-fill" style="width:0%"></div></div>
   </div>
-  <aside class="csb">
-    <div class="ic"><h3>Instructor</h3><div class="ir"><div class="iav">MR</div><div><div class="in">Dr. Miguel Reyes</div><div class="it">Criptografía Cuántica · UPC Barcelona</div></div></div><p class="ib">Investigador en criptografía cuántica en la Universitat Politècnica de Catalunya. Coautor de varios papers sobre implementaciones de Shor en hardware NISQ y resistencia post-cuántica.</p></div>
-    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:20px;"><h3 style="font-family:var(--font-m);font-size:.7rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text-3);margin-bottom:13px;">Incluido en las rutas</h3><a href="../paths.html" style="display:flex;align-items:center;gap:9px;padding:9px 11px;background:var(--bg-3);border-radius:8px;margin-bottom:8px;"><span>⚡</span><div><div style="font-size:.84rem;font-weight:600;">Quantum Developer</div><div style="font-size:.72rem;color:var(--text-3);">Módulo 5 de 5</div></div></a><a href="../paths.html" style="display:flex;align-items:center;gap:9px;padding:9px 11px;background:var(--bg-3);border-radius:8px;"><span>🔬</span><div><div style="font-size:.84rem;font-weight:600;">Quantum Researcher</div><div style="font-size:.72rem;color:var(--text-3);">Módulo 5 de 8</div></div></a></div>
+  <div class="hud-streak" id="hud-streak">🔥 0 días</div>
+  <div class="hud-badges">
+    <span class="hud-badge" id="hb-0" title="Primer Paso">🚀</span>
+    <span class="hud-badge" id="hb-1" title="Explorador">🔭</span>
+    <span class="hud-badge" id="hb-2" title="Quiz Perfecto">⭐</span>
+    <span class="hud-badge" id="hb-3" title="En Racha">🔥</span>
+    <span class="hud-badge" id="hb-4" title="Criptógrafo Cuántico">🔐</span>
+  </div>
+</div>
+
+<div class="cl-wrap">
+  <aside class="cl-sidebar" id="cl-sidebar">
+    <div class="cl-sb-head">
+      <div class="cl-sb-title">🔐 Algoritmo de Shor</div>
+      <div class="cl-prog-bar"><div class="cl-prog-fill" id="cl-prog" style="width:0%"></div></div>
+      <div class="cl-prog-text" id="cl-prog-text">0 / 6 lecciones</div>
+    </div>
+    <ul class="cl-list" id="cl-list">
+      <li class="cl-item active" data-lesson="0"><div class="cl-check" id="ck-0">1</div><div class="cl-item-info"><div class="cl-item-name">RSA y por qué importa romperlo</div><div class="cl-item-dur">⏱ 28 min</div></div></li>
+      <li class="cl-item" data-lesson="1"><div class="cl-check" id="ck-1">2</div><div class="cl-item-info"><div class="cl-item-name">Factorización y el problema del período</div><div class="cl-item-dur">⏱ 30 min</div></div></li>
+      <li class="cl-item" data-lesson="2"><div class="cl-check" id="ck-2">3</div><div class="cl-item-info"><div class="cl-item-name">La Transformada de Fourier Cuántica (QFT)</div><div class="cl-item-dur">⏱ 32 min</div></div></li>
+      <li class="cl-item" data-lesson="3"><div class="cl-check" id="ck-3">4</div><div class="cl-item-info"><div class="cl-item-name">Estimación de fase cuántica (QPE)</div><div class="cl-item-dur">⏱ 30 min</div></div></li>
+      <li class="cl-item" data-lesson="4"><div class="cl-check" id="ck-4">5</div><div class="cl-item-info"><div class="cl-item-name">El algoritmo de Shor completo</div><div class="cl-item-dur">⏱ 34 min</div></div></li>
+      <li class="cl-item" data-lesson="5"><div class="cl-check" id="ck-5">6</div><div class="cl-item-info"><div class="cl-item-name">Implicaciones y criptografía post-cuántica</div><div class="cl-item-dur">⏱ 26 min</div></div></li>
+    </ul>
   </aside>
-</div></div>
 
-<div class="nb"><div class="container"><div style="display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;">
-  <div><div class="label" style="margin-bottom:10px;">Siguiente en Quantum Developer</div><h2 style="font-size:1.4rem;margin-bottom:7px;">Programación con Qiskit</h2><p style="font-size:.88rem;color:var(--text-2);">El framework cuántico de IBM de principio a fin · 6h · 14 lecciones · €49</p></div>
-  <a href="qiskit.html" class="btn btn-primary btn-lg" style="flex-shrink:0;">Ver siguiente curso →</a>
-</div></div></div>
+  <main class="cl-main" id="cl-main">
 
-<footer><div class="container"><div class="footer-grid"><div class="footer-brand"><a href="../index.html" class="nav-logo"><div class="nav-logo-mark">|ψ⟩</div><span>qubitcademy</span></a><p data-i18n="ft.desc">La plataforma de aprendizaje cuántico más completa en español.</p></div><div class="footer-col"><h4 data-i18n="ft.col1">Cursos</h4><ul><li><a href="../catalogue.html">Fundamentos</a></li><li><a href="../catalogue.html">Algoritmos</a></li><li><a href="../catalogue.html">Programación</a></li><li><a href="../catalogue.html">Criptografía</a></li></ul></div><div class="footer-col"><h4 data-i18n="ft.col2">Plataforma</h4><ul><li><a href="../catalogue.html">Catálogo</a></li><li><a href="../paths.html">Rutas</a></li><li><a href="#">Certificados</a></li><li><a href="../faq.html">FAQ</a></li></ul></div><div class="footer-col"><h4 data-i18n="ft.col3">Empresa</h4><ul><li><a href="#">Sobre nosotros</a></li><li><a href="#">Blog</a></li><li><a href="../faq.html">Contacto</a></li><li><a href="#">Afiliados</a></li></ul></div></div><div class="footer-bottom"><span data-i18n="ft.copy">© 2025 Qubitcademy.</span><div style="display:flex;gap:16px;"><a href="#">Privacidad</a><a href="#">Términos</a></div></div></div></footer>
-<script src="../js/main.js"></script></body></html>
+    <!-- ══════════ LECCIÓN 1 ══════════ -->
+    <section class="cl-lesson active" id="lesson-0">
+      <div class="lh">
+        <div class="lh-badge">01</div>
+        <div class="lh-info">
+          <h1>RSA y por qué importa romperlo</h1>
+          <div class="lh-meta"><span>⏱ 28 min</span><span>🌱 Principiante</span><span>✨ Gratis</span></div>
+        </div>
+      </div>
+      <div class="lb">
+        <p>Cada vez que introduces tu tarjeta de crédito en un sitio web, cada mensaje que envías por WhatsApp, cada correo cifrado que mandas: todo eso está protegido por un algoritmo llamado <strong>RSA</strong>. Y Peter Shor descubrió en 1994 que un ordenador cuántico suficientemente grande podría romperlo en horas.</p>
+
+        <h2>¿Qué es RSA?</h2>
+        <p>RSA (Rivest-Shamir-Adleman, 1977) es el sistema de cifrado asimétrico más usado del mundo. Su seguridad se basa en una asimetría matemática fundamental: <strong>multiplicar dos números primos grandes es fácil; factorizarlos de vuelta es computacionalmente imposible</strong> para ordenadores clásicos con números suficientemente grandes.</p>
+        <p>El proceso básico de RSA:</p>
+        <ul>
+          <li>Elige dos primos grandes: p y q (en la práctica, de 1.024 o 2.048 bits cada uno)</li>
+          <li>Calcula N = p × q — este es el módulo público</li>
+          <li>Construye las claves pública y privada a partir de N y de φ(N) = (p−1)(q−1)</li>
+          <li>Publica N y la clave pública. Guarda p, q y la clave privada en secreto</li>
+          <li>Para cifrar: usa la clave pública. Para descifrar: necesitas la clave privada</li>
+        </ul>
+        <p>Cualquiera puede cifrar mensajes con la clave pública, pero solo el dueño de la clave privada (que conoce p y q) puede descifrarlos. La seguridad depende de que nadie pueda factorizar N para recuperar p y q.</p>
+
+        <div class="concept-box">
+          <div class="cb-tag">¿Por qué es difícil factorizar?</div>
+          <p>Para un número N de n bits, el mejor algoritmo clásico conocido (Tamiz del cuerpo de números — GNFS) tarda un tiempo <strong>subexponencial pero superpolinomial</strong>: exp(O(n^(1/3))). Para RSA-2048 (un número de 617 dígitos), el tiempo estimado con los mejores superordenadores es de <strong>millones de años</strong>. El algoritmo de Shor lo haría en <strong>tiempo polinomial</strong>: proporcional a n³.</p>
+        </div>
+
+        <h2>El tamaño del problema</h2>
+        <p>Para hacerse una idea de la magnitud: RSA-2048 usa un número N con 617 dígitos decimales. El récord de factorización clásica es RSA-250 (829 bits, 250 dígitos), logrado en 2020 con 2.700 años de CPU distribuidos en cientos de máquinas durante varios meses. RSA-2048 está completamente fuera del alcance clásico.</p>
+        <p>Un ordenador cuántico con ~4.000 qubits lógicos (tolerantes a fallos) podría factorizar RSA-2048 en horas usando el algoritmo de Shor. Los ordenadores cuánticos actuales tienen miles de qubits físicos pero muy pocos lógicos (se necesitan ~1.000 qubits físicos por qubit lógico con las tasas de error actuales).</p>
+
+        <div class="fact-box">
+          <span class="fact-icon">🔑</span>
+          <p><strong>Alcance real:</strong> Toda la infraestructura de seguridad de internet — HTTPS, TLS, certificados digitales, firmas digitales, VPNs, banca online — depende de RSA o de algoritmos similares (como la criptografía de curva elíptica, ECC) que también serían vulnerables al algoritmo de Shor. La amenaza es sistémica.</p>
+        </div>
+      </div>
+      <div class="quiz-block">
+        <h2>🧠 Comprueba lo que has aprendido</h2>
+        <p>3 preguntas para completar la lección y ganar XP.</p>
+        <div class="quiz-q" data-answered="false">
+          <div class="quiz-q-text">¿En qué principio matemático se basa la seguridad de RSA?</div>
+          <div class="quiz-opts" data-correct="1">
+            <button class="quiz-opt" data-idx="0"><span class="quiz-opt-letter">A</span> Es difícil multiplicar dos números primos grandes</button>
+            <button class="quiz-opt" data-idx="1"><span class="quiz-opt-letter">B</span> Multiplicar dos primos es fácil, pero factorizar su producto es computacionalmente imposible</button>
+            <button class="quiz-opt" data-idx="2"><span class="quiz-opt-letter">C</span> Los números primos son imposibles de generar aleatoriamente</button>
+          </div>
+          <div class="quiz-fb ok">✓ ¡Correcto! RSA explota la asimetría: multiplicar p × q es trivial (microsegundos), pero dado N = p × q, recuperar p y q lleva millones de años con los mejores algoritmos clásicos.</div>
+          <div class="quiz-fb err">✗ No es correcto. La seguridad de RSA se basa en que es fácil calcular N = p × q pero prácticamente imposible hacer la operación inversa: dado N, encontrar sus factores primos p y q.</div>
+        </div>
+        <div class="quiz-q" data-answered="false">
+          <div class="quiz-q-text">¿Cuántos qubits lógicos (tolerantes a fallos) se estiman necesarios para romper RSA-2048 con el algoritmo de Shor?</div>
+          <div class="quiz-opts" data-correct="2">
+            <button class="quiz-opt" data-idx="0"><span class="quiz-opt-letter">A</span> 50 qubits — ya es posible con hardware actual</button>
+            <button class="quiz-opt" data-idx="1"><span class="quiz-opt-letter">B</span> 500 qubits lógicos</button>
+            <button class="quiz-opt" data-idx="2"><span class="quiz-opt-letter">C</span> ~4.000 qubits lógicos (equivalentes a millones de qubits físicos con tasas de error actuales)</button>
+          </div>
+          <div class="quiz-fb ok">✓ ¡Exacto! Se estiman ~4.000 qubits lógicos perfectos para RSA-2048. Con las tasas de error actuales (~1% por puerta), se necesitarían millones de qubits físicos. Estamos décadas lejos de esto.</div>
+          <div class="quiz-fb err">✗ No es correcto. Romper RSA-2048 requiere ~4.000 qubits lógicos tolerantes a fallos. Con los qubits físicos actuales (con errores), eso equivale a millones de qubits físicos — muy lejos de las capacidades actuales.</div>
+        </div>
+        <div class="quiz-q" data-answered="false">
+          <div class="quiz-q-text">¿En qué año publicó Peter Shor su algoritmo de factorización cuántica?</div>
+          <div class="quiz-opts" data-correct="0">
+            <button class="quiz-opt" data-idx="0"><span class="quiz-opt-letter">A</span> 1994</button>
+            <button class="quiz-opt" data-idx="1"><span class="quiz-opt-letter">B</span> 2001</button>
+            <button class="quiz-opt" data-idx="2"><span class="quiz-opt-letter">C</span> 1977</button>
+          </div>
+          <div class="quiz-fb ok">✓ ¡Correcto! Peter Shor publicó su algoritmo en 1994, en el simposio FOCS. Fue un resultado revolucionario que demostró que los ordenadores cuánticos tendrían ventaja exponencial sobre los clásicos en problemas prácticos relevantes.</div>
+          <div class="quiz-fb err">✗ No es correcto. Shor publicó su algoritmo en 1994 en el simposio FOCS. RSA fue inventado en 1977 y en 2001 IBM implementó Shor en un ordenador cuántico de 7 qubits para factorizar el número 15.</div>
+        </div>
+        <div class="quiz-score" id="qs-0"><div class="quiz-score-left"><h3 id="qs-0-title">Puntuación</h3><p id="qs-0-sub"></p></div><div class="quiz-score-stars" id="qs-0-stars"></div></div>
+        <button class="btn btn-primary complete-btn" data-lesson="0">Completar lección y ganar XP →</button>
+        <div class="lesson-nav"><span></span><button class="btn btn-ghost btn-sm" onclick="COURSE.go(1)">Siguiente →</button></div>
+      </div>
+    </section>
+
+    <!-- ══════════ LECCIÓN 2 ══════════ -->
+    <section class="cl-lesson" id="lesson-1">
+      <div class="lh">
+        <div class="lh-badge">02</div>
+        <div class="lh-info">
+          <h1>Factorización y el problema del período</h1>
+          <div class="lh-meta"><span>⏱ 30 min</span><span>🟡 Intermedio</span><span>✨ Gratis</span></div>
+        </div>
+      </div>
+      <div class="lb">
+        <p>El genio de Shor fue darse cuenta de que <strong>factorizar un número es equivalente a encontrar el período de una función periódica</strong>. Y encontrar períodos es exactamente lo que los ordenadores cuánticos hacen de forma exponencialmente eficiente mediante la interferencia. Esta reducción transforma un problema computacionalmente duro en uno que la mecánica cuántica puede resolver.</p>
+
+        <h2>De la factorización al período: la reducción clave</h2>
+        <p>Dado el número N que queremos factorizar, el algoritmo de Shor usa el siguiente truco matemático clásico:</p>
+        <ol style="list-style:decimal;padding-left:20px;color:var(--text-2);font-size:0.91rem;line-height:1.9;">
+          <li>Elige un número aleatorio <strong>a</strong> con 1 &lt; a &lt; N y mcd(a, N) = 1 (coprimo con N)</li>
+          <li>Define la función <strong>f(x) = aˣ mod N</strong></li>
+          <li>Esta función es periódica: existe un período r tal que f(x+r) = f(x) para todo x</li>
+          <li>Si r es par y a^(r/2) ≠ −1 (mod N), entonces mcd(a^(r/2) ± 1, N) da un factor no trivial de N</li>
+        </ol>
+        <p>El paso clásico más costoso es el paso 3: encontrar el período r de f(x) = aˣ mod N. Para N grande, r puede ser enorme (hasta N), lo que haría que una búsqueda directa tomara tiempo exponencial. Aquí es donde entra la computación cuántica.</p>
+
+        <div class="math-box">f(x) = aˣ mod N &nbsp;&nbsp; es periódica con período r &nbsp;&nbsp; f(x+r) = f(x)</div>
+
+        <h2>Un ejemplo concreto: factorizar 15</h2>
+        <p>Factorizamos N = 15 eligiendo a = 7:</p>
+        <ul>
+          <li>f(0) = 7⁰ mod 15 = 1</li>
+          <li>f(1) = 7¹ mod 15 = 7</li>
+          <li>f(2) = 7² mod 15 = 49 mod 15 = 4</li>
+          <li>f(3) = 7³ mod 15 = 343 mod 15 = 13</li>
+          <li>f(4) = 7⁴ mod 15 = 2401 mod 15 = 1 → ¡período r = 4!</li>
+        </ul>
+        <p>Con r = 4 (par): a^(r/2) = 7² = 49 mod 15 = 4. Entonces:</p>
+        <div class="math-box">mcd(4 + 1, 15) = mcd(5, 15) = 5 ✓ &nbsp;&nbsp;&nbsp; mcd(4 − 1, 15) = mcd(3, 15) = 3 ✓</div>
+        <p>¡Encontramos 5 × 3 = 15! La parte cuántica es encontrar r = 4 eficientemente para números enormes donde no podemos calcular f(x) para todo x.</p>
+
+        <div class="concept-box">
+          <div class="cb-tag">¿Por qué funciona esta reducción?</div>
+          <p>Si r es par y a^(r/2) ≢ ±1 (mod N), entonces a^(r/2) − 1 y a^(r/2) + 1 deben compartir factores con N. Esto se deduce del Teorema Chino del Resto y de la estructura de grupo del anillo ℤ/Nℤ. Shor demostró que una base aleatoria a produce un r válido con probabilidad al menos 1/2, así que hay pocas repeticiones necesarias.</p>
+        </div>
+
+        <div class="fact-box">
+          <span class="fact-icon">🧮</span>
+          <p><strong>La primera implementación:</strong> En 2001, un equipo de IBM liderado por Isaac Chuang implementó el algoritmo de Shor en un ordenador cuántico de <strong>7 qubits basado en resonancia magnética nuclear (RMN)</strong> y factorizó con éxito el número 15 = 3 × 5. Fue la primera demostración experimental del algoritmo.</p>
+        </div>
+      </div>
+      <div class="quiz-block">
+        <h2>🧠 Comprueba lo que has aprendido</h2>
+        <p>¡A por el quiz perfecto!</p>
+        <div class="quiz-q" data-answered="false">
+          <div class="quiz-q-text">¿Cuál es la reducción clave que permite a Shor usar la computación cuántica para factorizar?</div>
+          <div class="quiz-opts" data-correct="0">
+            <button class="quiz-opt" data-idx="0"><span class="quiz-opt-letter">A</span> Factorizar N se reduce a encontrar el período r de f(x) = aˣ mod N</button>
+            <button class="quiz-opt" data-idx="1"><span class="quiz-opt-letter">B</span> Factorizar N se reduce a resolver un sistema de ecuaciones lineales</button>
+            <button class="quiz-opt" data-idx="2"><span class="quiz-opt-letter">C</span> Factorizar N se reduce a buscar en una tabla de primos</button>
+          </div>
+          <div class="quiz-fb ok">✓ ¡Correcto! Shor reduce la factorización al problema de encontrar el período de f(x) = aˣ mod N, que los ordenadores cuánticos pueden resolver eficientemente mediante la QFT.</div>
+          <div class="quiz-fb err">✗ No es correcto. La reducción clave de Shor es que factorizar N equivale a encontrar el período r de la función f(x) = aˣ mod N. Esto convierte un problema duro clásicamente en uno abordable cuánticamente.</div>
+        </div>
+        <div class="quiz-q" data-answered="false">
+          <div class="quiz-q-text">En el ejemplo de factorizar 15 con a=7, se encontró r=4. ¿Qué fórmula da los factores?</div>
+          <div class="quiz-opts" data-correct="2">
+            <button class="quiz-opt" data-idx="0"><span class="quiz-opt-letter">A</span> mcd(a^r ± 1, N)</button>
+            <button class="quiz-opt" data-idx="1"><span class="quiz-opt-letter">B</span> mcd(a + r, N)</button>
+            <button class="quiz-opt" data-idx="2"><span class="quiz-opt-letter">C</span> mcd(a^(r/2) ± 1, N)</button>
+          </div>
+          <div class="quiz-fb ok">✓ ¡Exacto! Con el período r (par), calculamos a^(r/2) mod N y luego mcd(a^(r/2) ± 1, N). Si el resultado es no trivial (diferente de 1 y N), hemos encontrado un factor.</div>
+          <div class="quiz-fb err">✗ No es correcto. La fórmula correcta es mcd(a^(r/2) ± 1, N). Usamos la mitad del período (r/2), por eso r debe ser par para que el método funcione.</div>
+        </div>
+        <div class="quiz-q" data-answered="false">
+          <div class="quiz-q-text">¿Qué ocurre si la base aleatoria a elegida no produce un período r válido (impar o a^(r/2) ≡ −1)?</div>
+          <div name="quiz-opts" class="quiz-opts" data-correct="1">
+            <button class="quiz-opt" data-idx="0"><span class="quiz-opt-letter">A</span> El algoritmo falla definitivamente y hay que buscar otro método</button>
+            <button class="quiz-opt" data-idx="1"><span class="quiz-opt-letter">B</span> Se elige otra base aleatoria y se repite — la probabilidad de éxito por intento es ≥ 1/2</button>
+            <button class="quiz-opt" data-idx="2"><span class="quiz-opt-letter">C</span> Se aumenta el número de qubits y se reintenta con la misma base</button>
+          </div>
+          <div class="quiz-fb ok">✓ ¡Perfecto! Shor demostró que una base aleatoria produce un r válido con probabilidad ≥ 1/2. Si falla, simplemente se elige otra base. En promedio se necesitan pocas repeticiones.</div>
+          <div class="quiz-fb err">✗ No es correcto. Si la base no da un r válido, simplemente se elige otra base aleatoria. La probabilidad de que una base dé un período válido es ≥ 50%, así que en pocas repeticiones se encuentra uno.</div>
+        </div>
+        <div class="quiz-score" id="qs-1"><div class="quiz-score-left"><h3 id="qs-1-title">Puntuación</h3><p id="qs-1-sub"></p></div><div class="quiz-score-stars" id="qs-1-stars"></div></div>
+        <button class="btn btn-primary complete-btn" data-lesson="1">Completar lección y ganar XP →</button>
+        <div class="lesson-nav"><button class="btn btn-ghost btn-sm" onclick="COURSE.go(0)">← Anterior</button><button class="btn btn-ghost btn-sm" onclick="COURSE.go(2)">Siguiente →</button></div>
+      </div>
+    </section>
+
+    <!-- ══════════ LECCIÓN 3 ══════════ -->
+    <section class="cl-lesson" id="lesson-2">
+      <div class="lh">
+        <div class="lh-badge">03</div>
+        <div class="lh-info">
+          <h1>La Transformada de Fourier Cuántica (QFT)</h1>
+          <div class="lh-meta"><span>⏱ 32 min</span><span>🟡 Intermedio</span><span>✨ Gratis</span></div>
+        </div>
+      </div>
+      <div class="lb">
+        <p>La <strong>Transformada de Fourier Cuántica (QFT)</strong> es el corazón matemático del algoritmo de Shor — y de muchos otros algoritmos cuánticos. Es el análogo cuántico de la Transformada de Fourier Discreta (DFT) que se usa en procesamiento de señal, compresión de audio y miles de aplicaciones clásicas. La diferencia es que la QFT actúa sobre amplitudes cuánticas y es exponencialmente más eficiente.</p>
+
+        <h2>Repaso: ¿qué hace la Transformada de Fourier?</h2>
+        <p>La Transformada de Fourier Discreta clásica convierte una señal del <strong>dominio del tiempo</strong> (o posición) al <strong>dominio de frecuencias</strong>. Si tienes una señal periódica, su transformada tiene picos en las frecuencias correspondientes al período. Esto es exactamente lo que necesitamos: dado el estado cuántico que codifica la función f(x) = aˣ mod N (periódica con período r), la QFT produce picos en las frecuencias relacionadas con r.</p>
+
+        <h2>La QFT matemáticamente</h2>
+        <p>La QFT sobre N estados es una transformación unitaria que mapea el estado base |j⟩ a:</p>
+        <div class="math-box">QFT|j⟩ = (1/√N) Σₖ e^(2πijk/N) |k⟩</div>
+        <p>Donde la suma es sobre todos los estados k de 0 a N−1. Los factores e^(2πijk/N) son raíces de la unidad complejas — exactamente las fases que usa la DFT clásica. La diferencia es que la QFT opera sobre la <strong>superposición de todos los j simultáneamente</strong>.</p>
+
+        <div class="concept-box">
+          <div class="cb-tag">Ventaja exponencial de la QFT</div>
+          <p>La DFT clásica sobre N puntos requiere O(N²) operaciones. El algoritmo FFT (Fast Fourier Transform) lo reduce a O(N log N). La QFT sobre N = 2ⁿ estados requiere solo O(n²) puertas cuánticas — <strong>exponencialmente más eficiente</strong> que la FFT clásica. Para n = 100 qubits (N = 2¹⁰⁰), la FFT necesita ~10³² operaciones; la QFT necesita solo ~10.000.</p>
+        </div>
+
+        <h2>Cómo se implementa la QFT en un circuito</h2>
+        <p>La QFT se implementa con un circuito elegante que usa dos tipos de puertas:</p>
+        <ul>
+          <li><strong>Puerta Hadamard (H):</strong> crea superposición en cada qubit</li>
+          <li><strong>Puerta de fase controlada R_k:</strong> aplica una rotación de fase de 2π/2ᵏ condicionada al estado de un qubit de control</li>
+        </ul>
+        <p>Para n qubits, el circuito QFT usa n puertas H y n(n−1)/2 puertas R_k, más n/2 puertas SWAP para invertir el orden de los qubits al final. Total: O(n²) puertas.</p>
+        <p>La estructura es recursiva: la QFT de n qubits se implementa como una H + puertas de fase + la QFT de n−1 qubits. Esta recursión es lo que da la eficiencia exponencial.</p>
+
+        <h2>La QFT en el algoritmo de Shor</h2>
+        <p>En el contexto de Shor, la QFT actúa sobre el registro de control (que contiene la superposición de todos los valores x de 0 a 2ⁿ−1 después de evaluar f(x)). La periodicidad de f(x) crea interferencia constructiva en las frecuencias múltiplas de N/r, y la QFT las convierte en picos medibles. Al medir, obtienes un múltiplo de N/r con alta probabilidad, del cual puedes recuperar r usando el algoritmo de fracciones continuas.</p>
+
+        <div class="fact-box">
+          <span class="fact-icon">🎵</span>
+          <p><strong>Analogía musical:</strong> Imagina que tuvieras una canción misteriosa y quisieras saber su tempo (período). La QFT es como el analizador de espectro que transforma la onda de audio en frecuencias: el pico más alto te da directamente el tempo. Shor usa la misma idea, pero para señales cuánticas periódicas codificadas en superposición.</p>
+        </div>
+      </div>
+      <div class="quiz-block">
+        <h2>🧠 Comprueba lo que has aprendido</h2>
+        <p>¡Mitad del curso! ¡Sigue así!</p>
+        <div class="quiz-q" data-answered="false">
+          <div class="quiz-q-text">¿Qué convierte la Transformada de Fourier Cuántica sobre un estado cuántico periódico?</div>
+          <div class="quiz-opts" data-correct="2">
+            <button class="quiz-opt" data-idx="0"><span class="quiz-opt-letter">A</span> Convierte el estado cuántico en un estado clásico directamente medible</button>
+            <button class="quiz-opt" data-idx="1"><span class="quiz-opt-letter">B</span> Duplica la amplitud del estado correcto y anula los demás</button>
+            <button class="quiz-opt" data-idx="2"><span class="quiz-opt-letter">C</span> Transforma la periodicidad en picos de amplitud en las frecuencias correspondientes</button>
+          </div>
+          <div class="quiz-fb ok">✓ ¡Correcto! La QFT convierte la periodicidad de la señal (período r) en picos de probabilidad en las frecuencias múltiplas de N/r, que luego se pueden medir para recuperar r.</div>
+          <div class="quiz-fb err">✗ No es correcto. La QFT transforma el dominio de "posición/tiempo" al de "frecuencias". Una señal con período r produce picos en las frecuencias k·N/r, que se miden para recuperar r.</div>
+        </div>
+        <div class="quiz-q" data-answered="false">
+          <div class="quiz-q-text">¿Cuántas puertas cuánticas necesita la QFT para n qubits, en comparación con la FFT clásica para N=2ⁿ puntos?</div>
+          <div class="quiz-opts" data-correct="1">
+            <button class="quiz-opt" data-idx="0"><span class="quiz-opt-letter">A</span> La misma cantidad: O(N log N) = O(2ⁿ · n)</button>
+            <button class="quiz-opt" data-idx="1"><span class="quiz-opt-letter">B</span> La QFT necesita O(n²) puertas — exponencialmente menos que la FFT</button>
+            <button class="quiz-opt" data-idx="2"><span class="quiz-opt-letter">C</span> La QFT necesita exactamente n puertas, una por qubit</button>
+          </div>
+          <div class="quiz-fb ok">✓ ¡Exacto! La QFT necesita O(n²) puertas para n qubits, mientras que la FFT clásica necesita O(N log N) = O(2ⁿ · n) operaciones. Para n=100, la diferencia es ~10.000 vs ~10³².</div>
+          <div class="quiz-fb err">✗ No es correcto. La QFT sobre n qubits (N=2ⁿ estados) requiere O(n²) puertas, mientras la FFT clásica necesita O(N log N) = O(2ⁿ · n) operaciones. La ventaja es exponencial en n.</div>
+        </div>
+        <div class="quiz-q" data-answered="false">
+          <div class="quiz-q-text">¿Qué tipos de puertas se usan en la implementación del circuito QFT?</div>
+          <div class="quiz-opts" data-correct="0">
+            <button class="quiz-opt" data-idx="0"><span class="quiz-opt-letter">A</span> Puertas Hadamard (H) y puertas de fase controladas (R_k)</button>
+            <button class="quiz-opt" data-idx="1"><span class="quiz-opt-letter">B</span> Solo puertas CNOT organizadas en árbol binario</button>
+            <button class="quiz-opt" data-idx="2"><span class="quiz-opt-letter">C</span> Puertas Toffoli (CCNOT) y puertas X (NOT)</button>
+          </div>
+          <div class="quiz-fb ok">✓ ¡Perfecto! La QFT usa puertas H (para crear superposición) y puertas de fase controladas R_k (para codificar las fases de las raíces de la unidad). También se añaden puertas SWAP al final para invertir el orden de los qubits.</div>
+          <div class="quiz-fb err">✗ No es correcto. El circuito QFT usa puertas Hadamard (H) que crean superposición, y puertas de fase controladas R_k que aplican rotaciones de 2π/2ᵏ. Las puertas CNOT y Toffoli no son las puertas principales de la QFT.</div>
+        </div>
+        <div class="quiz-score" id="qs-2"><div class="quiz-score-left"><h3 id="qs-2-title">Puntuación</h3><p id="qs-2-sub"></p></div><div class="quiz-score-stars" id="qs-2-stars"></div></div>
+        <button class="btn btn-primary complete-btn" data-lesson="2">Completar lección y ganar XP →</button>
+        <div class="lesson-nav"><button class="btn btn-ghost btn-sm" onclick="COURSE.go(1)">← Anterior</button><button class="btn btn-ghost btn-sm" onclick="COURSE.go(3)">Siguiente →</button></div>
+      </div>
+    </section>
+
+    <!-- ══════════ LECCIÓN 4 ══════════ -->
+    <section class="cl-lesson" id="lesson-3">
+      <div class="lh">
+        <div class="lh-badge">04</div>
+        <div class="lh-info">
+          <h1>Estimación de fase cuántica (QPE)</h1>
+          <div class="lh-meta"><span>⏱ 30 min</span><span>🟡 Intermedio</span><span>✨ Gratis</span></div>
+        </div>
+      </div>
+      <div class="lb">
+        <p>La <strong>Estimación de Fase Cuántica (QPE — Quantum Phase Estimation)</strong> es el algoritmo que combina la QFT con la aritmética modular para extraer el período r. Es un algoritmo con aplicaciones mucho más allá de Shor: se usa en química cuántica (cálculo de energías moleculares), en el algoritmo HHL para sistemas lineales, y en muchos otros contextos.</p>
+
+        <h2>¿Qué es una fase en mecánica cuántica?</h2>
+        <p>Recuerda que los estados cuánticos tienen amplitudes complejas. Cuando aplicas una puerta unitaria U a un autoestado |u⟩, el estado cambia solo por una <strong>fase global</strong>: U|u⟩ = e^(2πiφ)|u⟩. El número φ ∈ [0,1) se llama la <strong>fase de la puerta U para el autoestado |u⟩</strong>.</p>
+        <p>QPE toma como entrada la puerta U y un estado |u⟩ (autoestado de U) y produce como salida una aproximación de n bits a φ. La precisión es 1/2ⁿ — más qubits, más precisión.</p>
+
+        <div class="math-box">QPE: U, |u⟩ → |φ₀φ₁…φₙ₋₁⟩ &nbsp; donde φ ≈ φ₀.φ₁φ₂…φₙ₋₁ en binario</div>
+
+        <h2>Estructura del circuito QPE</h2>
+        <p>El circuito QPE tiene dos registros:</p>
+        <ul>
+          <li><strong>Registro de control</strong> (n qubits): empieza en |0⟩ⁿ, almacenará la estimación de la fase</li>
+          <li><strong>Registro de trabajo</strong> (m qubits): contiene el autoestado |u⟩ de U</li>
+        </ul>
+        <p>El circuito procede en tres fases:</p>
+        <ol style="list-style:decimal;padding-left:20px;color:var(--text-2);font-size:0.91rem;line-height:1.9;">
+          <li>Aplica H a todos los qubits de control → superposición uniforme</li>
+          <li>Aplica U^(2ᵏ) controlado por el qubit k de control (para k = 0, 1, …, n−1)</li>
+          <li>Aplica la QFT inversa al registro de control → mide y obtén φ</li>
+        </ol>
+        <p>La interferencia creada por las potencias de U codifica la fase en el registro de control, y la QFT inversa la "decodifica" en un número binario medible.</p>
+
+        <h2>QPE en el contexto de Shor</h2>
+        <p>En Shor, la puerta U es la puerta de <strong>multiplicación modular</strong>: U|y⟩ = |ay mod N⟩. Esta puerta tiene autoestados |u_s⟩ con fases φ_s = s/r (donde s = 0, 1, …, r−1 y r es el período que buscamos).</p>
+        <p>Cuando aplicamos QPE a una superposición de todos los autoestados |u_s⟩, el registro de control termina en una superposición de estimaciones de s/r. Al medir, obtenemos un valor aproximado a s/r con alta probabilidad, del cual podemos recuperar r usando el <strong>algoritmo de fracciones continuas</strong> (que convierte un número decimal en la fracción irreducible más cercana con denominador pequeño).</p>
+
+        <div class="concept-box">
+          <div class="cb-tag">Fracciones continuas: la pieza clásica final</div>
+          <p>Después de QPE, tenemos un número decimal ≈ s/r. El <strong>algoritmo de fracciones continuas</strong> (clásico, O(log N)) encuentra la fracción irreducible más cercana con denominador ≤ N. Si s y r son coprimos (lo que ocurre con alta probabilidad), el denominador encontrado es exactamente r. Con r en mano, calculamos los factores de N con la fórmula mcd(a^(r/2) ± 1, N).</p>
+        </div>
+
+        <div class="fact-box">
+          <span class="fact-icon">⚗️</span>
+          <p><strong>QPE más allá de Shor:</strong> La estimación de fase cuántica es fundamental en química cuántica. Para simular una molécula, se prepara el estado fundamental aproximado, se define U = e^(−iHt) (la evolución temporal bajo el Hamiltoniano H) y QPE da la energía del estado fundamental. Algoritmos como VQE son aproximaciones clásico-cuánticas de esta idea.</p>
+        </div>
+      </div>
+      <div class="quiz-block">
+        <h2>🧠 Comprueba lo que has aprendido</h2>
+        <p>¡Ya en la lección 4!</p>
+        <div class="quiz-q" data-answered="false">
+          <div class="quiz-q-text">¿Qué calcula el algoritmo QPE dado una puerta unitaria U y su autoestado |u⟩?</div>
+          <div class="quiz-opts" data-correct="1">
+            <button class="quiz-opt" data-idx="0"><span class="quiz-opt-letter">A</span> El número de qubits necesarios para representar U</button>
+            <button class="quiz-opt" data-idx="1"><span class="quiz-opt-letter">B</span> La fase φ tal que U|u⟩ = e^(2πiφ)|u⟩</button>
+            <button class="quiz-opt" data-idx="2"><span class="quiz-opt-letter">C</span> El período de la función f(x) = aˣ mod N directamente</button>
+          </div>
+          <div class="quiz-fb ok">✓ ¡Correcto! QPE estima la fase φ del autoestado |u⟩ bajo la puerta U. Con n qubits de control, la precisión es 1/2ⁿ. En Shor, estas fases son s/r, lo que permite recuperar r.</div>
+          <div class="quiz-fb err">✗ No es correcto. QPE estima la fase φ en U|u⟩ = e^(2πiφ)|u⟩. En Shor las fases son s/r (múltiplos del inverso del período), pero QPE en sí mismo es un algoritmo general de estimación de fase.</div>
+        </div>
+        <div class="quiz-q" data-answered="false">
+          <div class="quiz-q-text">¿Qué algoritmo clásico se usa al final de Shor para convertir el resultado decimal de QPE en el período r?</div>
+          <div class="quiz-opts" data-correct="2">
+            <button class="quiz-opt" data-idx="0"><span class="quiz-opt-letter">A</span> El algoritmo de Euclides para el máximo común divisor</button>
+            <button class="quiz-opt" data-idx="1"><span class="quiz-opt-letter">B</span> El cribo de Eratóstenes para primos</button>
+            <button class="quiz-opt" data-idx="2"><span class="quiz-opt-letter">C</span> El algoritmo de fracciones continuas</button>
+          </div>
+          <div class="quiz-fb ok">✓ ¡Exacto! Las fracciones continuas convierten el decimal ≈ s/r en la fracción irreducible más cercana con denominador pequeño, que es r. Es un algoritmo clásico eficiente O(log N).</div>
+          <div class="quiz-fb err">✗ No es correcto. Se usa el algoritmo de fracciones continuas, que convierte un número decimal en la fracción irreducible más cercana. El algoritmo de Euclides se usa para calcular el mcd, que es un paso distinto.</div>
+        </div>
+        <div class="quiz-q" data-answered="false">
+          <div class="quiz-q-text">¿Cuántos bits de precisión da QPE con n qubits de control?</div>
+          <div class="quiz-opts" data-correct="0">
+            <button class="quiz-opt" data-idx="0"><span class="quiz-opt-letter">A</span> 1/2ⁿ — precisión exponencialmente alta con pocos qubits</button>
+            <button class="quiz-opt" data-idx="1"><span class="quiz-opt-letter">B</span> 1/n — precisión lineal en el número de qubits</button>
+            <button class="quiz-opt" data-idx="2"><span class="quiz-opt-letter">C</span> n bits — precisión exactamente igual al número de qubits</button>
+          </div>
+          <div class="quiz-fb ok">✓ ¡Perfecto! Con n qubits de control, QPE estima φ con precisión 1/2ⁿ. Cada qubit adicional duplica la precisión. Para Shor, n necesita ser suficientemente grande para que el denominador del resultado sea exactamente r.</div>
+          <div class="quiz-fb err">✗ No es correcto. QPE proporciona una precisión de 1/2ⁿ con n qubits de control. Cada qubit adicional duplica la precisión, lo que da un crecimiento exponencial en la precisión con solo crecimiento lineal en el número de qubits.</div>
+        </div>
+        <div class="quiz-score" id="qs-3"><div class="quiz-score-left"><h3 id="qs-3-title">Puntuación</h3><p id="qs-3-sub"></p></div><div class="quiz-score-stars" id="qs-3-stars"></div></div>
+        <button class="btn btn-primary complete-btn" data-lesson="3">Completar lección y ganar XP →</button>
+        <div class="lesson-nav"><button class="btn btn-ghost btn-sm" onclick="COURSE.go(2)">← Anterior</button><button class="btn btn-ghost btn-sm" onclick="COURSE.go(4)">Siguiente →</button></div>
+      </div>
+    </section>
+
+    <!-- ══════════ LECCIÓN 5 ══════════ -->
+    <section class="cl-lesson" id="lesson-4">
+      <div class="lh">
+        <div class="lh-badge">05</div>
+        <div class="lh-info">
+          <h1>El algoritmo de Shor completo</h1>
+          <div class="lh-meta"><span>⏱ 34 min</span><span>🔴 Avanzado</span><span>✨ Gratis</span></div>
+        </div>
+      </div>
+      <div class="lb">
+        <p>Con las piezas en su lugar — la reducción al período, la QFT y la estimación de fase — podemos ensamblar el algoritmo de Shor completo. Es una combinación elegante de pasos clásicos y cuánticos que juntos logran la factorización en tiempo polinomial.</p>
+
+        <h2>El algoritmo completo paso a paso</h2>
+        <p><strong>Entrada:</strong> Un número compuesto impar N que queremos factorizar.<br>
+        <strong>Salida:</strong> Un factor no trivial de N.</p>
+
+        <ol style="list-style:decimal;padding-left:20px;color:var(--text-2);font-size:0.91rem;line-height:2.0;">
+          <li><strong>[Clásico]</strong> Si N es par, devuelve 2. Si N = pᵏ para algún primo p, devuelve p.</li>
+          <li><strong>[Clásico]</strong> Elige a al azar: 1 &lt; a &lt; N. Si mcd(a, N) &gt; 1, devuelve mcd(a, N).</li>
+          <li><strong>[Cuántico]</strong> Usa QPE con U|y⟩=|ay mod N⟩ para encontrar r = período de aˣ mod N.</li>
+          <li><strong>[Clásico]</strong> Si r es impar o a^(r/2) ≡ −1 (mod N), vuelve al paso 2.</li>
+          <li><strong>[Clásico]</strong> Calcula p = mcd(a^(r/2) − 1, N) y q = mcd(a^(r/2) + 1, N).</li>
+          <li><strong>[Clásico]</strong> Si p o q es no trivial (distinto de 1 y N), devuelve ese factor.</li>
+        </ol>
+
+        <div class="concept-box">
+          <div class="cb-tag">Complejidad total: O(n³)</div>
+          <p>El paso cuántico (QPE) requiere O(n²) puertas para la QFT más O(n³) puertas para la aritmética modular. En total, el circuito tiene O(n³) puertas para factorizar un número de n bits. Comparado con el tiempo subexponencial del GNFS clásico (≈ exp(n^(1/3))), la ventaja cuántica es <strong>exponencial</strong> para n grande.</p>
+        </div>
+
+        <h2>Los recursos de qubits necesarios</h2>
+        <p>Para factorizar N con n = log₂(N) bits, Shor necesita:</p>
+        <ul>
+          <li><strong>Registro de control:</strong> 2n qubits (para tener precisión suficiente en QPE)</li>
+          <li><strong>Registro de trabajo:</strong> n qubits (para el estado |y⟩ de la multiplicación modular)</li>
+          <li><strong>Qubits auxiliares:</strong> n qubits adicionales para la aritmética</li>
+          <li><strong>Total aproximado:</strong> ~5n qubits lógicos</li>
+        </ul>
+        <p>Para RSA-2048 (n = 2048 bits): ~10.000 qubits lógicos. Con las tasas de error actuales del hardware superconductor (~0.1–1% por puerta), se necesitarían entre 1 y 10 millones de qubits físicos para implementar la corrección de errores necesaria. El hardware actual tiene miles de qubits físicos pero muy poca fidelidad a esta escala.</p>
+
+        <h2>Ejemplos de implementaciones reales</h2>
+        <p>Factorizar 15 (4 bits): IBM lo demostró en 2001 con 7 qubits de RMN.<br>
+        Factorizar 21: demostrado en 2012 con fotónica.<br>
+        Factorizar 35, 56, 143: demostraciones posteriores con qubits superconductores e iónicos.<br>
+        Todos estos son números muy pequeños. El salto a RSA-2048 es de 617 dígitos — más de 600 veces más bits. La brecha es enorme.</p>
+
+        <div class="fact-box">
+          <span class="fact-icon">📰</span>
+          <p><strong>2023: ¿"Rompieron" RSA con Shor?</strong> En 2023 circuló la noticia de que investigadores chinos habían roto RSA-2048 con 372 qubits. El paper fue malinterpretado: usaban una combinación de optimizaciones heurísticas no probadas y solo factorizaban números de ~50 bits. Ningún experto del sector confirmó el resultado. RSA-2048 sigue siendo seguro hoy.</p>
+        </div>
+      </div>
+      <div class="quiz-block">
+        <h2>🧠 Comprueba lo que has aprendido</h2>
+        <p>¡Penúltima lección!</p>
+        <div class="quiz-q" data-answered="false">
+          <div class="quiz-q-text">¿Cuál es la complejidad temporal del algoritmo de Shor para factorizar un número de n bits?</div>
+          <div class="quiz-opts" data-correct="1">
+            <button class="quiz-opt" data-idx="0"><span class="quiz-opt-letter">A</span> O(2ⁿ) — exponencial, igual que los clásicos</button>
+            <button class="quiz-opt" data-idx="1"><span class="quiz-opt-letter">B</span> O(n³) — polinomial, exponencialmente mejor que los clásicos</button>
+            <button class="quiz-opt" data-idx="2"><span class="quiz-opt-letter">C</span> O(n log n) — igual que la FFT</button>
+          </div>
+          <div class="quiz-fb ok">✓ ¡Correcto! Shor corre en O(n³) tiempo polinomial, comparado con el tiempo subexponencial ~exp(n^(1/3)) del mejor algoritmo clásico (GNFS). Para n=2048, la diferencia es de millones de años vs. horas.</div>
+          <div class="quiz-fb err">✗ No es correcto. Shor tiene complejidad O(n³) polinomial. El mejor algoritmo clásico de factorización (GNFS) tiene complejidad subexponencial ~exp(O(n^(1/3))), que crece mucho más rápido.</div>
+        </div>
+        <div class="quiz-q" data-answered="false">
+          <div class="quiz-q-text">¿Cuántos qubits lógicos aproximados se necesitan para factorizar RSA-2048 con Shor?</div>
+          <div class="quiz-opts" data-correct="2">
+            <button class="quiz-opt" data-idx="0"><span class="quiz-opt-letter">A</span> 2.048 qubits — uno por bit de N</button>
+            <button class="quiz-opt" data-idx="1"><span class="quiz-opt-letter">B</span> 127 qubits — los de un procesador IBM actual</button>
+            <button class="quiz-opt" data-idx="2"><span class="quiz-opt-letter">C</span> ~10.000 qubits lógicos (equivalentes a millones de qubits físicos actuales)</button>
+          </div>
+          <div class="quiz-fb ok">✓ ¡Exacto! Shor necesita ~5n qubits lógicos. Para n=2048, son ~10.000 qubits lógicos. Con tasas de error actuales del hardware, eso requiere millones de qubits físicos con corrección de errores — muy lejos del estado del arte.</div>
+          <div class="quiz-fb err">✗ No es correcto. Shor necesita ~5n ≈ 10.000 qubits lógicos (con corrección de errores) para n=2048 bits. Los qubits actuales son físicos, ruidosos, y se necesitan ~1.000 por qubit lógico: millones en total.</div>
+        </div>
+        <div class="quiz-q" data-answered="false">
+          <div class="quiz-q-text">¿Cuál fue el número más grande factorizado experimentalmente con el algoritmo de Shor en hardware cuántico real hasta la fecha?</div>
+          <div class="quiz-opts" data-correct="0">
+            <button class="quiz-opt" data-idx="0"><span class="quiz-opt-letter">A</span> Números de pocas decenas a pocos cientos, como 15, 21, 35, 143</button>
+            <button class="quiz-opt" data-idx="1"><span class="quiz-opt-letter">B</span> RSA-512 (155 dígitos) en 2020</button>
+            <button class="quiz-opt" data-idx="2"><span class="quiz-opt-letter">C</span> RSA-2048 fue parcialmente factorizado en 2023</button>
+          </div>
+          <div class="quiz-fb ok">✓ ¡Correcto! Las implementaciones reales de Shor solo han factorizado números muy pequeños: 15, 21, 35, 56, 143. El salto a RSA-512 o RSA-2048 requeriría millones de qubits tolerantes a fallos que no existen todavía.</div>
+          <div class="quiz-fb err">✗ No es correcto. En hardware cuántico real, Shor solo ha factorizado números muy pequeños (15, 21, 35, 143). RSA-512 fue factorizado en 1999 pero con métodos clásicos (GNFS), no con Shor cuántico.</div>
+        </div>
+        <div class="quiz-score" id="qs-4"><div class="quiz-score-left"><h3 id="qs-4-title">Puntuación</h3><p id="qs-4-sub"></p></div><div class="quiz-score-stars" id="qs-4-stars"></div></div>
+        <button class="btn btn-primary complete-btn" data-lesson="4">Completar lección y ganar XP →</button>
+        <div class="lesson-nav"><button class="btn btn-ghost btn-sm" onclick="COURSE.go(3)">← Anterior</button><button class="btn btn-ghost btn-sm" onclick="COURSE.go(5)">Siguiente →</button></div>
+      </div>
+    </section>
+
+    <!-- ══════════ LECCIÓN 6 ══════════ -->
+    <section class="cl-lesson" id="lesson-5">
+      <div class="lh">
+        <div class="lh-badge">06</div>
+        <div class="lh-info">
+          <h1>Implicaciones y criptografía post-cuántica</h1>
+          <div class="lh-meta"><span>⏱ 26 min</span><span>🟡 Intermedio</span><span>✨ Gratis</span><span>🏁 Final</span></div>
+        </div>
+      </div>
+      <div class="lb">
+        <p>Shor no es solo un resultado teórico hermoso: es una amenaza real para la infraestructura de seguridad digital global. Gobiernos, agencias de inteligencia y empresas tecnológicas llevan años preparándose. La respuesta se llama <strong>criptografía post-cuántica (PQC)</strong>.</p>
+
+        <h2>¿Qué algoritmos son vulnerables?</h2>
+        <p>El algoritmo de Shor rompe cualquier sistema cuya seguridad dependa del problema de factorización o del logaritmo discreto:</p>
+        <ul>
+          <li><strong>RSA</strong> (todas las longitudes de clave) — vulnerable a Shor</li>
+          <li><strong>Criptografía de curva elíptica (ECC)</strong> — ECDSA, ECDH — vulnerable a Shor</li>
+          <li><strong>Diffie-Hellman</strong> — vulnerable a Shor</li>
+          <li><strong>AES-128</strong> — solo vulnerable a Grover (que da ventaja cuadrática, no exponencial); AES-256 sigue siendo seguro</li>
+          <li><strong>SHA-256, SHA-3</strong> — debilitados por Grover pero con longitudes actuales todavía seguros</li>
+        </ul>
+
+        <div class="concept-box">
+          <div class="cb-tag">"Cosecha ahora, descifra después"</div>
+          <p>Un adversario sofisticado puede <strong>almacenar hoy</strong> comunicaciones cifradas con RSA y <strong>descifrarlas en el futuro</strong> cuando tenga un ordenador cuántico suficientemente potente. Este ataque se llama HNDL (Harvest Now, Decrypt Later). Los datos con horizonte de confidencialidad de 10+ años (secretos militares, datos médicos, propiedad intelectual) ya están en riesgo si se almacenan cifrados con RSA hoy.</p>
+        </div>
+
+        <h2>La respuesta: criptografía post-cuántica (PQC)</h2>
+        <p>La PQC diseña algoritmos criptográficos que son seguros incluso contra ordenadores cuánticos. Se basan en problemas matemáticos que ni los ordenadores cuánticos conocen cómo resolver eficientemente:</p>
+        <ul>
+          <li><strong>Retículos (Lattices):</strong> problema del vector más corto (SVP) y aprendizaje con errores (LWE) — la base de CRYSTALS-Kyber y CRYSTALS-Dilithium</li>
+          <li><strong>Códigos de corrección de errores:</strong> Classic McEliece (propuesto en 1978, sigue siendo seguro)</li>
+          <li><strong>Funciones hash:</strong> SPHINCS+ (firmas digitales basadas en hash)</li>
+          <li><strong>Polinomios multivariables:</strong> menos populares pero en estudio</li>
+        </ul>
+
+        <h2>El proceso de estandarización del NIST</h2>
+        <p>En 2016, el NIST (Instituto Nacional de Estándares y Tecnología de EE.UU.) lanzó un proceso global de selección de algoritmos PQC. Tras 7 años de análisis, en 2024 publicó los <strong>primeros estándares PQC</strong>:</p>
+        <ul>
+          <li><strong>FIPS 203</strong> (ML-KEM, basado en CRYSTALS-Kyber): encapsulación de clave</li>
+          <li><strong>FIPS 204</strong> (ML-DSA, basado en CRYSTALS-Dilithium): firma digital</li>
+          <li><strong>FIPS 205</strong> (SLH-DSA, basado en SPHINCS+): firma digital alternativa</li>
+        </ul>
+        <p>Muchos navegadores, sistemas operativos y protocolos ya están implementando estos estándares. La migración será un proceso de años — hay miles de millones de dispositivos y sistemas que actualizar.</p>
+
+        <div class="fact-box">
+          <span class="fact-icon">🌐</span>
+          <p><strong>La migración ya comenzó:</strong> Google Chrome implementó soporte experimental para Kyber en 2023. Apple migró iMessage a un protocolo post-cuántico (PQ3) en 2024. Signal también adoptó un protocolo híbrido post-cuántico. La transición criptográfica más grande de la historia de internet está en marcha.</p>
+        </div>
+      </div>
+      <div class="quiz-block">
+        <h2>🧠 Comprueba lo que has aprendido</h2>
+        <p>¡Última lección del curso! ¡A por las 3 estrellas!</p>
+        <div class="quiz-q" data-answered="false">
+          <div class="quiz-q-text">¿En qué se basa la seguridad de los algoritmos de criptografía post-cuántica (PQC) como CRYSTALS-Kyber?</div>
+          <div class="quiz-opts" data-correct="2">
+            <button class="quiz-opt" data-idx="0"><span class="quiz-opt-letter">A</span> En la dificultad de factorizar números primos grandes</button>
+            <button class="quiz-opt" data-idx="1"><span class="quiz-opt-letter">B</span> En la imposibilidad de construir ordenadores cuánticos suficientemente grandes</button>
+            <button class="quiz-opt" data-idx="2"><span class="quiz-opt-letter">C</span> En problemas matemáticos (como retículos) que ni los ordenadores cuánticos saben resolver eficientemente</button>
+          </div>
+          <div class="quiz-fb ok">✓ ¡Correcto! PQC se basa en problemas matemáticos distintos a la factorización: problemas de retículos (LWE, SVP), códigos de corrección de errores y funciones hash, para los que no se conocen algoritmos cuánticos eficientes.</div>
+          <div class="quiz-fb err">✗ No es correcto. PQC no usa la factorización (eso sería vulnerable a Shor). Usa problemas como los retículos (Learning With Errors, LWE) para los que no existe ningún algoritmo cuántico eficiente conocido.</div>
+        </div>
+        <div class="quiz-q" data-answered="false">
+          <div class="quiz-q-text">¿Qué es el ataque HNDL (Harvest Now, Decrypt Later)?</div>
+          <div class="quiz-opts" data-correct="1">
+            <button class="quiz-opt" data-idx="0"><span class="quiz-opt-letter">A</span> Un ataque de fuerza bruta que usa muchos ordenadores clásicos en paralelo</button>
+            <button class="quiz-opt" data-idx="1"><span class="quiz-opt-letter">B</span> Almacenar hoy datos cifrados con RSA para descifrarlos en el futuro con un ordenador cuántico</button>
+            <button class="quiz-opt" data-idx="2"><span class="quiz-opt-letter">C</span> Un ataque de intermediario (man-in-the-middle) usando entrelazamiento cuántico</button>
+          </div>
+          <div class="quiz-fb ok">✓ ¡Exacto! HNDL es una amenaza presente: un adversario puede interceptar y almacenar comunicaciones cifradas con RSA ahora, aunque no pueda descifrarlas todavía, esperando a tener acceso a un ordenador cuántico suficientemente potente en el futuro.</div>
+          <div class="quiz-fb err">✗ No es correcto. HNDL significa "cosechar ahora, descifrar después": almacenar hoy comunicaciones RSA (asequible con almacenamiento masivo) y descifrarlas en el futuro cuando haya ordenadores cuánticos capaces. Es una amenaza real ya activa.</div>
+        </div>
+        <div class="quiz-q" data-answered="false">
+          <div class="quiz-q-text">¿Cuáles fueron los primeros algoritmos PQC estandarizados por el NIST en 2024?</div>
+          <div class="quiz-opts" data-correct="0">
+            <button class="quiz-opt" data-idx="0"><span class="quiz-opt-letter">A</span> ML-KEM (Kyber), ML-DSA (Dilithium) y SLH-DSA (SPHINCS+)</button>
+            <button class="quiz-opt" data-idx="1"><span class="quiz-opt-letter">B</span> RSA-8192, ECC-521 y AES-512</button>
+            <button class="quiz-opt" data-idx="2"><span class="quiz-opt-letter">C</span> BB84, E91 y el protocolo QKD de fibra óptica</button>
+          </div>
+          <div class="quiz-fb ok">✓ ¡Perfecto! En agosto de 2024, el NIST publicó los estándares FIPS 203 (ML-KEM/Kyber), FIPS 204 (ML-DSA/Dilithium) y FIPS 205 (SLH-DSA/SPHINCS+). Son los primeros estándares PQC oficiales y la base de la próxima generación de internet seguro.</div>
+          <div class="quiz-fb err">✗ No es correcto. Los estándares PQC del NIST (2024) son ML-KEM (FIPS 203), ML-DSA (FIPS 204) y SLH-DSA (FIPS 205) — basados en retículos y funciones hash. RSA-8192 y AES-512 no existen como estándares; BB84 es un protocolo QKD distinto.</div>
+        </div>
+        <div class="quiz-score" id="qs-5"><div class="quiz-score-left"><h3 id="qs-5-title">Puntuación</h3><p id="qs-5-sub"></p></div><div class="quiz-score-stars" id="qs-5-stars"></div></div>
+        <button class="btn btn-primary complete-btn" data-lesson="5">Completar lección y ganar XP →</button>
+        <div class="lesson-nav"><button class="btn btn-ghost btn-sm" onclick="COURSE.go(4)">← Anterior</button><span></span></div>
+      </div>
+    </section>
+
+    <!-- ══════════ COMPLETADO ══════════ -->
+    <section class="cl-lesson" id="lesson-done">
+      <div style="text-align:center;padding:48px 24px;">
+        <span style="font-size:5rem;display:block;margin-bottom:12px;">🔐</span>
+        <div class="label" style="margin-bottom:14px;">Curso completado</div>
+        <h1 style="font-size:clamp(1.6rem,4vw,2.6rem);margin-bottom:16px;">¡Eres un Criptógrafo Cuántico!</h1>
+        <p style="color:var(--text-2);max-width:480px;margin:0 auto 36px;line-height:1.75;font-size:0.98rem;">Has dominado el algoritmo más temido de la criptografía moderna: desde la reducción al período hasta la QFT, QPE y la criptografía post-cuántica que nos protegerá en el futuro.</p>
+        <div style="background:var(--bg-2);border:1px solid var(--border-md);border-radius:var(--r);padding:28px;max-width:460px;margin:0 auto 36px;text-align:left;">
+          <div class="label" style="margin-bottom:12px;">Tu progreso</div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:10px;font-size:0.88rem;"><span style="color:var(--text-2);">Lecciones completadas</span><span id="done-lessons" style="font-weight:700;">6/6</span></div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:10px;font-size:0.88rem;"><span style="color:var(--text-2);">XP ganados</span><span id="done-xp" style="font-weight:700;color:var(--cyan);">0 XP</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:0.88rem;"><span style="color:var(--text-2);">Nivel alcanzado</span><span id="done-level" style="font-weight:700;">—</span></div>
+        </div>
+        <div style="display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin-bottom:40px;" id="done-badges-row"></div>
+        <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
+          <a href="criptografia.html" class="btn btn-primary btn-lg">Siguiente: Criptografía Cuántica →</a>
+          <a href="../catalogue.html" class="btn btn-ghost btn-lg">Ver catálogo completo</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<button class="sidebar-fab" id="sidebar-fab" aria-label="Ver lecciones">☰</button>
+
+<div id="badge-modal">
+  <div class="bm-box">
+    <span class="bm-emoji" id="bm-emoji">🏅</span>
+    <div class="bm-tag">Nueva insignia desbloqueada</div>
+    <div class="bm-name" id="bm-name">Nombre</div>
+    <div class="bm-desc" id="bm-desc">Descripción</div>
+    <button class="btn btn-primary" id="bm-close" style="width:100%;justify-content:center;">¡Genial, a seguir!</button>
+  </div>
+</div>
+
+<div id="xp-toast">
+  <span class="toast-icon" id="toast-icon">⚡</span>
+  <div><div class="toast-title" id="toast-title">+50 XP</div><div class="toast-sub" id="toast-sub">¡Lección completada!</div></div>
+</div>
+
+<div id="confetti"></div>
+
+<script src="../js/main.js"></script>
+<script>
+const COURSE = (function () {
+  const KEY           = 'qb-shor-v1';
+  const GLOBAL_XP     = 'qb-xp';
+  const TOTAL_LESSONS = 6;
+  const XP_LESSON     = 50;
+  const XP_PERFECT    = 25;
+
+  const LEVELS = [
+    { min:0,   max:99,   label:'⚗️ Novato',    pct:(xp)=>xp/100 },
+    { min:100, max:249,  label:'🔬 Aprendiz',   pct:(xp)=>(xp-100)/150 },
+    { min:250, max:499,  label:'🌌 Explorador', pct:(xp)=>(xp-250)/250 },
+    { min:500, max:9999, label:'⚛️ Maestro',    pct:(xp)=>Math.min((xp-500)/500,1) },
+  ];
+
+  const BADGES = [
+    { id:'shor-inicio',     emoji:'🚀', name:'Primer Paso',        desc:'Completaste tu primera lección. ¡El viaje hacia RSA comienza!',              hbIdx:0, check:(s)=>s.done.length>=1 },
+    { id:'shor-explorador', emoji:'🔭', name:'Explorador',          desc:'Completaste 3 lecciones. ¡Ya entiendes la QFT!',                             hbIdx:1, check:(s)=>s.done.length>=3 },
+    { id:'shor-perfecto',   emoji:'⭐', name:'Quiz Perfecto',        desc:'3/3 correctas en un quiz. ¡Mente cuántica!',                                 hbIdx:2, check:(s)=>s.perfectCount>=1 },
+    { id:'shor-racha',      emoji:'🔥', name:'En Racha',             desc:'Estudiaste 2 días seguidos. ¡Constancia cuántica!',                          hbIdx:3, check:(s)=>s.streak>=2 },
+    { id:'shor-criptografo',emoji:'🔐', name:'Criptógrafo Cuántico', desc:'Completaste el curso de Shor. ¡Ya sabes por qué el mundo necesita PQC!',    hbIdx:4, check:(s)=>s.done.length>=6 },
+  ];
+
+  let state;
+  function defaultState() { return { done:[], current:0, perfectCount:0, streak:0, streakDate:'', badges:[] }; }
+  function load() {
+    try { state = JSON.parse(localStorage.getItem(KEY)) || defaultState(); } catch(e) { state = defaultState(); }
+    updateStreak();
+  }
+  function save() { localStorage.setItem(KEY, JSON.stringify(state)); }
+
+  function updateStreak() {
+    const today = new Date().toDateString(), last = state.streakDate;
+    if (!last) { state.streak=1; state.streakDate=today; }
+    else if (last===today) {}
+    else {
+      const diff = (new Date(today)-new Date(last))/86400000;
+      state.streak = diff<=1.5 ? state.streak+1 : 1;
+      state.streakDate = today;
+    }
+  }
+
+  function getXP()  { return parseInt(localStorage.getItem(GLOBAL_XP)||'0'); }
+  function addXP(n) { localStorage.setItem(GLOBAL_XP, getXP()+n); }
+  function getLevel(xp) { for(let i=LEVELS.length-1;i>=0;i--) if(xp>=LEVELS[i].min) return LEVELS[i]; return LEVELS[0]; }
+
+  function updateHUD() {
+    const xp=getXP(), lvl=getLevel(xp);
+    document.getElementById('hud-level').textContent    = lvl.label;
+    document.getElementById('hud-xp-label').textContent = xp+' XP';
+    document.getElementById('hud-xp-fill').style.width  = (lvl.pct(xp)*100).toFixed(1)+'%';
+    document.getElementById('hud-streak').textContent   = '🔥 '+state.streak+' día'+(state.streak!==1?'s':'');
+    BADGES.forEach((b,i) => { const el=document.getElementById('hb-'+i); if(el) el.classList.toggle('earned',state.badges.includes(b.id)); });
+  }
+
+  function updateSidebar() {
+    const pct = Math.round((state.done.length/TOTAL_LESSONS)*100);
+    document.getElementById('cl-prog').style.width = pct+'%';
+    document.getElementById('cl-prog-text').textContent = state.done.length+' / '+TOTAL_LESSONS+' lecciones';
+    document.querySelectorAll('.cl-item').forEach(li => {
+      const idx=parseInt(li.dataset.lesson);
+      li.classList.toggle('done', state.done.includes(idx));
+      li.classList.toggle('active', idx===state.current);
+      const ck=document.getElementById('ck-'+idx);
+      if(ck) ck.textContent = state.done.includes(idx)?'✓':idx+1;
+    });
+  }
+
+  function go(idx) {
+    state.current=idx; save();
+    document.querySelectorAll('.cl-lesson').forEach(l=>l.classList.remove('active'));
+    const t = idx==='done' ? document.getElementById('lesson-done') : document.getElementById('lesson-'+idx);
+    if(t) t.classList.add('active');
+    updateSidebar();
+    window.scrollTo({top:0,behavior:'smooth'});
+    if(window.innerWidth<=860) document.getElementById('cl-sidebar').classList.remove('open');
+  }
+
+  function showDone() {
+    document.querySelectorAll('.cl-lesson').forEach(l=>l.classList.remove('active'));
+    document.getElementById('lesson-done').classList.add('active');
+    window.scrollTo({top:0,behavior:'smooth'});
+    const xp=getXP(), lvl=getLevel(xp);
+    document.getElementById('done-lessons').textContent = state.done.length+'/6';
+    document.getElementById('done-xp').textContent      = xp+' XP';
+    document.getElementById('done-level').textContent   = lvl.label;
+    const row=document.getElementById('done-badges-row'); row.innerHTML='';
+    BADGES.forEach(b => { if(state.badges.includes(b.id)) row.innerHTML+=`<div style="background:var(--bg-card);border:1px solid var(--border-md);border-radius:var(--r);padding:16px 14px;text-align:center;min-width:90px;"><span style="font-size:2rem;display:block;margin-bottom:6px;">${b.emoji}</span><p style="font-size:0.72rem;font-weight:600;color:var(--text-2);">${b.name}</p></div>`; });
+  }
+
+  let badgeQueue=[], badgeShowing=false;
+  function checkBadges() { BADGES.forEach(b=>{ if(!state.badges.includes(b.id)&&b.check(state)){ state.badges.push(b.id); badgeQueue.push(b); } }); save(); updateHUD(); processBadgeQueue(); }
+  function processBadgeQueue() { if(badgeShowing||badgeQueue.length===0) return; badgeShowing=true; showBadge(badgeQueue.shift()); }
+  function showBadge(badge) { document.getElementById('bm-emoji').textContent=badge.emoji; document.getElementById('bm-name').textContent=badge.name; document.getElementById('bm-desc').textContent=badge.desc; document.getElementById('badge-modal').classList.add('show'); }
+  document.getElementById('bm-close').addEventListener('click',()=>{ document.getElementById('badge-modal').classList.remove('show'); badgeShowing=false; setTimeout(processBadgeQueue,300); });
+
+  let toastTimer;
+  function showToast(title,sub,icon) { document.getElementById('toast-title').textContent=title; document.getElementById('toast-sub').textContent=sub; document.getElementById('toast-icon').textContent=icon; const t=document.getElementById('xp-toast'); t.classList.add('show'); clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove('show'),3200); }
+
+  const COLORS=['#9333ea','#f59e0b','#10b981','#e2e8f0','#60a5fa'];
+  function launchConfetti() { const c=document.getElementById('confetti'); c.innerHTML=''; for(let i=0;i<70;i++){ const p=document.createElement('div'); p.className='cp'; const tx=(Math.random()-0.5)*200; p.style.cssText=['left:'+(Math.random()*100)+'%','background:'+COLORS[Math.floor(Math.random()*COLORS.length)],'--tx:'+tx+'px','width:'+(4+Math.random()*5)+'px','height:'+(4+Math.random()*7)+'px','animation-delay:'+(Math.random()*0.5)+'s','animation-duration:'+(0.9+Math.random()*0.8)+'s','border-radius:'+(Math.random()>0.5?'50%':'2px')].join(';'); c.appendChild(p); } setTimeout(()=>c.innerHTML='',2500); }
+
+  function showScore(lessonIdx,correct,total) {
+    const scoreEl=document.getElementById('qs-'+lessonIdx); if(!scoreEl) return;
+    scoreEl.classList.add('show');
+    const stars=correct===total?'⭐⭐⭐':correct>=2?'⭐⭐':'⭐';
+    const titles=['¡Sigue practicando!','¡Casi perfecto!','¡Quiz perfecto!'];
+    const subs=['Repasa el contenido y vuelve a intentarlo','Una más y sería perfecto','+25 XP de bonus!'];
+    document.getElementById('qs-'+lessonIdx+'-title').textContent=titles[correct-1]||titles[0];
+    document.getElementById('qs-'+lessonIdx+'-sub').textContent=subs[correct-1]||subs[0];
+    document.getElementById('qs-'+lessonIdx+'-stars').textContent=stars;
+  }
+
+  function completeLesson(idx,correct,total) {
+    if(!state.done.includes(idx)) state.done.push(idx);
+    if(correct===total) state.perfectCount++;
+    const xpEarned=XP_LESSON+(correct===total?XP_PERFECT:0);
+    addXP(xpEarned); save(); updateHUD(); updateSidebar();
+    showToast('+'+xpEarned+' XP', correct===total?'¡Quiz perfecto! Bonus +25 XP':correct+'/'+total+' respuestas correctas', correct===total?'⭐':'⚡');
+    if(correct===total||correct>=2) launchConfetti();
+    checkBadges();
+    setTimeout(()=>{ if(idx<TOTAL_LESSONS-1){ go(idx+1); } else { showDone(); launchConfetti(); } },1600);
+  }
+
+  function initQuizzes() {
+    document.querySelectorAll('.quiz-opts').forEach(opts=>{
+      const correctIdx=parseInt(opts.dataset.correct), question=opts.closest('.quiz-q');
+      const fbOk=question.querySelector('.quiz-fb.ok'), fbErr=question.querySelector('.quiz-fb.err');
+      const btns=opts.querySelectorAll('.quiz-opt');
+      btns.forEach(btn=>{ btn.addEventListener('click',()=>{
+        if(question.dataset.answered==='true') return;
+        question.dataset.answered='true'; const clicked=parseInt(btn.dataset.idx);
+        btns.forEach(b=>b.disabled=true);
+        if(clicked===correctIdx){ btn.classList.add('correct'); fbOk.classList.add('show'); question.dataset.result='correct'; }
+        else { btn.classList.add('wrong'); btns[correctIdx].classList.add('correct'); fbErr.classList.add('show'); question.dataset.result='wrong'; }
+        const quiz=question.closest('.quiz-block');
+        const allDone=[...quiz.querySelectorAll('.quiz-q')].every(q=>q.dataset.answered==='true');
+        if(allDone){ const c=[...quiz.querySelectorAll('.quiz-q')].filter(q=>q.dataset.result==='correct').length; const tot=quiz.querySelectorAll('.quiz-q').length; const b2=quiz.querySelector('.complete-btn'); b2.classList.add('ready'); showScore(parseInt(b2.dataset.lesson),c,tot); }
+      }); });
+    });
+    document.querySelectorAll('.complete-btn').forEach(btn=>{ btn.addEventListener('click',()=>{ if(!btn.classList.contains('ready')) return; const li=parseInt(btn.dataset.lesson); const q=btn.closest('.quiz-block'); const c=[...q.querySelectorAll('.quiz-q')].filter(q=>q.dataset.result==='correct').length; const tot=q.querySelectorAll('.quiz-q').length; completeLesson(li,c,tot); }); });
+  }
+
+  document.querySelectorAll('.cl-item').forEach(li=>{ li.addEventListener('click',()=>go(parseInt(li.dataset.lesson))); });
+  const fab=document.getElementById('sidebar-fab'), sidebar=document.getElementById('cl-sidebar');
+  if(fab&&sidebar){ fab.addEventListener('click',()=>sidebar.classList.toggle('open')); document.addEventListener('click',(e)=>{ if(!sidebar.contains(e.target)&&e.target!==fab) sidebar.classList.remove('open'); }); }
+
+  load(); updateHUD(); updateSidebar(); initQuizzes(); go(state.current);
+  return { go };
+})();
+</script>
+</body>
+</html>
